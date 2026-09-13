@@ -1,0 +1,1869 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>AI-Native PRD Lab — Idea → Interview → PRD</title>
+<meta name="description" content="아이디어를 Product Concept Card로 정리하고, 3가지 검증된 PRD 관점 중 하나를 선택해 ChatGPT 또는 Claude와 인터뷰하며 PRD를 완성하는 자율 실습 원페이저." />
+<style>
+
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500&family=Noto+Sans+KR:wght@400;500&display=swap');
+
+:root{
+  --canvas:#ffffff;
+  --canvas-soft:#fafafa;
+  --canvas-night:#1c1c1c;
+  --canvas-night-soft:#202020;
+  --ink:#171717;
+  --ink-secondary:#212121;
+  --ink-mute:#707070;
+  --ink-mute-2:#9a9a9a;
+  --ink-faint:#b2b2b2;
+  --hairline:#dfdfdf;
+  --hairline-strong:#c7c7c7;
+  --hairline-cool:#ededed;
+  --primary:#3ecf8e;
+  --primary-deep:#24b47e;
+  --radius-xs:4px;
+  --radius-sm:6px;
+  --radius-md:8px;
+  --radius-lg:12px;
+  --shadow-1:0 1px 3px rgba(0,0,0,.06);
+  --shadow-2:0 8px 24px rgba(0,0,0,.08);
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+  margin:0;
+  background:var(--canvas);
+  color:var(--ink);
+  font-family:Inter,"Noto Sans KR","Helvetica Neue",Helvetica,Arial,sans-serif;
+  font-size:16px;
+  line-height:1.55;
+  font-weight:400;
+  -webkit-font-smoothing:antialiased;
+}
+a{color:var(--ink);text-underline-offset:3px;text-decoration-thickness:1px}
+button,.btn,input,textarea{font:inherit}
+.container{width:min(1280px,calc(100% - 48px));margin:0 auto}
+
+/* HERO */
+.hero{
+  padding:88px 0 72px;
+  background:var(--canvas);
+  border-bottom:1px solid var(--hairline-cool);
+}
+.eyebrow{
+  display:inline-flex;
+  align-items:center;
+  gap:8px;
+  padding:0;
+  border:0;
+  background:transparent;
+  color:var(--ink-mute);
+  border-radius:0;
+  font-size:12px;
+  line-height:1.45;
+  font-weight:400;
+  letter-spacing:.01em;
+  text-transform:uppercase;
+}
+.eyebrow::before{
+  content:"";
+  width:7px;height:7px;border-radius:9999px;
+  background:var(--primary);
+  box-shadow:0 0 0 3px rgba(62,207,142,.14);
+}
+h1{
+  max-width:960px;
+  margin:22px 0 24px;
+  font-size:clamp(42px,5.1vw,64px);
+  line-height:1.08;
+  font-weight:500;
+  letter-spacing:-1.92px;
+}
+.lead{
+  max-width:820px;
+  margin:0;
+  color:var(--ink-mute);
+  font-size:18px;
+  line-height:1.6;
+  font-weight:400;
+}
+.hero-actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:28px}
+
+/* process mockup */
+.flow{
+  display:grid;
+  grid-template-columns:repeat(5,1fr);
+  gap:0;
+  margin-top:56px;
+  overflow:hidden;
+  background:var(--canvas);
+  border:1px solid var(--hairline);
+  border-radius:var(--radius-lg);
+  box-shadow:var(--shadow-2);
+}
+.flow .f{
+  position:relative;
+  min-height:132px;
+  padding:22px 20px 20px;
+  background:var(--canvas);
+  border:0;
+  border-right:1px solid var(--hairline-cool);
+  border-radius:0;
+  box-shadow:none;
+}
+.flow .f:last-child{border-right:0}
+.flow .f::after{
+  content:"";
+  position:absolute;
+  left:20px;right:20px;bottom:0;
+  height:2px;background:transparent;
+}
+.flow .f:hover::after{background:var(--primary)}
+.flow b{
+  display:block;
+  margin:0 0 12px;
+  color:var(--ink-mute-2);
+  font-size:12px;
+  line-height:1.45;
+  font-weight:400;
+  letter-spacing:.02em;
+}
+.flow span{
+  display:block;
+  margin-bottom:5px;
+  color:var(--ink);
+  font-size:16px;
+  line-height:1.35;
+  font-weight:500;
+}
+.flow small{color:var(--ink-mute);font-size:13px;line-height:1.45}
+
+/* NAV */
+.sticky{
+  position:sticky;top:0;z-index:50;
+  background:rgba(255,255,255,.94);
+  backdrop-filter:blur(12px);
+  border-bottom:1px solid var(--hairline-cool);
+}
+.nav{display:flex;align-items:center;gap:2px;overflow:auto;padding:10px 0}
+.nav a{
+  flex:none;
+  white-space:nowrap;
+  padding:7px 9px;
+  border-radius:var(--radius-sm);
+  color:var(--ink-mute);
+  font-size:13px;
+  line-height:1;
+  font-weight:400;
+  text-decoration:none;
+}
+.nav a:hover{background:var(--canvas-soft);color:var(--ink)}
+.progress-wrap{display:flex;gap:10px;align-items:center;margin-left:auto;color:var(--ink-mute);font-size:12px}
+.progress{width:136px;height:4px;border-radius:9999px;background:var(--hairline-cool);overflow:hidden}
+.progress>span{display:block;height:100%;width:0;background:var(--primary)}
+#progressText{font-weight:500;color:var(--ink)}
+
+/* CONTENT */
+main{padding:0 0 96px}
+.step{
+  margin:0;
+  padding:88px 0;
+  background:var(--canvas);
+  border:0;
+  border-bottom:1px solid var(--hairline-cool);
+  border-radius:0;
+  box-shadow:none;
+  scroll-margin-top:58px;
+}
+.step:nth-of-type(even){background:var(--canvas-soft)}
+.step-head{display:grid;grid-template-columns:48px minmax(0,760px);gap:20px;align-items:start}
+.num{
+  width:36px;height:36px;
+  display:grid;place-items:center;
+  background:var(--canvas);
+  color:var(--ink);
+  border:1px solid var(--hairline-strong);
+  border-radius:var(--radius-sm);
+  font-size:13px;
+  font-weight:500;
+}
+h2{
+  margin:0;
+  max-width:800px;
+  font-size:36px;
+  line-height:1.15;
+  font-weight:500;
+  letter-spacing:-.72px;
+}
+.kicker{max-width:760px;margin:10px 0 0;color:var(--ink-mute);font-size:16px}
+.where{
+  display:inline-flex;align-items:center;gap:7px;
+  margin-top:18px;padding:6px 9px;
+  background:var(--canvas);
+  border:1px solid var(--hairline);
+  border-radius:var(--radius-xs);
+  color:var(--ink-mute);
+  font-size:12px;
+  line-height:1.4;
+  font-weight:400;
+}
+.where strong{color:var(--ink);font-weight:500}
+hr{border:0;border-top:1px solid var(--hairline-cool);margin:40px 0}
+
+/* GRIDS */
+.grid2{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px}
+.grid3{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px}
+.card{
+  padding:24px;
+  background:var(--canvas);
+  border:1px solid var(--hairline);
+  border-radius:var(--radius-lg);
+  box-shadow:none;
+}
+.card h3{
+  margin:0 0 8px;
+  color:var(--ink);
+  font-size:18px;
+  line-height:1.4;
+  font-weight:500;
+}
+.card p{margin:6px 0;color:var(--ink-mute);font-size:15px;line-height:1.6}
+.tip,.note{
+  padding:18px 20px;
+  background:var(--canvas);
+  border:1px solid var(--hairline);
+  border-left:3px solid var(--primary);
+  border-radius:var(--radius-md);
+  color:var(--ink-secondary);
+}
+.note{border-left-color:var(--hairline-strong)}
+.tip b,.note b{font-weight:500}
+
+/* FORMS */
+label{display:block;margin:22px 0 8px;font-size:14px;font-weight:500;color:var(--ink)}
+.help{color:var(--ink-mute-2);font-size:12px;font-weight:400}
+input[type=text],textarea{
+  width:100%;
+  min-height:40px;
+  padding:11px 12px;
+  background:var(--canvas);
+  color:var(--ink);
+  border:1px solid var(--hairline);
+  border-radius:var(--radius-sm);
+  outline:none;
+  font-size:15px;
+  line-height:1.55;
+  transition:border-color .15s,box-shadow .15s;
+}
+textarea{min-height:104px;resize:vertical}
+input::placeholder,textarea::placeholder{color:var(--ink-faint)}
+input:focus,textarea:focus{
+  border-color:var(--hairline-strong);
+  box-shadow:0 0 0 3px rgba(62,207,142,.10);
+}
+
+/* BUTTONS */
+.btnrow{display:flex;flex-wrap:wrap;gap:8px;margin-top:16px}
+.btn{
+  min-height:36px;
+  display:inline-flex;align-items:center;justify-content:center;gap:7px;
+  padding:9px 14px;
+  background:var(--canvas);
+  color:var(--ink);
+  border:1px solid var(--hairline-strong);
+  border-radius:var(--radius-sm);
+  font-size:14px;
+  line-height:1;
+  font-weight:500;
+  text-decoration:none;
+  cursor:pointer;
+  box-shadow:none;
+}
+.btn:hover{background:var(--canvas-soft)}
+.btn.primary{
+  background:var(--primary);
+  border-color:var(--primary);
+  color:var(--ink);
+}
+.btn.primary:hover{background:var(--primary-deep);border-color:var(--primary-deep)}
+.btn.dark{background:var(--canvas-night);border-color:var(--canvas-night);color:#fff}
+.small{font-size:13px}
+
+/* PRD choices */
+.choice{position:relative;cursor:pointer}
+.choice input{position:absolute;opacity:0;pointer-events:none}
+.choice .card{height:100%;transition:border-color .15s,box-shadow .15s,transform .15s}
+.choice:hover .card{border-color:var(--hairline-strong);transform:translateY(-1px);box-shadow:var(--shadow-1)}
+.choice input:checked + .card{
+  border-color:var(--primary);
+  box-shadow:0 0 0 1px var(--primary);
+}
+.badge,.badge.green,.badge.blue,.badge.violet{
+  display:inline-block;
+  margin-bottom:14px;
+  padding:4px 7px;
+  background:var(--canvas-soft);
+  color:var(--ink-mute);
+  border:1px solid var(--hairline);
+  border-radius:var(--radius-xs);
+  font-size:11px;
+  line-height:1.3;
+  font-weight:400;
+}
+.choice input:checked + .card .badge{
+  background:var(--primary);
+  border-color:var(--primary);
+  color:var(--ink);
+}
+
+/* TABLE */
+.compare{
+  width:100%;
+  border-collapse:separate;
+  border-spacing:0;
+  margin-top:24px;
+  overflow:hidden;
+  background:var(--canvas);
+  border:1px solid var(--hairline);
+  border-radius:var(--radius-lg);
+  font-size:14px;
+}
+.compare th,.compare td{
+  padding:14px 16px;
+  text-align:left;
+  vertical-align:top;
+  border-bottom:1px solid var(--hairline-cool);
+  border-right:1px solid var(--hairline-cool);
+}
+.compare tr:last-child th,.compare tr:last-child td{border-bottom:0}
+.compare th:last-child,.compare td:last-child{border-right:0}
+.compare thead th{background:var(--canvas-soft);font-weight:500;color:var(--ink)}
+.compare tbody th{width:150px;background:#fcfcfc;font-weight:500;color:var(--ink)}
+.compare td{color:var(--ink-mute)}
+
+/* CODE / TABS */
+.codebox{
+  position:relative;
+  margin-top:12px;
+  padding:20px;
+  overflow:auto;
+  background:var(--canvas-night);
+  color:#fff;
+  border:1px solid #292929;
+  border-radius:var(--radius-sm);
+}
+.codebox pre{
+  margin:0;
+  white-space:pre-wrap;
+  font:14px/1.6 ui-monospace,SFMono-Regular,Menlo,Monaco,Consolas,"Liberation Mono",monospace;
+}
+.tabs{display:flex;gap:0;margin:18px 0 0;border-bottom:1px solid var(--hairline)}
+.tab{
+  padding:9px 12px;
+  background:transparent;
+  color:var(--ink-mute);
+  border:0;
+  border-bottom:2px solid transparent;
+  border-radius:0;
+  font-size:13px;
+  font-weight:500;
+  cursor:pointer;
+}
+.tab.active{background:transparent;color:var(--ink);border-color:var(--primary)}
+.prompt-panel{display:none}.prompt-panel.active{display:block}
+
+/* CHECKLIST */
+.checklist{display:grid;gap:8px;margin-top:18px}
+.check{
+  display:flex;gap:10px;align-items:flex-start;
+  margin:0;
+  padding:11px 12px;
+  background:var(--canvas);
+  border:1px solid var(--hairline);
+  border-radius:var(--radius-sm);
+  color:var(--ink-secondary);
+  font-size:14px;
+  font-weight:400;
+}
+.check input{margin-top:4px;accent-color:var(--primary)}
+.source{
+  max-width:920px;
+  margin:18px 0;
+  padding:0 0 0 18px;
+  color:var(--ink-mute);
+  border-left:2px solid var(--hairline-strong);
+}
+.source b{color:var(--ink);font-weight:500}
+.mono{font-family:ui-monospace,SFMono-Regular,Menlo,Monaco,Consolas,monospace}
+.footer{padding:56px 0 80px;color:var(--ink-mute);font-size:13px}
+.footer b{color:var(--ink);font-weight:500}
+#toast{
+  position:fixed;right:18px;bottom:18px;z-index:99;
+  padding:10px 12px;
+  background:var(--canvas-night);color:#fff;
+  border-radius:var(--radius-sm);
+  font-size:13px;font-weight:400;
+  box-shadow:var(--shadow-2);
+  opacity:0;pointer-events:none;transition:.2s;
+}
+#toast.show{opacity:1}
+
+
+/* STEP 2 live preview */
+.required-mark{
+  display:inline-flex;align-items:center;justify-content:center;
+  width:9px;height:9px;margin-left:6px;vertical-align:middle;
+  border-radius:9999px;background:#e5484d;box-shadow:0 0 0 2px rgba(229,72,77,.12);
+}
+.step2-layout{display:grid;grid-template-columns:minmax(0,1fr) 460px;gap:24px;align-items:start}
+.step2-form .field{margin-bottom:2px}
+.preview-col{position:sticky;top:72px}
+.preview-stack{display:grid;gap:16px}
+.preview-shell{
+  background:var(--canvas);
+  border:1px solid var(--hairline);
+  border-radius:var(--radius-lg);
+  overflow:hidden;
+}
+.preview-head{
+  display:flex;align-items:center;justify-content:space-between;gap:12px;
+  padding:12px 14px;border-bottom:1px solid var(--hairline-cool);background:var(--canvas-soft)
+}
+.preview-head h3{margin:0;font-size:14px;line-height:1.4;font-weight:500;color:var(--ink)}
+.preview-head small{color:var(--ink-mute);font-size:12px}
+.preview-body{padding:16px}
+.concept-live{
+  display:grid;gap:14px;
+}
+.live-block{padding-bottom:12px;border-bottom:1px solid var(--hairline-cool)}
+.live-block:last-child{padding-bottom:0;border-bottom:0}
+.live-label{display:block;margin-bottom:5px;color:var(--ink-mute);font-size:12px;line-height:1.45}
+.live-value{
+  color:var(--ink);font-size:14px;line-height:1.6;white-space:pre-wrap;word-break:keep-all
+}
+.live-list{margin:0;padding-left:18px}
+.live-list li{margin:3px 0;color:var(--ink);font-size:14px}
+.slide-stage{
+  width:100%;
+  aspect-ratio:16/9;
+  background:#fff;
+  border:1px solid var(--hairline);
+  border-radius:12px;
+  overflow:hidden;
+  box-shadow:var(--shadow-2);
+}
+.slide-canvas{
+  width:100%;height:100%;
+  display:grid;grid-template-rows:auto 1fr auto;
+  padding:24px 26px 20px;
+  background:#fff;
+}
+.slide-top{
+  display:grid;grid-template-columns:1fr auto;gap:16px;align-items:start;
+  padding-bottom:14px;border-bottom:1px solid var(--hairline-cool);
+}
+.slide-kicker{
+  display:inline-flex;align-items:center;gap:8px;
+  color:var(--ink-mute);font-size:11px;line-height:1.4;text-transform:uppercase
+}
+.slide-kicker::before{
+  content:"";width:7px;height:7px;border-radius:9999px;background:var(--primary)
+}
+.slide-title{
+  margin:8px 0 0;
+  color:var(--ink);
+  font-size:26px;line-height:1.08;font-weight:500;letter-spacing:-.6px;
+}
+.slide-main{
+  display:grid;grid-template-columns:1.25fr .95fr;gap:18px;
+  padding-top:16px;min-height:0
+}
+.slide-panel,.slide-panel-dark{
+  border:1px solid var(--hairline);
+  border-radius:12px;
+  padding:14px 14px 12px;
+  background:#fff;
+}
+.slide-panel-dark{
+  background:var(--canvas-night);
+  border-color:#2a2a2a;
+  color:#fff;
+}
+.slide-grid{display:grid;gap:12px}
+.slide-section-label{
+  color:var(--ink-mute);font-size:11px;line-height:1.4;text-transform:uppercase;margin-bottom:6px
+}
+.slide-panel-dark .slide-section-label{color:rgba(255,255,255,.66)}
+.slide-text{
+  color:var(--ink);font-size:13px;line-height:1.55;white-space:pre-wrap;word-break:keep-all
+}
+.slide-panel-dark .slide-text{color:#fff}
+.slide-bullets{margin:0;padding-left:18px}
+.slide-bullets li{margin:3px 0;color:var(--ink);font-size:13px;line-height:1.45}
+.slide-mini-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.slide-footer{
+  display:flex;align-items:center;justify-content:space-between;gap:12px;
+  padding-top:14px;border-top:1px solid var(--hairline-cool);
+}
+.slide-chip{
+  display:inline-flex;align-items:center;gap:6px;
+  padding:4px 7px;border:1px solid var(--hairline);border-radius:4px;
+  background:var(--canvas-soft);font-size:11px;color:var(--ink-mute)
+}
+.slide-chip.primary{
+  background:var(--primary);border-color:var(--primary);color:var(--ink)
+}
+.slide-meta{display:flex;gap:6px;flex-wrap:wrap}
+.slide-note{color:var(--ink-mute);font-size:11px;line-height:1.4}
+@media(max-width:1180px){
+  .step2-layout{grid-template-columns:1fr}
+  .preview-col{position:static}
+}
+@media(max-width:767px){
+  .slide-canvas{padding:16px}
+  .slide-title{font-size:20px}
+  .slide-main{grid-template-columns:1fr}
+  .slide-mini-grid{grid-template-columns:1fr}
+}
+
+
+/* copy fallback modal */
+.copy-modal-backdrop{
+  position:fixed;inset:0;z-index:120;
+  display:none;align-items:center;justify-content:center;
+  padding:24px;background:rgba(0,0,0,.34);backdrop-filter:blur(2px)
+}
+.copy-modal-backdrop.open{display:flex}
+.copy-modal{
+  width:min(760px,100%);
+  background:var(--canvas);
+  border:1px solid var(--hairline);
+  border-radius:12px;
+  box-shadow:0 16px 48px rgba(0,0,0,.16);
+  overflow:hidden
+}
+.copy-modal-head{
+  display:flex;align-items:center;justify-content:space-between;gap:12px;
+  padding:14px 16px;border-bottom:1px solid var(--hairline-cool)
+}
+.copy-modal-head h3{margin:0;font-size:16px;font-weight:500}
+.copy-modal-body{padding:16px}
+.copy-modal-body p{margin:0 0 10px;color:var(--ink-mute);font-size:13px}
+.copy-modal-body textarea{
+  min-height:340px;
+  font-family:ui-monospace,SFMono-Regular,Menlo,Monaco,Consolas,monospace;
+  font-size:13px;line-height:1.55
+}
+.copy-modal-actions{
+  display:flex;justify-content:flex-end;gap:8px;
+  padding:12px 16px;border-top:1px solid var(--hairline-cool)
+}
+
+/* RESPONSIVE */
+@media(max-width:1023px){
+  .flow{grid-template-columns:repeat(2,1fr)}
+  .flow .f{border-bottom:1px solid var(--hairline-cool)}
+  .flow .f:nth-child(2n){border-right:0}
+  .flow .f:last-child{border-bottom:0}
+}
+@media(max-width:767px){
+  .container{width:min(100% - 32px,1280px)}
+  .hero{padding:64px 0 48px}
+  h1{font-size:36px;line-height:1.1;letter-spacing:-.9px}
+  .lead{font-size:16px}
+  .flow{grid-template-columns:1fr;margin-top:36px}
+  .flow .f{min-height:auto;border-right:0;border-bottom:1px solid var(--hairline-cool)}
+  .step{padding:64px 0}
+  .step-head{grid-template-columns:36px 1fr;gap:14px}
+  h2{font-size:28px;letter-spacing:-.42px}
+  .grid2,.grid3{grid-template-columns:1fr}
+  .progress-wrap{display:none}
+  .compare{display:block;overflow-x:auto}
+  .card{padding:20px}
+}
+@media print{
+  .sticky,.btnrow,.tabs,#toast{display:none!important}
+  .step,.step:nth-of-type(even){background:#fff}
+  .flow,.card,.compare{box-shadow:none}
+}
+
+</style>
+<script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
+</head>
+<body>
+<header class="hero">
+  <div class="container">
+    <span class="eyebrow">AI-Native Product Planning Lab · Self-guided</span>
+    <h1>아이디어에서 시작해<br>AI와 함께 PRD로 구체화하기</h1>
+    <p class="lead">이 페이지 하나만 따라가면 됩니다. 먼저 웹에서 자신의 아이디어를 구체화하고, 세 가지 PRD 관점 중 하나를 선택한 뒤, Markdown 템플릿과 인터뷰 프롬프트를 ChatGPT 또는 Claude에 넣어 최종 PRD를 완성합니다.</p>
+    <div class="hero-actions">
+      <a class="btn primary" href="#step1">실습 시작하기</a>
+      <a class="btn" href="#step3">3가지 PRD 먼저 비교</a>
+    </div>
+    <div class="flow">
+      <div class="f"><b>STEP 1</b><span>Rough Idea</span><br><small>떠오르는 아이디어 적기</small></div>
+      <div class="f"><b>STEP 2</b><span>Concept Card</span><br><small>문제·사용자·경험 구체화</small></div>
+      <div class="f"><b>STEP 3</b><span>Choose a PRD</span><br><small>3가지 관점 중 선택</small></div>
+      <div class="f"><b>STEP 4–5</b><span>AI Interview</span><br><small>ChatGPT / Claude에서 대화</small></div>
+      <div class="f"><b>STEP 6</b><span>Final PRD</span><br><small>검토·저장·다음 단계 준비</small></div>
+    </div>
+  </div>
+</header>
+
+<div class="sticky">
+  <div class="container nav">
+    <a href="#start">시작 전</a><a href="#step1">1. Rough Idea</a><a href="#step2">2. Concept Card</a>
+    <a href="#step3">3. PRD 선택</a><a href="#step4">4. 파일 준비</a><a href="#step5">5. AI 인터뷰</a>
+    <a href="#step6">6. 완성·검토</a><a href="#refs">원본 레퍼런스</a>
+    <div class="progress-wrap"><small>진행률</small><div class="progress"><span id="progressBar"></span></div><b id="progressText">0%</b></div>
+  </div>
+</div>
+
+<main class="container">
+
+<section id="start" class="step">
+  <div class="step-head"><div class="num">0</div><div><h2>시작하기 전에: 오늘 만들 것은 “앱”이 아니라 “좋은 기획”입니다</h2>
+  <p class="kicker">기술을 몰라도 됩니다. 이 실습에서는 기능을 설명하면 AI가 필요한 기술 선택지를 설명하도록 합니다.</p>
+  <div class="where">지금 하는 곳: <strong>이 웹페이지</strong></div></div></div>
+  <hr>
+  <div class="grid2">
+    <div class="card"><h3>사람이 결정할 것</h3><p>누구의 어떤 문제를 풀지, 어떤 경험이 중요한지, 무엇을 이번 버전에 넣고 뺄지 판단합니다.</p></div>
+    <div class="card"><h3>AI에게 맡길 것</h3><p>빠진 질문을 찾아 묻고, 대안을 비교하고, 답변을 구조화하며, 필요한 기술 개념을 쉬운 말로 추천하게 합니다.</p></div>
+  </div>
+  <div class="tip" style="margin-top:16px"><b>핵심 원칙</b> — 모르는 항목을 억지로 채우지 마세요. <b>“아직 모르겠다”도 중요한 입력</b>입니다. AI가 질문해야 할 지점을 남겨두는 것이 이 실습의 일부입니다.</div>
+  <div class="checklist"><label class="check"><input class="progressCheck" type="checkbox" data-key="ready"><span>ChatGPT 또는 Claude를 새 탭에서 사용할 수 있다.</span></label></div>
+</section>
+
+<section id="step1" class="step">
+  <div class="step-head"><div class="num">1</div><div><h2>Rough Idea — 떠오르는 아이디어를 한 번에 적어보기</h2>
+  <p class="kicker">처음부터 잘 쓸 필요 없습니다. 2–5문장 정도면 충분합니다.</p>
+  <div class="where">지금 하는 곳: <strong>이 웹페이지</strong></div></div></div>
+  <hr>
+  <div class="note"><b>막히면 이렇게 시작하세요.</b><br>“나는 [어떤 사람]이 [어떤 상황]에서 겪는 [문제]를 줄여주는 [서비스/도구]를 만들고 싶다.”<br>기능이 먼저 떠오른다면 기능부터 써도 됩니다. 다음 단계에서 문제와 사용자로 다시 연결합니다.</div>
+  <label for="rough">내 Rough Idea</label>
+  <textarea id="rough" data-save="rough" placeholder="예: 기숙사에서 자기 전에 스마트폰을 오래 보다가 잠드는 시간이 계속 늦어지는 대학생을 위한 서비스를 만들고 싶다. 사용자가 억지로 폰을 끄는 느낌보다 자연스럽게 사용을 마치게 도와주고 싶다. AI가 그날의 상태와 사용 패턴에 맞춰 개입하면 좋겠다."></textarea>
+  <div class="btnrow"><button class="btn primary" onclick="saveAll()">입력 저장</button><button class="btn" onclick="clearField('rough')">비우기</button></div>
+  <div class="checklist"><label class="check"><input class="progressCheck" type="checkbox" data-key="roughdone"><span>완벽하지 않아도 좋으니 2–5문장으로 아이디어를 적었다.</span></label></div>
+</section>
+
+
+<section id="step2" class="step">
+  <div class="step-head"><div class="num">2</div><div><h2>Product Concept Card — AI에게 넘기기 전에 최소한의 생각 만들기</h2>
+  <p class="kicker">아래 카드는 수기 활동을 웹으로 옮긴 것입니다. 왼쪽에 입력하면 오른쪽에 Live Concept Card와 16:9 슬라이드가 바로 반영됩니다.</p>
+  <div class="where">지금 하는 곳: <strong>이 웹페이지</strong></div></div></div>
+  <hr>
+
+  <div class="step2-layout">
+    <div class="step2-form">
+      <div class="field">
+        <label>① 우리가 만들고 싶은 것은? <span class="required-mark" aria-label="필수"></span> <span class="help">한 문장</span></label>
+        <textarea data-save="c1" id="c1" placeholder="예: 자기 전 스마트폰 사용을 자연스럽게 마무리하도록 돕는 AI 수면 루틴 서비스"></textarea>
+      </div>
+
+      <div class="field">
+        <label>② 누구를 위한 것인가? <span class="required-mark" aria-label="필수"></span> <span class="help">가능한 한 구체적으로</span></label>
+        <textarea data-save="c2" id="c2" placeholder="예: 기숙사에서 생활하며 잠들기 전 숏폼을 오래 보는 대학생"></textarea>
+      </div>
+
+      <div class="field">
+        <label>③ 그 사람은 언제, 어떤 어려움을 겪는가? — 상황 <span class="required-mark" aria-label="필수"></span></label>
+        <textarea data-save="c3a" id="c3a" placeholder="예: 불을 끄고 침대에 누워 알람을 맞추려고 폰을 열었을 때"></textarea>
+      </div>
+
+      <div class="field">
+        <label>④ 그 상황에서 구체적으로 무엇이 어려운가? <span class="required-mark" aria-label="필수"></span></label>
+        <textarea data-save="c3b" id="c3b" placeholder="예: 짧게 볼 생각이었지만 멈출 지점을 찾지 못해 1시간 이상 보게 됨"></textarea>
+      </div>
+
+      <div class="field">
+        <label>⑤ 무엇이 가능해지면 좋을까? <span class="required-mark" aria-label="필수"></span> <span class="help">기능 이름보다 사용자 결과</span></label>
+        <textarea data-save="c4" id="c4" placeholder="예: 사용자가 억지로 차단당한다는 느낌 없이 스스로 오늘의 폰 사용을 끝내고 잠들 준비를 할 수 있으면 좋겠다."></textarea>
+      </div>
+
+      <div class="field">
+        <label>⑥ 가장 중요한 경험 1단계 <span class="help">선택</span></label>
+        <textarea data-save="c5a" id="c5a" placeholder="예: 사용자가 잠들 준비를 하면서 서비스에 오늘 상태를 간단히 입력한다."></textarea>
+      </div>
+
+      <div class="field">
+        <label>⑦ 가장 중요한 경험 2단계 <span class="help">선택</span></label>
+        <textarea data-save="c5b" id="c5b" placeholder="예: 서비스가 오늘의 상황에 맞는 마무리 루틴이나 대화를 제안한다."></textarea>
+      </div>
+
+      <div class="field">
+        <label>⑧ 가장 중요한 경험 3단계 <span class="help">선택</span></label>
+        <textarea data-save="c5c" id="c5c" placeholder="예: 사용자가 자연스럽게 폰 사용을 마치고 잠들 준비로 넘어간다."></textarea>
+      </div>
+
+      <div class="field">
+        <label>⑨ 꼭 있었으면 하는 기능 1 <span class="help">선택</span></label>
+        <input type="text" data-save="c6a" id="c6a" placeholder="기능 1">
+      </div>
+
+      <div class="field">
+        <label>⑩ 꼭 있었으면 하는 기능 2 <span class="help">선택</span></label>
+        <input type="text" data-save="c6b" id="c6b" placeholder="기능 2">
+      </div>
+
+      <div class="field">
+        <label>⑪ 꼭 있었으면 하는 기능 3 <span class="help">선택</span></label>
+        <input type="text" data-save="c6c" id="c6c" placeholder="기능 3">
+      </div>
+
+      <div class="field">
+        <label>⑫ AI가 잘 도와줄 수 있을 것 같은 부분 <span class="help">선택 · 모르면 비워도 됨</span></label>
+        <textarea data-save="c7" id="c7" placeholder="예: 그날의 사용 기록과 사용자의 답변을 보고 오늘은 어떤 마무리 방법이 적당한지 제안"></textarea>
+      </div>
+
+      <div class="field">
+        <label>⑬ 아직 결정하지 못한 것 / AI와 같이 고민하고 싶은 것 <span class="help">선택</span></label>
+        <textarea data-save="c8" id="c8" placeholder="예: 사용을 멈추게 하는 방식이 알림이 좋을지, 대화가 좋을지 모르겠다. 앱이 나을지 웹서비스가 나을지도 모르겠다."></textarea>
+      </div>
+
+      <div class="btnrow">
+        <button class="btn primary" onclick="downloadConcept()">Concept Card (.md) 저장...</button>
+        <button class="btn" onclick="copyConcept()">Concept Card 복사</button>
+        <button class="btn" onclick="saveAll()">입력 저장</button>
+      </div>
+
+      <div class="checklist">
+        <label class="check"><input class="progressCheck" type="checkbox" data-key="conceptdone"><span>필수 항목(빨간 점)까지 채웠다. 가장 중요한 경험 3단계와 나머지 선택 항목은 비워두어도 된다.</span></label>
+      </div>
+    </div>
+
+    <aside class="preview-col">
+      <div class="preview-stack">
+        <div class="preview-shell">
+          <div class="preview-head"><h3>Live Concept Card</h3><small>입력 즉시 반영</small></div>
+          <div class="preview-body">
+            <div id="conceptPreview" class="concept-live"></div>
+          </div>
+        </div>
+
+        <div class="preview-shell">
+          <div class="preview-head"><h3>16:9 Concept Slide</h3><small>공유용 one-page slide</small></div>
+          <div class="preview-body">
+            <div class="btnrow" style="margin-top:0;margin-bottom:14px">
+              <button class="btn primary" onclick="downloadConceptSlideHTML()">슬라이드 HTML 다운로드</button>
+              <button class="btn" onclick="downloadConceptSlidePNG()">슬라이드 PNG 저장...</button>
+            </div>
+            <div class="help" style="margin-bottom:14px">지원되는 브라우저에서는 저장 위치를 직접 선택합니다. 그렇지 않으면 브라우저의 기본 다운로드 폴더에 저장됩니다.</div>
+            <div class="slide-stage">
+              <div id="conceptSlidePreview" class="slide-canvas"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </aside>
+  </div>
+</section>
+
+
+<section id="step3" class="step">
+  <div class="step-head"><div class="num">3</div><div><h2>PRD 관점 선택 — 같은 아이디어라도 질문이 달라지면 제품이 달라집니다</h2>
+  <p class="kicker">아래 세 가지는 목적이 다릅니다. “가장 좋아 보이는 것”이 아니라 지금 더 깊게 생각해보고 싶은 관점을 고르세요.</p>
+  <div class="where">지금 하는 곳: <strong>이 웹페이지</strong></div></div></div>
+  <hr>
+
+  <div class="grid3">
+    <label class="choice"><input type="radio" name="prd" value="build" onchange="selectPRD(this.value)"><div class="card">
+      <span class="badge green">A · Build-oriented</span><h3>v0 Build PRD</h3>
+      <p><b>핵심 질문:</b> 사용자가 실제로 무엇을 보고, 누르고, 경험해야 할까?</p>
+      <p><b>잘 보이는 것:</b> 핵심 흐름, 화면, 기능, 상태, 프로토타입 범위</p>
+      <p><b>추천:</b> 아이디어가 있는데 아직 서비스 모습이 흐릿할 때</p>
+    </div></label>
+
+    <label class="choice"><input type="radio" name="prd" value="onepager" onchange="selectPRD(this.value)"><div class="card">
+      <span class="badge blue">B · Strategy-oriented</span><h3>Lenny’s 1-Pager</h3>
+      <p><b>핵심 질문:</b> 누구의 어떤 문제를 왜 지금 풀어야 할까?</p>
+      <p><b>잘 보이는 것:</b> 문제, 대상 사용자, 가치, 성공 기준, 리스크</p>
+      <p><b>추천:</b> 기능보다 문제 정의와 방향을 더 검증하고 싶을 때</p>
+    </div></label>
+
+    <label class="choice"><input type="radio" name="prd" value="feature" onchange="selectPRD(this.value)"><div class="card">
+      <span class="badge violet">C · Execution-oriented</span><h3>Feature Implementation Spec</h3>
+      <p><b>핵심 질문:</b> 이 기능이 정확히 어떻게 동작해야 하며, 구현에 무엇이 필요할까?</p>
+      <p><b>잘 보이는 것:</b> 동작 규칙, 예외 상황, acceptance criteria, 필요한 기술</p>
+      <p><b>추천:</b> 기능이 꽤 구체적이고 “실제로 만들려면?”까지 가보고 싶을 때</p>
+    </div></label>
+  </div>
+
+  <table class="compare">
+    <thead><tr><th></th><th>A. v0 Build PRD</th><th>B. Lenny’s 1-Pager</th><th>C. Feature Implementation Spec</th></tr></thead>
+    <tbody>
+      <tr><th>생각하는 관점</th><td>Designer / Builder</td><td>Product Manager</td><td>Implementation Planner</td></tr>
+      <tr><th>주로 묻는 것</th><td>Flow, screen, feature, state</td><td>Problem, user, value, success</td><td>Behavior, edge case, test, technical need</td></tr>
+      <tr><th>기술 지식 필요?</th><td>거의 없음</td><td>없음</td><td><b>없음.</b> 기술명 대신 원하는 동작을 답하면 AI가 선택지를 추천</td></tr>
+      <tr><th>주의점</th><td>기능부터 생각하기 쉬움</td><td>화면/구현 디테일은 부족할 수 있음</td><td>AI의 기술 추천은 결론이 아니라 <b>가설</b>로 검토</td></tr>
+    </tbody>
+  </table>
+
+  <div class="note" style="margin-top:16px"><b>출처 표시:</b> A는 Vercel v0의 공개 build workflow와 ChatPRD의 <i>App Prototyping with AI Code Generation</i> 템플릿을 참고한 <b>수업용 adaptation</b>입니다. “Vercel 공식 PRD 원문”을 그대로 옮긴 것이 아닙니다. B의 <i>Lenny’s 1-Pager</i>와 C의 <i>Feature Implementation Spec</i>은 ChatPRD의 실제 공개 템플릿 라이브러리에서 존재가 확인되는 형식이며, 아래 Markdown은 비전공자 수업을 위해 질문 문구를 단순화한 버전입니다.</div>
+  <div class="checklist"><label class="check"><input class="progressCheck" type="checkbox" data-key="chosendone"><span>세 가지 차이를 읽고 내 목적에 맞는 PRD 하나를 선택했다.</span></label></div>
+</section>
+
+<section id="step4" class="step">
+  <div class="step-head"><div class="num">4</div><div><h2>AI에게 줄 두 가지 준비하기 — Concept Card + PRD Template</h2>
+  <p class="kicker">AI에게 빈 화면에서 “PRD 써줘”라고 하지 않습니다. 내가 생각한 출발점과 원하는 문서 구조를 같이 줍니다.</p>
+  <div class="where">지금 하는 곳: <strong>이 웹페이지 → 파일 다운로드</strong></div></div></div>
+  <hr>
+
+  <div id="selectedNotice" class="tip"><b>먼저 STEP 3에서 PRD를 선택하세요.</b> 선택하면 해당 템플릿과 전용 인터뷰 프롬프트가 아래에 표시됩니다.</div>
+
+  <div id="prdContent" style="display:none">
+    <h3 id="prdTitle">선택한 PRD</h3>
+    <p id="prdDesc" class="kicker"></p>
+    <div class="btnrow">
+      <button class="btn primary" onclick="downloadTemplate()">선택한 PRD Template (.md) 다운로드</button>
+      <button class="btn" onclick="copyTemplate()">Template 복사</button>
+      <button class="btn" onclick="downloadBundle()">Concept + Template 묶음 (.md)</button>
+    </div>
+    <div class="codebox"><pre id="templatePreview"></pre></div>
+
+    <hr>
+    <h3>AI Interview Prompt</h3>
+    <p>ChatGPT/Claude가 바로 문서를 써버리지 않고, <b>먼저 당신에게 중요한 질문을 한 뒤</b> 답을 반영해 PRD를 완성하도록 하는 프롬프트입니다. 한국어가 기본입니다.</p>
+    <div class="tabs">
+      <button class="tab active" onclick="showPrompt('ko',this)">한국어 · 기본</button>
+      <button class="tab" onclick="showPrompt('en',this)">English</button>
+    </div>
+    <div id="prompt-ko" class="prompt-panel active">
+      <div class="btnrow"><button class="btn dark" onclick="copyPrompt('ko')">한국어 프롬프트 복사</button></div>
+      <div class="codebox"><pre id="promptKo"></pre></div>
+    </div>
+    <div id="prompt-en" class="prompt-panel">
+      <div class="btnrow"><button class="btn dark" onclick="copyPrompt('en')">Copy English Prompt</button></div>
+      <div class="codebox"><pre id="promptEn"></pre></div>
+    </div>
+  </div>
+  <div class="checklist"><label class="check"><input class="progressCheck" type="checkbox" data-key="filesdone"><span>Concept Card와 선택한 PRD Template을 다운로드하거나 복사했다.</span></label></div>
+</section>
+
+<section id="step5" class="step">
+  <div class="step-head"><div class="num">5</div><div><h2>ChatGPT 또는 Claude에서 AI 인터뷰 진행하기</h2>
+  <p class="kicker">이 단계부터 장소가 바뀝니다. 새 채팅을 열고, 준비한 자료를 넣은 뒤 대화를 시작하세요.</p>
+  <div class="where">지금 하는 곳: <strong>ChatGPT 또는 Claude의 새 채팅</strong></div></div></div>
+  <hr>
+
+  <div class="grid2">
+    <div class="card"><h3>방법 A · 파일 업로드</h3>
+      <p>1. 새 채팅을 엽니다.<br>2. <span class="mono">concept-card.md</span>와 선택한 <span class="mono">prd-template.md</span>를 첨부합니다.<br>3. 이 페이지의 <b>한국어 Interview Prompt</b>를 복사해 붙여넣습니다.<br>4. 전송합니다.</p>
+    </div>
+    <div class="card"><h3>방법 B · 복사/붙여넣기</h3>
+      <p>파일 첨부가 어렵다면 새 채팅에 <b>Interview Prompt → Concept Card → PRD Template</b> 순서로 붙여넣어도 됩니다.</p>
+    </div>
+  </div>
+
+  <div class="tip" style="margin-top:16px"><b>중요:</b> AI가 첫 답변부터 PRD 전체를 써버리면 멈추고 이렇게 말하세요.<br><span class="mono">“아직 PRD를 작성하지 말고, 먼저 중요한 결정을 위한 질문부터 해줘. 한 번에 3–5개만 물어봐.”</span></div>
+
+  <h3 style="margin-top:24px">AI 질문에 답할 때</h3>
+  <div class="grid3">
+    <div class="card"><h3>1. 편하게 답하기</h3><p>전문용어를 쓸 필요 없습니다. “잘 모르겠다”, “A와 B 중 고민된다”도 좋은 답입니다.</p></div>
+    <div class="card"><h3>2. 선택지는 비교시키기</h3><p>모르겠다면 “가능한 선택지 3개와 각각의 장단점을 알려줘”라고 요청하세요.</p></div>
+    <div class="card"><h3>3. 기술은 행동으로 설명하기</h3><p>“Supabase가 필요해?” 대신 “사용자마다 자기 데이터만 보이게 하고 싶다”고 말하세요. 기술 번역은 AI에게 맡깁니다.</p></div>
+  </div>
+
+  <h3 style="margin-top:24px">특히 C. Feature Implementation Spec을 골랐다면</h3>
+  <div class="note">AI가 database, authentication, API, hosting 같은 용어를 제안할 수 있습니다. <b>그 기술을 이미 알아야 하는 것은 아닙니다.</b> “왜 필요한지 비전공자에게 설명해줘”, “더 단순한 대안은?”, “무료/초보자 친화적 선택은?”이라고 되물으세요. 기술 선택은 이 단계에서 확정 사실이 아니라 <b>기능에서 도출된 구현 가설</b>입니다.</div>
+
+  <h3 style="margin-top:24px">대화가 충분히 진행되면</h3>
+  <div class="codebox"><pre>지금까지 내가 답한 내용을 바탕으로 핵심 제품 결정을 먼저 요약해줘.
+1) 결정된 것
+2) 아직 가정인 것
+3) 열린 질문
+을 구분해 보여줘.
+
+내가 확인한 뒤에만, 제공한 PRD Template의 구조를 유지해서 최종 PRD를 작성해줘.</pre></div>
+
+  <div class="checklist">
+    <label class="check"><input class="progressCheck" type="checkbox" data-key="interview1"><span>AI가 나에게 실제로 clarifying question을 물었고 내가 답했다.</span></label>
+    <label class="check"><input class="progressCheck" type="checkbox" data-key="interview2"><span>모르는 결정 하나 이상에서 선택지·장단점을 AI에게 물어봤다.</span></label>
+    <label class="check"><input class="progressCheck" type="checkbox" data-key="interview3"><span>최종 작성 전에 AI가 “결정 / 가정 / 열린 질문”을 구분해 요약하게 했다.</span></label>
+  </div>
+</section>
+
+<section id="step6" class="step">
+  <div class="step-head"><div class="num">6</div><div><h2>최종 PRD 검토·저장 — AI가 썼다고 끝이 아닙니다</h2>
+  <p class="kicker">PRD의 주인은 AI가 아니라 당신입니다. 마지막에는 “그럴듯함”보다 의도와 일치하는지 확인합니다.</p>
+  <div class="where">지금 하는 곳: <strong>ChatGPT/Claude에서 검토 → 내 컴퓨터에 .md 저장</strong></div></div></div>
+  <hr>
+
+  <h3>최종 체크</h3>
+  <div class="checklist">
+    <label class="check"><input class="progressCheck" type="checkbox" data-key="final1"><span><b>사용자:</b> 누구를 위한 제품인지 구체적이다.</span></label>
+    <label class="check"><input class="progressCheck" type="checkbox" data-key="final2"><span><b>문제:</b> 기능이 아니라 사용자의 실제 어려움이 설명되어 있다.</span></label>
+    <label class="check"><input class="progressCheck" type="checkbox" data-key="final3"><span><b>핵심 경험:</b> 사용자가 처음부터 원하는 결과까지 무엇을 하는지 따라갈 수 있다.</span></label>
+    <label class="check"><input class="progressCheck" type="checkbox" data-key="final4"><span><b>범위:</b> 이번 버전에 넣는 것과 넣지 않는 것이 구분되어 있다.</span></label>
+    <label class="check"><input class="progressCheck" type="checkbox" data-key="final5"><span><b>가정:</b> AI가 임의로 만들어낸 사실이나 근거 없는 숫자가 “사실”처럼 들어가 있지 않다.</span></label>
+    <label class="check"><input class="progressCheck" type="checkbox" data-key="final6"><span><b>검증 가능성:</b> “완성되었다”고 판단할 수 있는 기준이 적혀 있다.</span></label>
+  </div>
+
+  <div class="tip" style="margin-top:18px"><b>제출/저장 파일 권장 이름</b><br><span class="mono">팀명_서비스명_PRD.md</span><br><br>
+  ChatGPT/Claude의 최종 PRD를 복사해 Markdown 파일로 저장하세요. 다음 개발 실습에서는 이 PRD가 AI coding agent에게 넘어갈 입력물이 됩니다.</div>
+
+  <h3 style="margin-top:24px">마지막 성찰 질문</h3>
+  <div class="grid2">
+    <div class="card"><h3>PRD가 제품을 바꿨는가?</h3><p>처음 Rough Idea와 비교했을 때 어떤 결정이 가장 크게 달라졌는지 한 가지 적어보세요.</p></div>
+    <div class="card"><h3>AI가 아니라 내가 결정한 것은?</h3><p>AI가 제안했지만 내가 선택·수정·거절한 결정 하나를 적어보세요.</p></div>
+  </div>
+</section>
+
+<section id="refs" class="step">
+  <div class="step-head"><div class="num">R</div><div><h2>원본 레퍼런스 — 템플릿 이름과 워크플로우를 직접 확인하기</h2>
+  <p class="kicker">이 원페이저는 아래 공개 원본을 바탕으로 수업 목적에 맞게 단순화·재구성했습니다.</p>
+  <div class="where">지금 하는 곳: <strong>원본을 더 확인하고 싶을 때</strong></div></div></div>
+  <hr>
+
+  <div class="source"><b>Vercel v0</b><br>
+    v0는 아이디어에서 작동하는 앱을 만들고, GitHub와 동기화하거나 Vercel에 배포할 수 있는 build workflow를 공개합니다. 이 실습의 A 템플릿은 그 “build-oriented” 관점을 반영한 수업용 adaptation입니다.<br>
+    <a href="https://v0.dev/" target="_blank" rel="noopener">v0 official site ↗</a>
+  </div>
+
+  <div class="source"><b>ChatPRD — Included Templates</b><br>
+    ChatPRD 공식 문서에는 <i>Lenny’s 1-Pager</i>와, v0.dev·Bolt·Lovable·Replit 같은 AI code generation 플랫폼을 위한 <i>App Prototyping with AI Code Generation</i> 템플릿이 포함되어 있다고 명시되어 있습니다.<br>
+    <a href="https://www.chatprd.ai/docs/included-templates" target="_blank" rel="noopener">Included Templates ↗</a>
+  </div>
+
+  <div class="source"><b>ChatPRD — AI-first Builder Templates</b><br>
+    ChatPRD는 <i>Feature Implementation Spec</i>을 requirements, API contracts, UI behavior, test plans를 다루는 AI-first development template으로 공개했습니다. 이 실습의 C 템플릿은 기술을 아직 배우지 않은 학생을 위해 “기술명”보다 “원하는 동작”을 먼저 답하게 단순화했습니다.<br>
+    <a href="https://www.chatprd.ai/blog/new-templates-for-ai-builders-smarter-file-search-and-self-serve-seat-upgrades" target="_blank" rel="noopener">AI-first builder templates ↗</a>
+  </div>
+
+  <div class="source"><b>ChatPRD — Writing Your First PRD</b><br>
+    공식 가이드는 rough brief에서 시작해 필요한 경우 clarifying questions를 받고, 초안을 만든 뒤 chat으로 반복 수정하는 workflow를 설명합니다. 이 수업의 “Concept Card → AI interview → final PRD” 구조가 이 방식과 맞닿아 있습니다.<br>
+    <a href="https://www.chatprd.ai/docs/writing-your-first-prd" target="_blank" rel="noopener">Writing Your First PRD ↗</a>
+  </div>
+
+  <div class="source"><b>ChatPRD — Template Library</b><br>
+    PRD, one-pager, technical design 등 공개 템플릿 라이브러리를 직접 둘러볼 수 있습니다.<br>
+    <a href="https://www.chatprd.ai/templates" target="_blank" rel="noopener">Template Library ↗</a>
+  </div>
+
+  <div class="note"><b>검증에 관한 주의:</b> “특정 회사에서 공식적으로 이 정확한 Markdown 문구를 사용한다”는 의미가 아닙니다. 템플릿의 존재와 목적은 원본 공개 페이지에서 검증하고, 실제 Markdown 구조와 인터뷰 문구는 비전공자 수업에서 사용하기 쉽도록 재작성했습니다.</div>
+</section>
+
+<div class="footer">
+  <b>AI-Native PRD Lab</b> · 입력 내용은 이 HTML을 연 브라우저의 localStorage에만 저장됩니다. 서버로 전송하지 않습니다. GitHub Pages 같은 정적 호스팅에 올려도 별도 백엔드 없이 동작하도록 제작되었습니다.
+</div>
+
+</main>
+
+<div id="copyFallbackModal" class="copy-modal-backdrop" role="dialog" aria-modal="true" aria-labelledby="copyFallbackTitle">
+  <div class="copy-modal">
+    <div class="copy-modal-head">
+      <h3 id="copyFallbackTitle">수동으로 복사하기</h3>
+      <button class="btn" onclick="closeCopyFallback()">닫기</button>
+    </div>
+    <div class="copy-modal-body">
+      <p>브라우저가 자동 복사를 막았습니다. 아래 텍스트가 전체 선택되어 있습니다. <b>⌘C / Ctrl+C</b>로 복사하세요.</p>
+      <textarea id="copyFallbackText" readonly></textarea>
+    </div>
+    <div class="copy-modal-actions">
+      <button class="btn primary" onclick="manualSelectCopy()">전체 선택</button>
+      <button class="btn" onclick="closeCopyFallback()">완료</button>
+    </div>
+  </div>
+</div>
+
+<div id="toast">복사했습니다.</div>
+
+<script>
+const TEMPLATES = {
+build: `# v0 Build PRD — Classroom Adaptation
+
+> 목적: 아이디어를 실제 사용자 경험, 화면, 기능, 상태까지 구체화한다.
+> 참고: Vercel v0 build workflow + ChatPRD "App Prototyping with AI Code Generation"
+
+## 1. Product Overview
+- Product / Service Name:
+- One-line Description:
+- Primary User:
+- Core User Outcome:
+
+## 2. Problem & Context
+- 사용자가 겪는 문제:
+- 문제가 발생하는 구체적 상황:
+- 현재 사용자가 하는 대안:
+
+## 3. Core User Journey
+1.
+2.
+3.
+4.
+
+## 4. Must-have Features
+### Feature 1
+- 목적:
+- 사용자가 하는 행동:
+- 서비스의 반응:
+- 기대 결과:
+
+### Feature 2
+- 목적:
+- 사용자가 하는 행동:
+- 서비스의 반응:
+- 기대 결과:
+
+## 5. Main Screens / Views
+각 화면의 목적, 핵심 정보, 주요 행동을 적는다.
+
+### Screen 1
+- Purpose:
+- Main elements:
+- Primary action:
+
+## 6. Important UI States
+- First use / onboarding:
+- Empty state:
+- Loading:
+- Error:
+- Success / completion:
+
+## 7. AI Behavior (해당되는 경우)
+- AI가 담당하는 일:
+- AI가 알기 위해 필요한 맥락:
+- AI가 확신하지 못할 때:
+- 사용자가 수정/거절할 수 있는 방법:
+
+## 8. Data / Connections
+기술명을 몰라도 된다. "무엇을 기억해야 하는가 / 다른 서비스와 연결해야 하는가"를 설명한다.
+- 저장해야 하는 정보:
+- 사용자별로 구분되어야 하는 정보:
+- 연결이 필요한 외부 서비스:
+
+## 9. Scope
+### In Scope
+-
+
+### Out of Scope
+-
+
+## 10. Success Criteria
+- 사용자가 무엇을 성공적으로 할 수 있으면 되는가?
+- 어떤 행동/결과를 보면 가치가 있다고 판단할 수 있는가?
+
+## 11. Open Questions
+-`,
+
+onepager: `# Lenny’s 1-Pager — Classroom Adaptation
+
+> 목적: 기능을 늘리기 전에 문제, 사용자, 가치, 성공 기준을 한 페이지 관점으로 정렬한다.
+> 참고: ChatPRD에 포함된 "Lenny’s 1-Pager" community template.
+
+## 1. The Idea
+제품/기능 제안을 1–2문장으로 설명한다.
+
+## 2. Problem
+- 우리가 풀려는 핵심 사용자 문제:
+- 이 문제를 겪는 사람:
+- 문제가 특히 심해지는 상황:
+- 현재 사용자의 대안:
+
+## 3. Why This / Why Now?
+- 왜 이 문제를 풀 가치가 있는가?
+- 왜 지금 시도할 이유가 있는가?
+- 아직 근거가 없는 부분은 무엇인가?
+
+## 4. Target User
+- Primary user:
+- 중요한 특성/상황:
+- 우리가 우선하지 않는 사용자:
+
+## 5. Proposed Solution
+가장 단순한 해결 방향을 설명한다. 기능 목록으로만 쓰지 않는다.
+
+## 6. Key User Value
+이 제품을 사용한 뒤 사용자에게 무엇이 의미 있게 달라지는가?
+
+## 7. Success
+- 핵심 사용자 행동:
+- 핵심 사용자 결과:
+- 관찰/측정 가능한 성공 신호:
+
+## 8. Scope
+### In Scope
+-
+
+### Not in Scope
+-
+
+## 9. Risks & Assumptions
+### Assumptions
+-
+
+### Risks
+-
+
+## 10. Open Questions
+-`,
+
+feature: `# Feature Implementation Spec — Beginner-friendly Adaptation
+
+> 목적: 기능이 실제로 어떻게 동작해야 하는지 명확히 하고, 구현에 필요한 기술은 AI가 기능 요구에서 역으로 제안하게 한다.
+> 참고: ChatPRD "Feature Implementation Spec" (requirements, API contracts, UI behavior, test plans)
+
+## 1. Feature Goal
+- 이 기능으로 사용자가 할 수 있어야 하는 것:
+- 이 기능이 해결하는 문제:
+- 대상 사용자:
+
+## 2. User Story
+As a [사용자],
+I want to [행동],
+so that [결과].
+
+## 3. Expected Behavior
+사용자가 무엇을 하면 서비스가 어떻게 반응해야 하는지 단계별로 적는다.
+
+1.
+2.
+3.
+
+## 4. Inputs & Outputs
+기술 용어 대신 사용자가 주는 정보와 받는 결과를 먼저 설명한다.
+- 사용자가 입력/제공하는 것:
+- 서비스가 보여주거나 만드는 것:
+- 서비스가 기억해야 하는 것:
+
+## 5. Access & Permissions
+- 로그인 필요 여부:
+- 사용자마다 자기 데이터만 보여야 하는가?
+- 누가 생성/조회/수정/삭제할 수 있는가?
+
+## 6. UI Behavior & States
+- Normal / happy path:
+- First use:
+- Empty:
+- Loading:
+- Invalid input:
+- Error:
+- AI가 답하지 못하거나 확신하지 못하는 경우:
+
+## 7. External Connections
+- 이메일 / 지도 / 결제 / 캘린더 / AI 등 외부 연결이 필요한가?
+- 무엇을 위해 필요한가?
+
+## 8. Technical Recommendations — AI가 제안
+학생에게 기술명을 요구하지 말 것.
+기능 요구를 바탕으로 AI가 다음을 "선택지 + 이유 + 더 단순한 대안" 형태로 제안한다.
+- 필요한 데이터 저장 방식
+- 인증/권한이 필요한지
+- 외부 API가 필요한지
+- 초보자에게 적합한 구현 선택지
+- 비용/복잡도 주의점
+
+## 9. Edge Cases
+- 데이터가 없을 때:
+- 잘못된 입력:
+- 네트워크/외부 서비스 실패:
+- 중복 작업:
+- 사용자 취소/되돌리기:
+- 기타:
+
+## 10. Acceptance Criteria
+기능이 완료되었다고 판단할 수 있는 관찰 가능한 조건.
+- [ ]
+- [ ]
+- [ ]
+
+## 11. Test Scenarios
+### Happy Path
+-
+
+### Failure / Edge Cases
+-
+
+## 12. Open Questions & Assumptions
+-`
+};
+
+const PROMPTS_KO = {
+build: `당신은 제품 매니저이자 UX 기획 퍼실리테이터입니다.
+
+나는 ① Product Concept Card와 ② v0 Build PRD 템플릿을 제공합니다.
+당신의 역할은 PRD를 즉시 대신 써주는 것이 아니라, 내가 제품을 더 구체적으로 생각하도록 질문한 뒤 템플릿에 맞는 최종 PRD를 함께 완성하는 것입니다.
+
+[작업 규칙]
+1. 먼저 Concept Card와 PRD Template을 읽고 다음을 구분하세요.
+   - 이미 결정된 정보
+   - 빠진 정보
+   - 내가 직접 결정해야 하는 중요한 선택
+   - 합리적으로 추론할 수 있지만 확인이 필요한 부분
+
+2. 아직 최종 PRD를 작성하지 마세요.
+   한 번에 3–5개의 중요한 질문만 하세요.
+
+3. 질문은 특히 다음을 구체화해야 합니다.
+   - 핵심 사용자와 사용 상황
+   - 시작부터 결과까지의 핵심 user journey
+   - 꼭 필요한 기능과 나중으로 미룰 기능
+   - 주요 화면/뷰와 사용자의 행동
+   - empty / loading / error / success 같은 중요한 상태
+   - AI 기능이 있다면 AI와 사람의 역할
+   - 성공했다고 판단할 수 있는 기준
+
+4. 내가 애매하게 답하면 무조건 동의하지 말고 무엇이 애매한지 짧게 알려준 뒤 더 좋은 후속 질문을 하세요.
+
+5. 내가 결정을 어려워하면 2–4개의 현실적인 선택지를 제시하고 각각의 장단점을 짧게 비교하세요.
+
+6. 내가 기술을 모른다고 가정하세요.
+   데이터베이스, 인증, API 같은 기술명을 먼저 묻지 말고,
+   "사용자마다 자기 데이터만 보여야 하나요?", "어떤 정보를 기억해야 하나요?"처럼 제품 행동을 물으세요.
+   필요한 기술은 답변을 바탕으로 나중에 쉬운 말로 제안하세요.
+
+7. 충분한 정보가 모이면 최종 작성 전에 아래 세 가지를 먼저 요약하세요.
+   A. 결정된 것
+   B. 아직 가정인 것
+   C. 열린 질문
+   그리고 내 확인을 받으세요.
+
+8. 내가 확인한 뒤에만 제공된 v0 Build PRD 템플릿의 구조를 유지해 최종 PRD를 Markdown으로 작성하세요.
+   중요한 빈칸을 임의로 만들어내지 말고 [가정] 또는 [열린 질문]으로 명시하세요.
+
+9. 최종 PRD는 다음 단계에서 디자이너나 AI coding agent가 읽어도 핵심 경험과 범위를 이해할 수 있을 만큼 구체적으로 작성하세요.
+
+이제 첨부/붙여넣은 Concept Card와 PRD Template을 읽고, 아직 PRD를 쓰지 말고 첫 질문 3–5개부터 시작하세요.`,
+
+onepager: `당신은 제품 전략 코치이자 PRD 퍼실리테이터입니다.
+
+나는 ① Product Concept Card와 ② Lenny’s 1-Pager 수업용 템플릿을 제공합니다.
+당신의 역할은 내 아이디어를 그럴듯하게 포장하는 것이 아니라, 문제·사용자·가치·성공 기준이 실제로 정렬되어 있는지 질문을 통해 검토한 뒤 One-Pager를 함께 완성하는 것입니다.
+
+[작업 규칙]
+1. 먼저 Concept Card와 Template을 읽고 다음을 구분하세요.
+   - 이미 알고 있는 것
+   - 근거 없이 가정하고 있는 것
+   - 아직 결정하지 않은 것
+   - 서로 모순되거나 너무 넓은 부분
+
+2. 아직 One-Pager를 작성하지 마세요.
+   한 번에 3–5개의 고가치 질문만 하세요.
+
+3. 기능 세부사항보다 먼저 다음을 파고드세요.
+   - 정확히 누구의 문제인가?
+   - 어떤 상황에서 문제가 발생하는가?
+   - 현재 사용자는 어떻게 해결하고 있는가?
+   - 해결되면 사용자에게 무엇이 의미 있게 달라지는가?
+   - 왜 지금 이 문제를 시도할 가치가 있는가?
+   - 가장 단순한 해결 방향은 무엇인가?
+   - 성공했다는 것을 어떤 행동이나 결과로 알 수 있는가?
+   - 이번 버전에서 의도적으로 하지 않을 것은 무엇인가?
+
+4. 내가 solution-first로 답하면 "문제"와 "해결책"을 구분해 다시 질문하세요.
+   예: "AI 추천 기능이 필요하다"라고 말하면, 먼저 그 추천이 없어서 사용자가 겪는 어려움이 무엇인지 물으세요.
+
+5. 내가 결정을 어려워하면 2–4개 선택지와 trade-off를 제시하세요.
+   사실처럼 보이는 시장 수치나 사용자 데이터를 임의로 만들어내지 마세요.
+
+6. 충분한 정보가 모이면 최종 작성 전에
+   A. 결정된 것
+   B. 검증이 필요한 가정
+   C. 열린 질문
+   을 먼저 요약하고 내 확인을 받으세요.
+
+7. 내가 확인한 뒤에만 제공된 One-Pager Template의 구조를 유지해 Markdown으로 작성하세요.
+   문서를 억지로 길게 만들지 말고, 핵심 정렬과 의사결정이 잘 보이게 하세요.
+
+이제 첨부/붙여넣은 Concept Card와 Template을 읽고, 아직 One-Pager를 쓰지 말고 첫 질문 3–5개부터 시작하세요.`,
+
+feature: `당신은 제품 매니저이자 초보자를 돕는 implementation planner입니다.
+
+나는 ① Product Concept Card와 ② Feature Implementation Spec 수업용 템플릿을 제공합니다.
+나는 아직 웹 개발 기술을 배우기 전일 수 있습니다. 따라서 기술 지식을 시험하지 말고, 내가 원하는 제품 동작을 이해한 뒤 필요한 구현 개념과 선택지를 쉬운 말로 번역해 주세요.
+
+[작업 규칙]
+1. 먼저 Concept Card와 Template을 읽고 다음을 구분하세요.
+   - 기능의 목적과 사용자 결과
+   - 이미 정해진 동작
+   - 아직 정의되지 않은 동작
+   - 중요한 예외 상황
+   - 구현을 위해 나중에 기술 선택이 필요한 부분
+
+2. 아직 최종 Spec을 작성하지 마세요.
+   한 번에 3–5개의 질문만 하세요.
+
+3. 질문은 기술명보다 사용자/서비스 행동으로 물으세요.
+   나쁜 질문: "Postgres를 쓸까요?"
+   좋은 질문: "사용자가 만든 정보는 다음 방문에도 남아 있어야 하나요?"
+
+   나쁜 질문: "OAuth가 필요합니까?"
+   좋은 질문: "로그인해야 하나요? 사용자마다 자기 정보만 볼 수 있어야 하나요?"
+
+4. 특히 다음을 명확히 하세요.
+   - 사용자가 기능을 시작하는 조건
+   - 사용자의 입력과 서비스의 결과
+   - 무엇을 저장/기억해야 하는지
+   - 로그인 및 권한 요구
+   - empty/loading/error/invalid input 상태
+   - AI가 실패하거나 확신하지 못할 때의 행동
+   - 완료 여부를 확인할 acceptance criteria
+
+5. 내가 기술을 모르면 답을 요구하지 마세요.
+   대신 기능 요구를 이해한 뒤 필요한 기술을 다음 형식으로 추천하세요.
+   - 필요한 능력/개념
+   - 왜 필요한지 (비전공자 설명)
+   - 초보자 친화적 선택지 1–2개
+   - 더 단순하게 만들 수 있는 대안
+   - 비용/복잡도/개인정보 등 주의점
+   특정 기술을 유일한 정답처럼 말하지 마세요.
+
+6. 근거 없이 실제 성능, 비용, 보안 수준을 확정하지 마세요.
+   확인이 필요한 것은 [검증 필요]라고 표시하세요.
+
+7. 충분한 정보가 모이면 최종 작성 전에
+   A. 결정된 제품 동작
+   B. 제안하는 구현 가설
+   C. 검증이 필요한 부분
+   D. 열린 질문
+   을 요약하고 내 확인을 받으세요.
+
+8. 내가 확인한 뒤에만 제공된 Feature Implementation Spec 구조를 유지하여 Markdown으로 작성하세요.
+   Acceptance Criteria는 관찰하고 테스트할 수 있는 문장으로 작성하세요.
+
+이제 Concept Card와 Template을 읽고, 아직 Spec을 쓰지 말고 첫 질문 3–5개부터 시작하세요.`
+};
+
+const PROMPTS_EN = {
+build: `You are my product manager and UX planning facilitator.
+
+I will provide (1) a Product Concept Card and (2) a classroom v0 Build PRD template.
+Do NOT immediately write the PRD. First interview me so I can make the important product decisions myself.
+
+Rules:
+1. Separate what is already decided, what is missing, what I must decide, and what can only be inferred tentatively.
+2. Ask only 3–5 high-value questions at a time.
+3. Focus on target user, context, core journey, must-have scope, screens/views, important UI states, AI/human roles, and success criteria.
+4. If my answer is vague or contradictory, briefly challenge it and ask a better follow-up.
+5. If I am unsure, offer 2–4 realistic options and explain the trade-offs.
+6. Assume I may not know technical terms. Ask about desired product behavior first; recommend technical options later in plain language.
+7. When enough information is available, summarize: (A) decisions, (B) assumptions, and (C) open questions. Ask me to confirm.
+8. Only after confirmation, write the final PRD in Markdown using EXACTLY the supplied template structure. Do not invent important missing decisions.
+9. Make it specific enough for a designer or AI coding agent to understand the intended experience and scope.
+
+Read the supplied Concept Card and PRD Template. Do not write the PRD yet. Start with your first 3–5 questions.`,
+
+onepager: `You are my product strategy coach and PRD facilitator.
+
+I will provide (1) a Product Concept Card and (2) a classroom adaptation of Lenny’s 1-Pager.
+Your goal is not to make my idea sound impressive. Your goal is to test whether the problem, user, value, scope, and success criteria are aligned.
+
+Rules:
+1. Separate known information, assumptions, undecided issues, contradictions, and overly broad claims.
+2. Do NOT write the One-Pager yet. Ask only 3–5 high-value questions at a time.
+3. Prioritize: who has the problem, when it occurs, current alternatives, meaningful user value, why now, simplest solution direction, success signals, and intentional non-goals.
+4. If I jump to features, bring me back to the underlying user problem.
+5. If I am unsure, offer 2–4 options with clear trade-offs. Never invent market facts or user evidence.
+6. Before drafting, summarize: (A) decisions, (B) assumptions that need validation, and (C) open questions. Ask me to confirm.
+7. Only after confirmation, write the final Markdown using the supplied One-Pager structure. Keep it concise and decision-oriented.
+
+Read the supplied materials. Do not write the One-Pager yet. Start with your first 3–5 questions.`,
+
+feature: `You are my product manager and a beginner-friendly implementation planner.
+
+I will provide (1) a Product Concept Card and (2) a classroom Feature Implementation Spec template.
+I may not know web development yet. Do NOT test my technical knowledge. Understand the behavior I want, then translate it into implementation needs and options in plain language.
+
+Rules:
+1. Separate the feature goal, already-defined behavior, undefined behavior, edge cases, and areas that will require a technical choice later.
+2. Do NOT write the final spec yet. Ask only 3–5 questions at a time.
+3. Ask in terms of product behavior, not technology names. For example, ask “Should each user see only their own data?” rather than “Do you need OAuth?”
+4. Clarify triggers, inputs, outputs, stored information, login/permissions, empty/loading/error/invalid states, AI failure behavior, and testable acceptance criteria.
+5. If I do not know a technology, do not require an answer. After understanding the requirement, recommend:
+   - the capability needed,
+   - why it is needed in beginner-friendly language,
+   - 1–2 beginner-friendly options,
+   - a simpler alternative if possible,
+   - important cost/complexity/privacy cautions.
+   Do not present one technology as the only correct answer.
+6. Mark claims that need checking as [Needs validation].
+7. Before drafting, summarize: (A) decided behavior, (B) proposed implementation hypotheses, (C) items needing validation, and (D) open questions. Ask me to confirm.
+8. Only after confirmation, write the final Markdown using the supplied Feature Implementation Spec structure. Make acceptance criteria observable and testable.
+
+Read the supplied materials. Do not write the spec yet. Start with your first 3–5 questions.`
+};
+
+const META = {
+ build:["v0 Build PRD","사용 경험·화면·기능을 구체화하는 build-oriented 문서입니다."],
+ onepager:["Lenny’s 1-Pager","문제·사용자·가치·성공 기준을 정렬하는 strategy-oriented 문서입니다."],
+ feature:["Feature Implementation Spec","제품 동작과 예외·검증 기준을 명확히 하고 필요한 기술을 AI가 역으로 제안하도록 하는 문서입니다."]
+};
+
+
+let selected = localStorage.getItem("selectedPRD") || "";
+
+function toast(msg="복사했습니다."){
+  const el=document.getElementById("toast");
+  el.textContent=msg;
+  el.classList.add("show");
+  setTimeout(()=>el.classList.remove("show"),1600);
+}
+function escapeHtml(str){
+  return String(str ?? "")
+    .replace(/&/g,"&amp;")
+    .replace(/</g,"&lt;")
+    .replace(/>/g,"&gt;")
+    .replace(/"/g,"&quot;");
+}
+function getField(id){
+  return (document.getElementById(id)?.value || "").trim();
+}
+function displayValue(id, fallback="아직 입력하지 않았습니다."){
+  return getField(id) || fallback;
+}
+function saveAll(){
+  document.querySelectorAll("[data-save]").forEach(el=>localStorage.setItem("field_"+el.dataset.save,el.value));
+  renderConceptPreviews();
+  toast("저장했습니다.");
+}
+function clearField(id){
+  const el=document.getElementById(id);
+  if(el){ el.value=""; localStorage.removeItem("field_"+id); renderConceptPreviews(); }
+}
+function restore(){
+  document.querySelectorAll("[data-save]").forEach(el=>{
+    const v=localStorage.getItem("field_"+el.dataset.save);
+    if(v!==null) el.value=v;
+    el.addEventListener("input",()=>{
+      localStorage.setItem("field_"+el.dataset.save,el.value);
+      renderConceptPreviews();
+    });
+  });
+  document.querySelectorAll(".progressCheck").forEach(cb=>{
+    cb.checked=localStorage.getItem("check_"+cb.dataset.key)==="1";
+    cb.addEventListener("change",()=>{
+      localStorage.setItem("check_"+cb.dataset.key,cb.checked?"1":"0");
+      updateProgress();
+    });
+  });
+  if(selected){
+    const r=document.querySelector(`input[name=prd][value="${selected}"]`);
+    if(r){ r.checked=true; selectPRD(selected,false); }
+  }
+  renderConceptPreviews();
+  updateProgress();
+}
+
+function conceptMarkdown(){
+  const g=id=>(document.getElementById(id)?.value||"").trim()||"[미작성]";
+  return `# Product Concept Card
+
+## Rough Idea
+${g("rough")}
+
+## 1. 우리가 만들고 싶은 것은?
+${g("c1")}
+
+## 2. 누구를 위한 것인가?
+${g("c2")}
+
+## 3. 사용 상황
+${g("c3a")}
+
+## 4. 구체적인 어려움
+${g("c3b")}
+
+## 5. 사용자가 얻고 싶은 결과
+${g("c4")}
+
+## 6. 가장 중요한 3단계 경험
+1. ${g("c5a")}
+2. ${g("c5b")}
+3. ${g("c5c")}
+
+## 7. 꼭 있었으면 하는 기능
+- ${g("c6a")}
+- ${g("c6b")}
+- ${g("c6c")}
+
+## 8. AI가 도와줄 수 있을 것 같은 부분
+${g("c7")}
+
+## 9. 아직 결정하지 못한 것 / AI와 같이 고민할 것
+${g("c8")}
+`;
+}
+
+function renderConceptPreviews(){
+  const preview = document.getElementById("conceptPreview");
+  const slide = document.getElementById("conceptSlidePreview");
+  if(!preview || !slide) return;
+
+  const features = [getField("c6a"), getField("c6b"), getField("c6c")].filter(Boolean);
+  const featureLis = features.length ? features.map(x=>`<li>${escapeHtml(x)}</li>`).join("") : `<li>아직 선택한 기능이 없습니다.</li>`;
+
+  preview.innerHTML = `
+    <div class="live-block">
+      <span class="live-label">Rough Idea</span>
+      <div class="live-value">${escapeHtml(displayValue("rough"))}</div>
+    </div>
+    <div class="live-block">
+      <span class="live-label">우리가 만들고 싶은 것</span>
+      <div class="live-value">${escapeHtml(displayValue("c1"))}</div>
+    </div>
+    <div class="live-block">
+      <span class="live-label">누구를 위한 것인가</span>
+      <div class="live-value">${escapeHtml(displayValue("c2"))}</div>
+    </div>
+    <div class="live-block">
+      <span class="live-label">상황</span>
+      <div class="live-value">${escapeHtml(displayValue("c3a"))}</div>
+    </div>
+    <div class="live-block">
+      <span class="live-label">어려움</span>
+      <div class="live-value">${escapeHtml(displayValue("c3b"))}</div>
+    </div>
+    <div class="live-block">
+      <span class="live-label">사용자가 얻고 싶은 결과</span>
+      <div class="live-value">${escapeHtml(displayValue("c4"))}</div>
+    </div>
+    <div class="live-block">
+      <span class="live-label">가장 중요한 경험</span>
+      <ol class="live-list">
+        <li>${escapeHtml(displayValue("c5a"))}</li>
+        <li>${escapeHtml(displayValue("c5b"))}</li>
+        <li>${escapeHtml(displayValue("c5c"))}</li>
+      </ol>
+    </div>
+    <div class="live-block">
+      <span class="live-label">꼭 있었으면 하는 기능</span>
+      <ul class="live-list">${featureLis}</ul>
+    </div>
+    <div class="live-block">
+      <span class="live-label">AI가 도와줄 수 있는 부분</span>
+      <div class="live-value">${escapeHtml(displayValue("c7"))}</div>
+    </div>
+    <div class="live-block">
+      <span class="live-label">AI와 같이 고민할 것</span>
+      <div class="live-value">${escapeHtml(displayValue("c8"))}</div>
+    </div>
+  `;
+
+  slide.innerHTML = `
+    <div class="slide-top">
+      <div>
+        <div class="slide-kicker">AI-Native PRD Lab · Product Concept Slide</div>
+        <div class="slide-title">${escapeHtml(displayValue("c1","제품 이름 또는 핵심 아이디어를 입력하세요."))}</div>
+      </div>
+      <div class="slide-meta">
+        <span class="slide-chip primary">Concept Card</span>
+        <span class="slide-chip">16:9</span>
+      </div>
+    </div>
+
+    <div class="slide-main">
+      <div class="slide-grid">
+        <div class="slide-panel">
+          <div class="slide-section-label">Target User</div>
+          <div class="slide-text">${escapeHtml(displayValue("c2"))}</div>
+        </div>
+
+        <div class="slide-panel">
+          <div class="slide-section-label">Situation & Problem</div>
+          <div class="slide-mini-grid">
+            <div>
+              <div class="slide-section-label">Situation</div>
+              <div class="slide-text">${escapeHtml(displayValue("c3a"))}</div>
+            </div>
+            <div>
+              <div class="slide-section-label">Difficulty</div>
+              <div class="slide-text">${escapeHtml(displayValue("c3b"))}</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="slide-panel">
+          <div class="slide-section-label">Desired Outcome</div>
+          <div class="slide-text">${escapeHtml(displayValue("c4"))}</div>
+        </div>
+      </div>
+
+      <div class="slide-grid">
+        <div class="slide-panel-dark">
+          <div class="slide-section-label">Core Experience</div>
+          <ol class="slide-bullets">
+            <li>${escapeHtml(displayValue("c5a"))}</li>
+            <li>${escapeHtml(displayValue("c5b"))}</li>
+            <li>${escapeHtml(displayValue("c5c"))}</li>
+          </ol>
+        </div>
+
+        <div class="slide-panel">
+          <div class="slide-section-label">Must-have Features</div>
+          <ul class="slide-bullets">${featureLis}</ul>
+        </div>
+
+        <div class="slide-panel">
+          <div class="slide-section-label">AI Opportunity</div>
+          <div class="slide-text">${escapeHtml(displayValue("c7"))}</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="slide-footer">
+      <div class="slide-meta">
+        <span class="slide-chip">Open Questions</span>
+        <span class="slide-note">${escapeHtml(displayValue("c8"))}</span>
+      </div>
+      <div class="slide-note">Generated from the Product Concept Card in this one-pager.</div>
+    </div>
+  `;
+}
+
+function slideHTMLString(){
+  const slideInner = document.getElementById("conceptSlidePreview").innerHTML;
+  return `<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Concept Slide</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500&family=Noto+Sans+KR:wght@400;500&display=swap');
+:root{
+  --canvas:#ffffff;--canvas-soft:#fafafa;--canvas-night:#1c1c1c;--ink:#171717;--ink-mute:#707070;--hairline:#dfdfdf;--hairline-cool:#ededed;--primary:#3ecf8e;
+}
+*{box-sizing:border-box}
+body{margin:0;background:#f4f4f4;font-family:Inter,"Noto Sans KR",Arial,sans-serif;color:var(--ink)}
+.wrapper{min-height:100vh;display:grid;place-items:center;padding:20px}
+.slide-canvas{
+  width:1600px;height:900px;background:#fff;border:1px solid var(--hairline);border-radius:12px;overflow:hidden;
+  display:grid;grid-template-rows:auto 1fr auto;padding:24px 26px 20px;
+}
+.slide-top{display:grid;grid-template-columns:1fr auto;gap:16px;align-items:start;padding-bottom:14px;border-bottom:1px solid var(--hairline-cool)}
+.slide-kicker{display:inline-flex;align-items:center;gap:8px;color:var(--ink-mute);font-size:11px;line-height:1.4;text-transform:uppercase}
+.slide-kicker::before{content:"";width:7px;height:7px;border-radius:9999px;background:var(--primary)}
+.slide-title{margin:8px 0 0;color:var(--ink);font-size:48px;line-height:1.08;font-weight:500;letter-spacing:-1.44px}
+.slide-main{display:grid;grid-template-columns:1.25fr .95fr;gap:18px;padding-top:16px}
+.slide-panel,.slide-panel-dark{border:1px solid var(--hairline);border-radius:12px;padding:14px 14px 12px;background:#fff}
+.slide-panel-dark{background:var(--canvas-night);border-color:#2a2a2a;color:#fff}
+.slide-grid{display:grid;gap:12px}
+.slide-section-label{color:var(--ink-mute);font-size:11px;line-height:1.4;text-transform:uppercase;margin-bottom:6px}
+.slide-panel-dark .slide-section-label{color:rgba(255,255,255,.66)}
+.slide-text{color:var(--ink);font-size:22px;line-height:1.55;white-space:pre-wrap;word-break:keep-all}
+.slide-panel-dark .slide-text{color:#fff}
+.slide-bullets{margin:0;padding-left:28px}
+.slide-bullets li{margin:6px 0;color:inherit;font-size:21px;line-height:1.45}
+.slide-mini-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.slide-footer{display:flex;align-items:center;justify-content:space-between;gap:12px;padding-top:14px;border-top:1px solid var(--hairline-cool)}
+.slide-chip{display:inline-flex;align-items:center;gap:6px;padding:4px 7px;border:1px solid var(--hairline);border-radius:4px;background:var(--canvas-soft);font-size:11px;color:var(--ink-mute)}
+.slide-chip.primary{background:var(--primary);border-color:var(--primary);color:var(--ink)}
+.slide-meta{display:flex;gap:6px;flex-wrap:wrap;align-items:center}
+.slide-note{color:var(--ink-mute);font-size:11px;line-height:1.4;max-width:540px}
+</style>
+</head>
+<body>
+<div class="wrapper">
+  <div class="slide-canvas">${slideInner}</div>
+</div>
+</body>
+</html>`;
+}
+
+
+async function saveBlob(name, blob, mimeType, description){
+  // On GitHub Pages / secure Chrome, let the user choose the exact save location.
+  if(window.showSaveFilePicker && window.isSecureContext){
+    try{
+      const extension = "." + name.split(".").pop();
+      const handle = await window.showSaveFilePicker({
+        suggestedName:name,
+        types:[{
+          description:description || "File",
+          accept:{ [mimeType || "application/octet-stream"]:[extension] }
+        }]
+      });
+      const writable = await handle.createWritable();
+      await writable.write(blob);
+      await writable.close();
+      toast(`저장 완료: ${name}`);
+      return true;
+    }catch(err){
+      if(err && err.name === "AbortError"){
+        toast("저장을 취소했습니다.");
+        return false;
+      }
+      console.warn("Save picker unavailable; falling back to browser download.", err);
+    }
+  }
+
+  // Fallback: standard browser download. The browser controls the destination.
+  const a=document.createElement("a");
+  const url=URL.createObjectURL(blob);
+  a.href=url;
+  a.download=name;
+  a.style.display="none";
+  document.body.appendChild(a);
+  a.click();
+  setTimeout(()=>{
+    URL.revokeObjectURL(url);
+    a.remove();
+  },1200);
+  toast(`다운로드 시작: ${name} · 브라우저의 기본 다운로드 폴더를 확인하세요.`);
+  return true;
+}
+
+async function dl(name,text){
+  const blob=new Blob([text],{type:"text/markdown;charset=utf-8"});
+  await saveBlob(name, blob, "text/markdown", "Markdown document");
+}
+
+function openCopyFallback(text){
+  const modal=document.getElementById("copyFallbackModal");
+  const area=document.getElementById("copyFallbackText");
+  area.value=text;
+  modal.classList.add("open");
+  setTimeout(()=>{
+    area.focus();
+    area.select();
+    area.setSelectionRange(0, area.value.length);
+  },50);
+}
+function closeCopyFallback(){
+  document.getElementById("copyFallbackModal")?.classList.remove("open");
+}
+function manualSelectCopy(){
+  const area=document.getElementById("copyFallbackText");
+  area.focus();
+  area.select();
+  area.setSelectionRange(0, area.value.length);
+  toast("전체 선택했습니다. ⌘C / Ctrl+C로 복사하세요.");
+}
+
+async function copyText(text){
+  // 1) Modern Clipboard API
+  try{
+    if(navigator.clipboard && window.isSecureContext){
+      await navigator.clipboard.writeText(text);
+      toast("복사했습니다.");
+      return true;
+    }
+  }catch(e){
+    console.warn("Clipboard API failed",e);
+  }
+
+  // 2) Legacy execCommand fallback
+  try{
+    const ta=document.createElement("textarea");
+    ta.value=text;
+    ta.setAttribute("readonly","");
+    ta.style.position="fixed";
+    ta.style.left="-9999px";
+    ta.style.top="0";
+    document.body.appendChild(ta);
+    ta.focus();
+    ta.select();
+    ta.setSelectionRange(0, ta.value.length);
+    const ok=document.execCommand("copy");
+    ta.remove();
+    if(ok){
+      toast("복사했습니다.");
+      return true;
+    }
+  }catch(e){
+    console.warn("execCommand copy failed",e);
+  }
+
+  // 3) Guaranteed manual fallback
+  openCopyFallback(text);
+  toast("자동 복사가 차단되어 수동 복사 창을 열었습니다.");
+  return false;
+}
+
+function downloadConcept(){ saveAll(); dl("concept-card.md", conceptMarkdown()); }
+function copyConcept(){ copyText(conceptMarkdown()); }
+
+async function downloadConceptSlideHTML(){
+  saveAll();
+  const blob = new Blob([slideHTMLString()], {type:"text/html;charset=utf-8"});
+  await saveBlob("concept-slide-16x9.html", blob, "text/html", "HTML document");
+}
+
+async function downloadConceptSlidePNG(){
+  saveAll();
+  const el = document.getElementById("conceptSlidePreview");
+  if(!el){
+    toast("슬라이드 영역을 찾지 못했습니다.");
+    return;
+  }
+  if(typeof html2canvas !== "function"){
+    toast("PNG 변환 라이브러리를 불러오지 못했습니다. 인터넷 연결 후 다시 시도해 주세요.");
+    return;
+  }
+  try{
+    const canvas = await html2canvas(el, {
+      backgroundColor:"#ffffff",
+      scale:2.2,
+      useCORS:true,
+      logging:false
+    });
+    const blob = await new Promise(resolve=>canvas.toBlob(resolve, "image/png"));
+    if(!blob){
+      toast("PNG 생성에 실패했습니다.");
+      return;
+    }
+    await saveBlob("concept-slide-16x9.png", blob, "image/png", "PNG image");
+  }catch(err){
+    console.error(err);
+    toast("PNG 생성 중 오류가 발생했습니다.");
+  }
+}
+
+function selectPRD(v,scroll=true){
+  selected=v;
+  localStorage.setItem("selectedPRD",v);
+  document.getElementById("selectedNotice").style.display="none";
+  document.getElementById("prdContent").style.display="block";
+  document.getElementById("prdTitle").textContent=META[v][0];
+  document.getElementById("prdDesc").textContent=META[v][1];
+  document.getElementById("templatePreview").textContent=TEMPLATES[v];
+  document.getElementById("promptKo").textContent=PROMPTS_KO[v];
+  document.getElementById("promptEn").textContent=PROMPTS_EN[v];
+  if(scroll) document.getElementById("step4").scrollIntoView({behavior:"smooth",block:"start"});
+}
+function requireSelected(){
+  if(!selected){
+    toast("먼저 STEP 3에서 PRD를 선택하세요.");
+    return false;
+  }
+  return true;
+}
+function downloadTemplate(){
+  if(!requireSelected()) return;
+  dl(`${selected}-prd-template.md`, TEMPLATES[selected]);
+}
+function copyTemplate(){
+  if(!requireSelected()) return;
+  copyText(TEMPLATES[selected]);
+}
+function downloadBundle(){
+  if(!requireSelected()) return;
+  dl(`prd-lab-${selected}-bundle.md`, conceptMarkdown()+`
+
+---
+
+`+TEMPLATES[selected]);
+}
+function showPrompt(lang,btn){
+  document.querySelectorAll(".prompt-panel").forEach(x=>x.classList.remove("active"));
+  document.querySelectorAll(".tab").forEach(x=>x.classList.remove("active"));
+  document.getElementById("prompt-"+lang).classList.add("active");
+  btn.classList.add("active");
+}
+function copyPrompt(lang){
+  if(!requireSelected()) return;
+  copyText(lang==="ko" ? PROMPTS_KO[selected] : PROMPTS_EN[selected]);
+}
+function updateProgress(){
+  const c=[...document.querySelectorAll(".progressCheck")];
+  const n=c.filter(x=>x.checked).length;
+  const p=Math.round(n/c.length*100);
+  document.getElementById("progressBar").style.width=p+"%";
+  document.getElementById("progressText").textContent=p+"%";
+}
+restore();
+</script>
+</body>
+</html>
