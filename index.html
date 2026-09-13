@@ -591,7 +591,7 @@ input:focus,textarea:focus{
 }
 
 </style>
-<script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/html-to-image@1.11.11/dist/html-to-image.js"></script>
 </head>
 <body>
 <header class="hero">
@@ -1781,25 +1781,64 @@ async function downloadConceptSlideHTML(){
   await saveBlob("concept-slide-16x9.html", blob, "text/html", "HTML document");
 }
 
+// Fixed-size (1600x900) styles for PNG export, scoped so page CSS can't interfere.
+const SLIDE_EXPORT_CSS = `
+#slidePngExportRoot,#slidePngExportRoot *{box-sizing:border-box}
+#slidePngExportRoot .slide-canvas{width:1600px;height:900px;background:#fff;border:1px solid #dfdfdf;overflow:hidden;display:grid;grid-template-rows:auto 1fr auto;padding:24px 26px 20px;font-family:Inter,"Noto Sans KR",Arial,sans-serif;color:#171717}
+#slidePngExportRoot .slide-top{display:grid;grid-template-columns:1fr auto;gap:16px;align-items:start;padding-bottom:14px;border-bottom:1px solid #ededed}
+#slidePngExportRoot .slide-kicker{display:inline-flex;align-items:center;gap:8px;color:#707070;font-size:20px;line-height:1.4;text-transform:uppercase}
+#slidePngExportRoot .slide-kicker::before{content:"";width:12px;height:12px;border-radius:9999px;background:#3ecf8e}
+#slidePngExportRoot .slide-title{margin:8px 0 0;color:#171717;font-size:48px;line-height:1.08;font-weight:500;letter-spacing:-1.44px}
+#slidePngExportRoot .slide-main{display:grid;grid-template-columns:1.25fr .95fr;gap:18px;padding-top:16px;min-height:0}
+#slidePngExportRoot .slide-panel,#slidePngExportRoot .slide-panel-dark{border:1px solid #dfdfdf;border-radius:12px;padding:14px 14px 12px;background:#fff}
+#slidePngExportRoot .slide-panel-dark{background:#1c1c1c;border-color:#2a2a2a;color:#fff}
+#slidePngExportRoot .slide-grid{display:grid;gap:12px}
+#slidePngExportRoot .slide-section-label{color:#707070;font-size:18px;line-height:1.4;text-transform:uppercase;margin-bottom:6px}
+#slidePngExportRoot .slide-panel-dark .slide-section-label{color:rgba(255,255,255,.66)}
+#slidePngExportRoot .slide-text{color:#171717;font-size:22px;line-height:1.55;white-space:pre-wrap;word-break:keep-all}
+#slidePngExportRoot .slide-panel-dark .slide-text{color:#fff}
+#slidePngExportRoot .slide-bullets{margin:0;padding-left:28px}
+#slidePngExportRoot .slide-bullets li{margin:6px 0;color:inherit;font-size:21px;line-height:1.45}
+#slidePngExportRoot .slide-mini-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+#slidePngExportRoot .slide-footer{display:flex;align-items:center;justify-content:space-between;gap:12px;padding-top:14px;border-top:1px solid #ededed}
+#slidePngExportRoot .slide-chip{display:inline-flex;align-items:center;gap:6px;padding:6px 10px;border:1px solid #dfdfdf;border-radius:4px;background:#fafafa;font-size:17px;color:#707070}
+#slidePngExportRoot .slide-chip.primary{background:#3ecf8e;border-color:#3ecf8e;color:#171717}
+#slidePngExportRoot .slide-meta{display:flex;gap:6px;flex-wrap:wrap;align-items:center}
+#slidePngExportRoot .slide-note{color:#707070;font-size:17px;line-height:1.4;max-width:900px}
+`;
+
 async function downloadConceptSlidePNG(){
   saveAll();
-  const el = document.getElementById("conceptSlidePreview");
-  if(!el){
+  const preview = document.getElementById("conceptSlidePreview");
+  if(!preview){
     toast("슬라이드 영역을 찾지 못했습니다.");
     return;
   }
-  if(typeof html2canvas !== "function"){
+  if(!window.htmlToImage){
     toast("PNG 변환 라이브러리를 불러오지 못했습니다. 인터넷 연결 후 다시 시도해 주세요.");
     return;
   }
+  // Render a full-size 1600x900 copy off-screen: capturing the responsive
+  // preview directly produces a small, layout-broken image.
+  const root = document.createElement("div");
+  root.id = "slidePngExportRoot";
+  root.style.cssText = "position:fixed;left:0;top:0;z-index:-1;pointer-events:none;";
+  const styleEl = document.createElement("style");
+  styleEl.textContent = SLIDE_EXPORT_CSS;
+  const slide = document.createElement("div");
+  slide.className = "slide-canvas";
+  slide.innerHTML = preview.innerHTML;
+  root.appendChild(styleEl);
+  root.appendChild(slide);
+  document.body.appendChild(root);
   try{
-    const canvas = await html2canvas(el, {
+    await document.fonts.ready;
+    const blob = await htmlToImage.toBlob(slide, {
+      pixelRatio:2,
       backgroundColor:"#ffffff",
-      scale:2.2,
-      useCORS:true,
-      logging:false
+      width:1600,
+      height:900
     });
-    const blob = await new Promise(resolve=>canvas.toBlob(resolve, "image/png"));
     if(!blob){
       toast("PNG 생성에 실패했습니다.");
       return;
@@ -1808,6 +1847,8 @@ async function downloadConceptSlidePNG(){
   }catch(err){
     console.error(err);
     toast("PNG 생성 중 오류가 발생했습니다.");
+  }finally{
+    root.remove();
   }
 }
 
