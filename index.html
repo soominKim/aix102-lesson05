@@ -3,8 +3,8 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width,initial-scale=1" />
-<title>AI-Native PRD Lab — Idea → Interview → PRD</title>
-<meta name="description" content="아이디어를 Product Concept Card로 정리하고, 3가지 검증된 PRD 관점 중 하나를 선택해 ChatGPT 또는 Claude와 인터뷰하며 PRD를 완성하는 자율 실습 원페이저." />
+<title>AI-Native PRD Lab: Idea → One-Page PRD → Claude Code</title>
+<meta name="description" content="아이디어를 Product Concept Card로 정리하고, PRD 템플릿을 골라 외부 LLM과 One-Page PRD, 발표 슬라이드, Claude Code 프롬프트까지 완성하는 자율 실습 원페이저." />
 <style>
 
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500&family=Noto+Sans+KR:wght@400;500&display=swap');
@@ -95,7 +95,7 @@ h1{
 /* process mockup */
 .flow{
   display:grid;
-  grid-template-columns:repeat(5,1fr);
+  grid-template-columns:repeat(7,1fr);
   gap:0;
   margin-top:56px;
   overflow:hidden;
@@ -344,6 +344,56 @@ input:focus,textarea:focus{
 .compare tbody th{width:150px;background:#fcfcfc;font-weight:500;color:var(--ink)}
 .compare td{color:var(--ink-mute)}
 
+/* LOCATION BADGES */
+.where .dot,.loc .dot{width:8px;height:8px;border-radius:9999px;background:currentColor;display:inline-block;flex:none}
+.where.web{background:#e8f7ee;border-color:#bfe8cf;color:#11763f}
+.where.llm{background:#eef0ff;border-color:#cfd3ff;color:#3b3fb6}
+.where.peer{background:#fff4e5;border-color:#f7d9ad;color:#9a5b00}
+.where.web strong,.where.llm strong,.where.peer strong{color:inherit}
+.where{font-size:13px}
+.where-row{display:flex;flex-wrap:wrap;align-items:center;gap:8px;margin-top:18px}
+.where-row .where{margin-top:0}
+.where-arrow{color:var(--ink-mute);font-size:14px}
+.loc{display:inline-flex;align-items:center;gap:6px;padding:3px 9px;border-radius:9999px;font-size:12px;font-weight:500;line-height:1.5}
+.loc.web{background:#e8f7ee;color:#11763f}
+.loc.llm{background:#eef0ff;color:#3b3fb6}
+.loc.peer{background:#fff4e5;color:#9a5b00}
+.substep{margin-top:32px}
+.substep:first-of-type{margin-top:0}
+.substep-head{display:flex;flex-direction:column;align-items:flex-start;gap:8px;margin-bottom:12px}
+.substep-head h3{margin:0;font-size:20px;font-weight:500}
+.sub-desc{margin:0 0 4px;color:var(--ink-mute);font-size:14px;line-height:1.6}
+.llm-zone{padding:20px;border:1px solid #cfd3ff;border-radius:var(--radius-lg);background:#fafaff}
+.template-view{margin-top:18px;padding:18px;border:1px solid var(--primary);border-radius:var(--radius-lg);background:var(--canvas)}
+.template-view-head{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:flex-end;gap:12px}
+.template-view-head h3{margin:8px 0 2px;font-size:20px;font-weight:500}
+.template-view-head p{margin:0;color:var(--ink-mute);font-size:14px}
+.template-scroll{max-height:420px}
+.compare-details{margin-top:18px}
+.compare-details summary{cursor:pointer;color:var(--ink-mute);font-size:14px;padding:6px 0}
+.status-grid{gap:12px}
+.status-card{padding:14px 16px;border:1px solid var(--hairline);border-radius:var(--radius-sm);background:var(--canvas)}
+.status-card b{font-weight:500;font-size:14px}
+.status-card span{margin-left:6px;color:var(--ink-mute);font-size:12px}
+.status-card p{margin:6px 0 0;font-size:13px;line-height:1.55;color:var(--ink-mute)}
+.status-card.ok{border-color:#bfe8cf;background:#f3fbf6}
+.status-card.warn{border-color:#f7d9ad;background:#fffaf2}
+.review-q{gap:10px}
+.review-q .note{margin:0}
+
+.num.bonus{width:auto;padding:0 8px;background:#eef0ff;border-color:#cfd3ff;color:#3b3fb6}
+.cc-steps .badge{margin-bottom:6px}
+.cc-ex{margin-top:10px!important;padding:10px 12px;background:var(--canvas-soft);border-radius:var(--radius-xs);font-size:12px!important;line-height:1.55!important;color:var(--ink-mute)}
+.cc-stage{margin-top:14px;border:1px solid var(--hairline);border-radius:var(--radius-sm);overflow:hidden;background:var(--canvas)}
+.cc-stage + .cc-stage{border-top:3px solid #3b3fb6}
+.cc-stage-head{display:flex;align-items:center;gap:10px;padding:10px 14px;background:#eef0ff;border-bottom:1px solid #cfd3ff;font-size:14px}
+.cc-stage-head b{font-weight:500;color:#3b3fb6}
+.cc-num{display:grid;place-items:center;width:22px;height:22px;border-radius:9999px;background:#3b3fb6;color:#fff;font-size:12px}
+.cc-stage textarea{border:0;border-radius:0;margin:0;min-height:110px}
+.cycle{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:12px}
+@media(max-width:1023px){.cycle{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:600px){.cycle{grid-template-columns:1fr}}
+.cycle .card p{font-size:14px}
 /* CODE / TABS */
 .codebox{
   position:relative;
@@ -418,6 +468,12 @@ input:focus,textarea:focus{
   width:9px;height:9px;margin-left:6px;vertical-align:middle;
   border-radius:9999px;background:#e5484d;box-shadow:0 0 0 2px rgba(229,72,77,.12);
 }
+.w2-guide{margin:0 0 18px;padding:14px 16px;border:1px solid var(--hairline);border-radius:12px;background:var(--canvas-soft)}
+.w2-guide b{font-size:14px;font-weight:500}
+.w2-guide p{margin:6px 0 0;font-size:13px;line-height:1.6;color:var(--ink-mute)}
+.w2-map{display:inline-block;margin-left:6px;padding:1px 8px;border-radius:9999px;background:#e8f7ee;color:#11763f;font-size:11px;font-weight:500;line-height:1.6;vertical-align:middle;white-space:nowrap}
+.w2-map.new{background:#eef0ff;color:#3b3fb6}
+.w2-hint{margin:2px 0 6px;font-size:12px;line-height:1.55;color:var(--ink-mute)}
 .step2-layout{display:grid;grid-template-columns:minmax(0,1fr) 460px;gap:24px;align-items:start}
 .step2-form .field{margin-bottom:2px}
 .preview-col{position:sticky;top:72px}
@@ -598,17 +654,19 @@ input:focus,textarea:focus{
   <div class="container">
     <span class="eyebrow">AI-Native Product Planning Lab · Self-guided</span>
     <h1>아이디어에서 시작해<br>AI와 함께 PRD로 구체화하기</h1>
-    <p class="lead">이 페이지 하나만 따라가면 됩니다. 먼저 웹에서 자신의 아이디어를 구체화하고, 세 가지 PRD 관점 중 하나를 선택한 뒤, Markdown 템플릿과 인터뷰 프롬프트를 ChatGPT 또는 Claude에 넣어 최종 PRD를 완성합니다.</p>
+    <p class="lead">STEP 1~3은 <b>이 웹페이지</b>에서 아이디어를 Concept Card로 정리하고 PRD 템플릿을 고릅니다. STEP 4~5는 이 페이지가 만들어준 프롬프트를 <b>ChatGPT 등 외부 LLM</b>에 넣어 One-Page PRD와 발표 슬라이드를 완성하고, STEP 6에서 <b>다 같이 Peer Review</b>를 한 뒤, Bonus STEP 7에서 다음 차시 Claude Code 실습용 프롬프트를 준비합니다.</p>
     <div class="hero-actions">
       <a class="btn primary" href="#step1">실습 시작하기</a>
       <a class="btn" href="#step3">3가지 PRD 먼저 비교</a>
     </div>
     <div class="flow">
-      <div class="f"><b>STEP 1</b><span>Rough Idea</span><br><small>떠오르는 아이디어 적기</small></div>
-      <div class="f"><b>STEP 2</b><span>Concept Card</span><br><small>문제·사용자·경험 구체화</small></div>
-      <div class="f"><b>STEP 3</b><span>Choose a PRD</span><br><small>3가지 관점 중 선택</small></div>
-      <div class="f"><b>STEP 4–5</b><span>AI Interview</span><br><small>ChatGPT / Claude에서 대화</small></div>
-      <div class="f"><b>STEP 6</b><span>Final PRD</span><br><small>검토·저장·다음 단계 준비</small></div>
+      <div class="f"><b>STEP 1 · 웹</b><span>Rough Idea</span><br><small>떠오르는 아이디어 적기</small></div>
+      <div class="f"><b>STEP 2 · 웹</b><span>Concept Card</span><br><small>문제·사용자·기능·데이터</small></div>
+      <div class="f"><b>STEP 3 · 웹</b><span>PRD Template</span><br><small>템플릿 고르고 바로 확인</small></div>
+      <div class="f"><b>STEP 4 · 외부 LLM</b><span>One-Page PRD</span><br><small>AI의 역질문에 답하며 완성</small></div>
+      <div class="f"><b>STEP 5 · 외부 LLM</b><span>Slide</span><br><small>16:9 HTML 1~2장</small></div>
+      <div class="f"><b>STEP 6 · 다 같이</b><span>Peer Review</span><br><small>3분 발표·3분 피드백</small></div>
+      <div class="f"><b>BONUS 7 · 외부 LLM</b><span>Claude Code 준비</span><br><small>PRD를 3단계 프롬프트로</small></div>
     </div>
   </div>
 </header>
@@ -616,8 +674,8 @@ input:focus,textarea:focus{
 <div class="sticky">
   <div class="container nav">
     <a href="#start">시작 전</a><a href="#step1">1. Rough Idea</a><a href="#step2">2. Concept Card</a>
-    <a href="#step3">3. PRD 선택</a><a href="#step4">4. 파일 준비</a><a href="#step5">5. AI 인터뷰</a>
-    <a href="#step6">6. 완성·검토</a><a href="#refs">원본 레퍼런스</a>
+    <a href="#step3">3. PRD 템플릿</a><a href="#step4">4. One-Page PRD</a><a href="#step5">5. 슬라이드</a>
+    <a href="#step6">6. Peer Review</a><a href="#step7">B7. Claude Code</a><a href="#refs">원본 레퍼런스</a>
     <div class="progress-wrap"><small>진행률</small><div class="progress"><span id="progressBar"></span></div><b id="progressText">0%</b></div>
   </div>
 </div>
@@ -627,99 +685,108 @@ input:focus,textarea:focus{
 <section id="start" class="step">
   <div class="step-head"><div class="num">0</div><div><h2>시작하기 전에: 오늘 만들 것은 “앱”이 아니라 “좋은 기획”입니다</h2>
   <p class="kicker">기술을 몰라도 됩니다. 이 실습에서는 기능을 설명하면 AI가 필요한 기술 선택지를 설명하도록 합니다.</p>
-  <div class="where">지금 하는 곳: <strong>이 웹페이지</strong></div></div></div>
+  <div class="where web"><span class="dot"></span>지금 하는 곳: <strong>이 웹페이지</strong></div></div></div>
   <hr>
   <div class="grid2">
     <div class="card"><h3>사람이 결정할 것</h3><p>누구의 어떤 문제를 풀지, 어떤 경험이 중요한지, 무엇을 이번 버전에 넣고 뺄지 판단합니다.</p></div>
     <div class="card"><h3>AI에게 맡길 것</h3><p>빠진 질문을 찾아 묻고, 대안을 비교하고, 답변을 구조화하며, 필요한 기술 개념을 쉬운 말로 추천하게 합니다.</p></div>
   </div>
-  <div class="tip" style="margin-top:16px"><b>핵심 원칙</b> — 모르는 항목을 억지로 채우지 마세요. <b>“아직 모르겠다”도 중요한 입력</b>입니다. AI가 질문해야 할 지점을 남겨두는 것이 이 실습의 일부입니다.</div>
+  <div class="tip" style="margin-top:16px"><b>핵심 원칙:</b> 모르는 항목을 억지로 채우지 마세요. <b>“아직 모르겠다”도 중요한 입력</b>입니다. AI가 질문해야 할 지점을 남겨두는 것이 이 실습의 일부입니다.</div>
   <div class="checklist"><label class="check"><input class="progressCheck" type="checkbox" data-key="ready"><span>ChatGPT 또는 Claude를 새 탭에서 사용할 수 있다.</span></label></div>
 </section>
 
 <section id="step1" class="step">
-  <div class="step-head"><div class="num">1</div><div><h2>Rough Idea — 떠오르는 아이디어를 한 번에 적어보기</h2>
-  <p class="kicker">처음부터 잘 쓸 필요 없습니다. 2–5문장 정도면 충분합니다.</p>
-  <div class="where">지금 하는 곳: <strong>이 웹페이지</strong></div></div></div>
+  <div class="step-head"><div class="num">1</div><div><h2>Rough Idea: 떠오르는 아이디어를 한 번에 적어보기</h2>
+  <p class="kicker">처음부터 잘 쓸 필요 없습니다. 2~5문장 정도면 충분합니다.</p>
+  <div class="where web"><span class="dot"></span>지금 하는 곳: <strong>이 웹페이지</strong></div></div></div>
   <hr>
   <div class="note"><b>막히면 이렇게 시작하세요.</b><br>“나는 [어떤 사람]이 [어떤 상황]에서 겪는 [문제]를 줄여주는 [서비스/도구]를 만들고 싶다.”<br>기능이 먼저 떠오른다면 기능부터 써도 됩니다. 다음 단계에서 문제와 사용자로 다시 연결합니다.</div>
   <label for="rough">내 Rough Idea</label>
   <textarea id="rough" data-save="rough" placeholder="예: 기숙사에서 자기 전에 스마트폰을 오래 보다가 잠드는 시간이 계속 늦어지는 대학생을 위한 서비스를 만들고 싶다. 사용자가 억지로 폰을 끄는 느낌보다 자연스럽게 사용을 마치게 도와주고 싶다. AI가 그날의 상태와 사용 패턴에 맞춰 개입하면 좋겠다."></textarea>
   <div class="btnrow"><button class="btn primary" onclick="saveAll()">입력 저장</button><button class="btn" onclick="clearField('rough')">비우기</button></div>
-  <div class="checklist"><label class="check"><input class="progressCheck" type="checkbox" data-key="roughdone"><span>완벽하지 않아도 좋으니 2–5문장으로 아이디어를 적었다.</span></label></div>
+  <div class="checklist"><label class="check"><input class="progressCheck" type="checkbox" data-key="roughdone"><span>완벽하지 않아도 좋으니 2~5문장으로 아이디어를 적었다.</span></label></div>
 </section>
 
 
 <section id="step2" class="step">
-  <div class="step-head"><div class="num">2</div><div><h2>Product Concept Card — AI에게 넘기기 전에 최소한의 생각 만들기</h2>
+  <div class="step-head"><div class="num">2</div><div><h2>Product Concept Card: AI에게 넘기기 전에 최소한의 생각 만들기</h2>
   <p class="kicker">아래 카드는 수기 활동을 웹으로 옮긴 것입니다. 왼쪽에 입력하면 오른쪽에 Live Concept Card와 16:9 슬라이드가 바로 반영됩니다.</p>
-  <div class="where">지금 하는 곳: <strong>이 웹페이지</strong></div></div></div>
+  <div class="where web"><span class="dot"></span>지금 하는 곳: <strong>이 웹페이지</strong></div></div></div>
   <hr>
 
   <div class="step2-layout">
     <div class="step2-form">
+      <div class="w2-guide">
+        <b>W2 과제와 연결하기</b>
+        <p>지난주 제출한 <i>[W2 Assignment] Problem Definition One-Pager</i>를 옆에 펼쳐두세요. 각 질문 옆 <span class="w2-map">W2 · 번호</span> 표시는 그 답을 가져올 W2 항목입니다. 그대로 복사하기보다 한 문장으로 다듬어 옮기세요. <span class="w2-map new">NEW</span> 표시는 W2에 없던, 이번에 새로 생각할 질문입니다.</p>
+      </div>
+
       <div class="field">
-        <label>① 우리가 만들고 싶은 것은? <span class="required-mark" aria-label="필수"></span> <span class="help">한 문장</span></label>
+        <label>① 우리가 만들고 싶은 것은? <span class="required-mark" aria-label="필수"></span> <span class="help">한 문장</span> <span class="w2-map">W2 · 07 HMW + 08 Solution Ideas</span></label>
+        <div class="w2-hint">07 HMW 질문에 대한 답으로, 08 Solution Ideas 중 가장 해보고 싶은 아이디어 하나를 골라 한 문장으로 적습니다.</div>
         <textarea data-save="c1" id="c1" placeholder="예: 자기 전 스마트폰 사용을 자연스럽게 마무리하도록 돕는 AI 수면 루틴 서비스"></textarea>
       </div>
 
       <div class="field">
-        <label>② 누구를 위한 것인가? <span class="required-mark" aria-label="필수"></span> <span class="help">가능한 한 구체적으로</span></label>
+        <label>② 누구를 위한 것인가? <span class="required-mark" aria-label="필수"></span> <span class="help">가능한 한 구체적으로</span> <span class="w2-map">W2 · 01 Target User</span></label>
+        <div class="w2-hint">01 Target User를 옮기되, 06 POV의 [고객] 표현과 맞춰 역할·상황·맥락까지 적습니다.</div>
         <textarea data-save="c2" id="c2" placeholder="예: 기숙사에서 생활하며 잠들기 전 숏폼을 오래 보는 대학생"></textarea>
       </div>
 
       <div class="field">
-        <label>③ 그 사람은 언제, 어떤 어려움을 겪는가? — 상황 <span class="required-mark" aria-label="필수"></span></label>
+        <label>③ 그 사람은 언제, 어떤 어려움을 겪는가? (상황) <span class="required-mark" aria-label="필수"></span> <span class="w2-map">W2 · 02 Key Data · 03 Key Theme</span></label>
+        <div class="w2-hint">02 Key Data의 [행동 및 상황]과 03 Key Theme에서 반복된 장면을 가져옵니다.</div>
         <textarea data-save="c3a" id="c3a" placeholder="예: 불을 끄고 침대에 누워 알람을 맞추려고 폰을 열었을 때"></textarea>
       </div>
 
       <div class="field">
-        <label>④ 그 상황에서 구체적으로 무엇이 어려운가? <span class="required-mark" aria-label="필수"></span></label>
+        <label>④ 그 상황에서 구체적으로 무엇이 어려운가? <span class="required-mark" aria-label="필수"></span> <span class="w2-map">W2 · 05 Pain Point · 04 Insight</span></label>
+        <div class="w2-hint">05의 Pain을 적고, 04 Key Insight(왜 그런지)를 한 줄 덧붙이면 좋습니다.</div>
         <textarea data-save="c3b" id="c3b" placeholder="예: 짧게 볼 생각이었지만 멈출 지점을 찾지 못해 1시간 이상 보게 됨"></textarea>
       </div>
 
       <div class="field">
-        <label>⑤ 무엇이 가능해지면 좋을까? <span class="required-mark" aria-label="필수"></span> <span class="help">기능 이름보다 사용자 결과</span></label>
+        <label>⑤ 무엇이 가능해지면 좋을까? <span class="required-mark" aria-label="필수"></span> <span class="help">기능 이름보다 사용자 결과</span> <span class="w2-map">W2 · 05 Need · 07 HMW [원하는 상태]</span></label>
+        <div class="w2-hint">05의 Need와 07 HMW의 [원하는 상태]를 사용자 결과 문장으로 적습니다.</div>
         <textarea data-save="c4" id="c4" placeholder="예: 사용자가 억지로 차단당한다는 느낌 없이 스스로 오늘의 폰 사용을 끝내고 잠들 준비를 할 수 있으면 좋겠다."></textarea>
       </div>
 
       <div class="field">
-        <label>⑥ 가장 중요한 경험 1단계 <span class="help">선택</span></label>
-        <textarea data-save="c5a" id="c5a" placeholder="예: 사용자가 잠들 준비를 하면서 서비스에 오늘 상태를 간단히 입력한다."></textarea>
+        <label>⑥ 꼭 있었으면 하는 기능 1 <span class="help">경험 → 기능 · 선택</span> <span class="w2-map">W2 · 08 Idea 01</span></label>
+        <div class="w2-hint">사용자가 겪는 <b>경험</b>과 그것을 가능하게 하는 <b>구체적인 기능</b>을 함께 적습니다. 08 Solution Ideas를 경험 순서대로 풀어보세요.</div>
+        <textarea data-save="c6a" id="c6a" placeholder="예: 경험: 잠들 준비를 하며 오늘 상태를 간단히 알려준다 → 기능: 3초 컨디션 체크(피곤함·스트레스 버튼)"></textarea>
       </div>
 
       <div class="field">
-        <label>⑦ 가장 중요한 경험 2단계 <span class="help">선택</span></label>
-        <textarea data-save="c5b" id="c5b" placeholder="예: 서비스가 오늘의 상황에 맞는 마무리 루틴이나 대화를 제안한다."></textarea>
+        <label>⑦ 꼭 있었으면 하는 기능 2 <span class="help">경험 → 기능 · 선택</span> <span class="w2-map">W2 · 08 Idea 02</span></label>
+        <textarea data-save="c6b" id="c6b" placeholder="예: 경험: 오늘 상황에 맞는 마무리 방법을 제안받는다 → 기능: 사용 기록과 답변 기반 AI 마무리 루틴 추천"></textarea>
       </div>
 
       <div class="field">
-        <label>⑧ 가장 중요한 경험 3단계 <span class="help">선택</span></label>
-        <textarea data-save="c5c" id="c5c" placeholder="예: 사용자가 자연스럽게 폰 사용을 마치고 잠들 준비로 넘어간다."></textarea>
+        <label>⑧ 꼭 있었으면 하는 기능 3 <span class="help">경험 → 기능 · 선택</span> <span class="w2-map">W2 · 08 Idea 03</span></label>
+        <textarea data-save="c6c" id="c6c" placeholder="예: 경험: 자연스럽게 폰을 내려놓고 잠들 준비로 넘어간다 → 기능: 화면이 서서히 어두워지는 굿나잇 모드"></textarea>
       </div>
 
       <div class="field">
-        <label>⑨ 꼭 있었으면 하는 기능 1 <span class="help">선택</span></label>
-        <input type="text" data-save="c6a" id="c6a" placeholder="기능 1">
-      </div>
-
-      <div class="field">
-        <label>⑩ 꼭 있었으면 하는 기능 2 <span class="help">선택</span></label>
-        <input type="text" data-save="c6b" id="c6b" placeholder="기능 2">
-      </div>
-
-      <div class="field">
-        <label>⑪ 꼭 있었으면 하는 기능 3 <span class="help">선택</span></label>
-        <input type="text" data-save="c6c" id="c6c" placeholder="기능 3">
-      </div>
-
-      <div class="field">
-        <label>⑫ AI가 잘 도와줄 수 있을 것 같은 부분 <span class="help">선택 · 모르면 비워도 됨</span></label>
+        <label>⑨ AI가 잘 도와줄 수 있을 것 같은 부분 <span class="help">선택 · 모르면 비워도 됨</span> <span class="w2-map">W2 · 04 Insight</span></label>
         <textarea data-save="c7" id="c7" placeholder="예: 그날의 사용 기록과 사용자의 답변을 보고 오늘은 어떤 마무리 방법이 적당한지 제안"></textarea>
       </div>
 
       <div class="field">
-        <label>⑬ 아직 결정하지 못한 것 / AI와 같이 고민하고 싶은 것 <span class="help">선택</span></label>
+        <label>⑩ 어떤 데이터가 필요하고, 어디서 얻을 수 있을까? (API) <span class="help">선택</span> <span class="w2-map new">NEW</span></label>
+        <div class="w2-hint">⑥~⑧ 기능이 동작하려면 무엇을 알아야 하는지 적고, 그 데이터를 가져올 곳(외부 API, 사용자 직접 입력, AI 모델)을 짝지어 봅니다. 서비스 이름을 몰라도 “날씨 정보를 주는 API”처럼 쓰면 됩니다.</div>
+        <div class="w2-hint">💬 막히면 GPT에게: <b>“[이런이런 걸] 하고 싶은데, 비개발자도 쓸 수 있는 무료 또는 저렴한 API 추천해줘.”</b></div>
+        <textarea data-save="c9" id="c9" placeholder="예: 오늘 화면 사용 시간 → 기기 스크린타임 API / 기상·수면 시간 → 사용자 입력 / 마무리 루틴 추천 문장 → OpenAI 또는 Claude API"></textarea>
+      </div>
+
+      <div class="field">
+        <label>⑪ 어떤 정보를 저장해야 하는가? (Supabase) <span class="help">선택</span> <span class="w2-map new">NEW</span></label>
+        <div class="w2-hint">다음에 다시 열었을 때 남아 있어야 하는 정보를 적습니다. “누구의 / 무엇을 / 언제” 단위로 나누면 Supabase 테이블 설계로 바로 이어집니다.</div>
+        <textarea data-save="c10" id="c10" placeholder="예: 사용자 프로필(이름, 목표 취침 시간) / 매일의 컨디션 체크 기록(날짜, 상태) / AI가 추천한 루틴과 실제 실행 여부"></textarea>
+      </div>
+
+      <div class="field">
+        <label>⑫ 아직 결정하지 못한 것 / AI와 같이 고민하고 싶은 것 <span class="help">선택</span></label>
         <textarea data-save="c8" id="c8" placeholder="예: 사용을 멈추게 하는 방식이 알림이 좋을지, 대화가 좋을지 모르겠다. 앱이 나을지 웹서비스가 나을지도 모르겠다."></textarea>
       </div>
 
@@ -730,7 +797,7 @@ input:focus,textarea:focus{
       </div>
 
       <div class="checklist">
-        <label class="check"><input class="progressCheck" type="checkbox" data-key="conceptdone"><span>필수 항목(빨간 점)까지 채웠다. 가장 중요한 경험 3단계와 나머지 선택 항목은 비워두어도 된다.</span></label>
+        <label class="check"><input class="progressCheck" type="checkbox" data-key="conceptdone"><span>필수 항목(빨간 점)까지 채웠다. 기능·데이터·저장 등 선택 항목은 비워두어도 된다.</span></label>
       </div>
     </div>
 
@@ -763,9 +830,9 @@ input:focus,textarea:focus{
 
 
 <section id="step3" class="step">
-  <div class="step-head"><div class="num">3</div><div><h2>PRD 관점 선택 — 같은 아이디어라도 질문이 달라지면 제품이 달라집니다</h2>
-  <p class="kicker">아래 세 가지는 목적이 다릅니다. “가장 좋아 보이는 것”이 아니라 지금 더 깊게 생각해보고 싶은 관점을 고르세요.</p>
-  <div class="where">지금 하는 곳: <strong>이 웹페이지</strong></div></div></div>
+  <div class="step-head"><div class="num">3</div><div><h2>PRD 템플릿 고르기: 같은 아이디어도 문서 구조가 달라지면 생각이 달라집니다</h2>
+  <p class="kicker">세 가지 중 하나를 고르면 바로 아래에 그 템플릿이 펼쳐집니다. 어떤 항목을 채우게 되는지 직접 보고 고르세요.</p>
+  <div class="where web"><span class="dot"></span>지금 하는 곳: <strong>이 웹페이지</strong></div></div></div>
   <hr>
 
   <div class="grid3">
@@ -785,134 +852,263 @@ input:focus,textarea:focus{
 
     <label class="choice"><input type="radio" name="prd" value="feature" onchange="selectPRD(this.value)"><div class="card">
       <span class="badge violet">C · Execution-oriented</span><h3>Feature Implementation Spec</h3>
-      <p><b>핵심 질문:</b> 이 기능이 정확히 어떻게 동작해야 하며, 구현에 무엇이 필요할까?</p>
-      <p><b>잘 보이는 것:</b> 동작 규칙, 예외 상황, acceptance criteria, 필요한 기술</p>
+      <p><b>핵심 질문:</b> 이 기능이 정확히 어떻게 동작해야 할까?</p>
+      <p><b>잘 보이는 것:</b> 동작 규칙, 예외 상황, 완료 기준</p>
       <p><b>추천:</b> 기능이 꽤 구체적이고 “실제로 만들려면?”까지 가보고 싶을 때</p>
     </div></label>
   </div>
 
-  <table class="compare">
-    <thead><tr><th></th><th>A. v0 Build PRD</th><th>B. Lenny’s 1-Pager</th><th>C. Feature Implementation Spec</th></tr></thead>
-    <tbody>
-      <tr><th>생각하는 관점</th><td>Designer / Builder</td><td>Product Manager</td><td>Implementation Planner</td></tr>
-      <tr><th>주로 묻는 것</th><td>Flow, screen, feature, state</td><td>Problem, user, value, success</td><td>Behavior, edge case, test, technical need</td></tr>
-      <tr><th>기술 지식 필요?</th><td>거의 없음</td><td>없음</td><td><b>없음.</b> 기술명 대신 원하는 동작을 답하면 AI가 선택지를 추천</td></tr>
-      <tr><th>주의점</th><td>기능부터 생각하기 쉬움</td><td>화면/구현 디테일은 부족할 수 있음</td><td>AI의 기술 추천은 결론이 아니라 <b>가설</b>로 검토</td></tr>
-    </tbody>
-  </table>
+  <div id="selectedNotice" class="tip" style="margin-top:18px"><b>위에서 템플릿 하나를 클릭하세요.</b> 선택하는 즉시 여기에 템플릿 전체가 펼쳐집니다.</div>
 
-  <div class="note" style="margin-top:16px"><b>출처 표시:</b> A는 Vercel v0의 공개 build workflow와 ChatPRD의 <i>App Prototyping with AI Code Generation</i> 템플릿을 참고한 <b>수업용 adaptation</b>입니다. “Vercel 공식 PRD 원문”을 그대로 옮긴 것이 아닙니다. B의 <i>Lenny’s 1-Pager</i>와 C의 <i>Feature Implementation Spec</i>은 ChatPRD의 실제 공개 템플릿 라이브러리에서 존재가 확인되는 형식이며, 아래 Markdown은 비전공자 수업을 위해 질문 문구를 단순화한 버전입니다.</div>
-  <div class="checklist"><label class="check"><input class="progressCheck" type="checkbox" data-key="chosendone"><span>세 가지 차이를 읽고 내 목적에 맞는 PRD 하나를 선택했다.</span></label></div>
+  <div id="prdContent" class="template-view" style="display:none">
+    <div class="template-view-head">
+      <div>
+        <span class="loc web"><span class="dot"></span>선택한 템플릿</span>
+        <h3 id="prdTitle">선택한 PRD</h3>
+        <p id="prdDesc"></p>
+      </div>
+      <div class="btnrow" style="margin-top:0">
+        <button class="btn" onclick="copyTemplate()">Template 복사</button>
+        <button class="btn" onclick="downloadTemplate()">Template (.md) 저장</button>
+      </div>
+    </div>
+    <div class="codebox template-scroll"><pre id="templatePreview"></pre></div>
+  </div>
+
+  <details class="compare-details">
+    <summary>세 템플릿 한눈에 비교하기</summary>
+    <table class="compare">
+      <thead><tr><th></th><th>A. v0 Build PRD</th><th>B. Lenny’s 1-Pager</th><th>C. Feature Implementation Spec</th></tr></thead>
+      <tbody>
+        <tr><th>생각하는 관점</th><td>Designer / Builder</td><td>Product Manager</td><td>Implementation Planner</td></tr>
+        <tr><th>주로 묻는 것</th><td>Flow, screen, feature, state</td><td>Problem, user, value, success</td><td>Behavior, edge case, acceptance criteria</td></tr>
+        <tr><th>기술 지식 필요?</th><td>거의 없음</td><td>없음</td><td>없음 (원하는 동작만 답하면 됨)</td></tr>
+        <tr><th>주의점</th><td>기능부터 생각하기 쉬움</td><td>화면 디테일은 부족할 수 있음</td><td>AI의 기술 추천은 결론이 아니라 <b>가설</b></td></tr>
+      </tbody>
+    </table>
+    <div class="note" style="margin-top:16px"><b>출처 표시:</b> A는 Vercel v0의 공개 build workflow와 ChatPRD의 <i>App Prototyping with AI Code Generation</i> 템플릿을 참고한 <b>수업용 adaptation</b>입니다. B의 <i>Lenny’s 1-Pager</i>와 C의 <i>Feature Implementation Spec</i>은 ChatPRD 공개 템플릿 라이브러리의 형식을 비전공자 수업용으로 단순화한 버전입니다.</div>
+  </details>
+
+  <div class="checklist"><label class="check"><input class="progressCheck" type="checkbox" data-key="chosendone"><span>템플릿을 하나 골랐고, 펼쳐진 항목을 훑어봤다.</span></label></div>
 </section>
 
 <section id="step4" class="step">
-  <div class="step-head"><div class="num">4</div><div><h2>AI에게 줄 두 가지 준비하기 — Concept Card + PRD Template</h2>
-  <p class="kicker">AI에게 빈 화면에서 “PRD 써줘”라고 하지 않습니다. 내가 생각한 출발점과 원하는 문서 구조를 같이 줍니다.</p>
-  <div class="where">지금 하는 곳: <strong>이 웹페이지 → 파일 다운로드</strong></div></div></div>
+  <div class="step-head"><div class="num">4</div><div><h2>Concept Card + PRD 템플릿을 합쳐 One-Page PRD 완성하기</h2>
+  <p class="kicker">이 웹페이지가 STEP 2의 Concept Card와 STEP 3의 템플릿을 하나의 프롬프트로 묶어줍니다. 복사해서 외부 LLM에 붙여넣으면, AI가 애매한 항목을 <b>나에게 먼저 역으로 질문</b>한 뒤 한 페이지짜리 PRD를 씁니다.</p>
+  <div class="where-row">
+    <div class="where web"><span class="dot"></span>① 프롬프트 만들기: <strong>이 웹페이지</strong></div>
+    <span class="where-arrow">→</span>
+    <div class="where llm"><span class="dot"></span>② 대화하며 PRD 완성: <strong>외부 LLM (ChatGPT · Claude 등)</strong></div>
+  </div></div></div>
   <hr>
 
-  <div id="selectedNotice" class="tip"><b>먼저 STEP 3에서 PRD를 선택하세요.</b> 선택하면 해당 템플릿과 전용 인터뷰 프롬프트가 아래에 표시됩니다.</div>
-
-  <div id="prdContent" style="display:none">
-    <h3 id="prdTitle">선택한 PRD</h3>
-    <p id="prdDesc" class="kicker"></p>
-    <div class="btnrow">
-      <button class="btn primary" onclick="downloadTemplate()">선택한 PRD Template (.md) 다운로드</button>
-      <button class="btn" onclick="copyTemplate()">Template 복사</button>
-      <button class="btn" onclick="downloadBundle()">Concept + Template 묶음 (.md)</button>
-    </div>
-    <div class="codebox"><pre id="templatePreview"></pre></div>
-
-    <hr>
-    <h3>AI Interview Prompt</h3>
-    <p>ChatGPT/Claude가 바로 문서를 써버리지 않고, <b>먼저 당신에게 중요한 질문을 한 뒤</b> 답을 반영해 PRD를 완성하도록 하는 프롬프트입니다. 한국어가 기본입니다.</p>
-    <div class="tabs">
-      <button class="tab active" onclick="showPrompt('ko',this)">한국어 · 기본</button>
-      <button class="tab" onclick="showPrompt('en',this)">English</button>
-    </div>
-    <div id="prompt-ko" class="prompt-panel active">
-      <div class="btnrow"><button class="btn dark" onclick="copyPrompt('ko')">한국어 프롬프트 복사</button></div>
-      <div class="codebox"><pre id="promptKo"></pre></div>
-    </div>
-    <div id="prompt-en" class="prompt-panel">
-      <div class="btnrow"><button class="btn dark" onclick="copyPrompt('en')">Copy English Prompt</button></div>
-      <div class="codebox"><pre id="promptEn"></pre></div>
+  <div class="substep">
+    <div class="substep-head"><span class="loc web"><span class="dot"></span>이 웹페이지</span><h3>4-1. 들어갈 재료 확인</h3></div>
+    <div class="grid3 status-grid">
+      <div class="status-card" id="st-concept"><b>Concept Card</b><span>STEP 2</span><p></p></div>
+      <div class="status-card" id="st-template"><b>PRD Template</b><span>STEP 3</span><p></p></div>
+      <div class="status-card ok"><b>고정 조건</b><span>자동 포함</span><p>서비스 유형: 웹 · 데이터 저장소: Supabase · 분량: One-Page · 상세 기술 스펙 제외</p></div>
     </div>
   </div>
-  <div class="checklist"><label class="check"><input class="progressCheck" type="checkbox" data-key="filesdone"><span>Concept Card와 선택한 PRD Template을 다운로드하거나 복사했다.</span></label></div>
+
+  <div class="substep">
+    <div class="substep-head"><span class="loc web"><span class="dot"></span>이 웹페이지</span><h3>4-2. 프롬프트 복사하기</h3></div>
+    <p class="sub-desc">둘 중 편한 방법 하나만 고르세요. 결과는 같습니다.</p>
+    <div class="tabs">
+      <button class="tab active" onclick="showPrompt('full',this)">방법 A · 전체 프롬프트 붙여넣기 (추천)</button>
+      <button class="tab" onclick="showPrompt('attach',this)">방법 B · 파일 첨부 + 메타 프롬프트</button>
+    </div>
+    <div id="prompt-full" class="prompt-panel active">
+      <p class="sub-desc" style="margin-top:14px"><b>AI 메타 프롬프트 + Concept Card + PRD Template</b>이 한 번에 묶여 있습니다. 버튼 하나로 복사해 새 채팅에 붙여넣으세요.</p>
+      <div class="btnrow"><button class="btn primary" onclick="copyFullPrompt()">전체 프롬프트 복사</button><button class="btn" onclick="downloadFullPrompt()">전체 프롬프트 (.md) 저장</button></div>
+      <div class="codebox template-scroll"><pre id="promptFull"></pre></div>
+    </div>
+    <div id="prompt-attach" class="prompt-panel">
+      <p class="sub-desc" style="margin-top:14px">파일 두 개를 저장해 새 채팅에 첨부하고, 아래 메타 프롬프트를 붙여넣어 함께 전송하세요.</p>
+      <div class="btnrow">
+        <button class="btn" onclick="downloadConcept()">① concept-card.md 저장</button>
+        <button class="btn" onclick="downloadTemplate()">② prd-template.md 저장</button>
+        <button class="btn primary" onclick="copyMetaPrompt()">③ 메타 프롬프트 복사</button>
+      </div>
+      <div class="codebox template-scroll"><pre id="promptMeta"></pre></div>
+    </div>
+  </div>
+
+  <div class="substep llm-zone">
+    <div class="substep-head"><span class="loc llm"><span class="dot"></span>외부 LLM (ChatGPT · Claude 등)</span><h3>4-3. 새 채팅에 붙여넣고 AI의 질문에 답하기</h3></div>
+    <div class="grid3">
+      <div class="card"><h3>1. 새 채팅 열기</h3><p>ChatGPT 또는 Claude에서 <b>새 채팅</b>을 열고 복사한 프롬프트를 붙여넣어 전송합니다.</p></div>
+      <div class="card"><h3>2. 역질문에 답하기</h3><p>AI가 애매한 항목을 번호로 묻습니다. 짧게 답해도 되고, 모르면 “모르겠어, 추천해줘”라고 답하세요.</p></div>
+      <div class="card"><h3>3. One-Page PRD 받기</h3><p>질문이 끝나면 AI가 한 페이지 PRD를 씁니다. 너무 길면 아래 문장으로 줄이세요.</p></div>
+    </div>
+    <div class="tip" style="margin-top:16px"><b>AI가 질문 없이 바로 PRD를 써버리면</b><br><span class="mono">“아직 쓰지 말고, 애매한 항목부터 번호 붙여서 최대 5개만 질문해줘.”</span></div>
+    <div class="tip"><b>결과가 한 페이지를 넘거나 기술 스펙이 너무 자세하면</b><br><span class="mono">“한 페이지로 줄여줘. 코드나 DB 세부 스펙은 빼고, 외부 데이터(API)와 Supabase에 저장할 항목은 남겨줘.”</span></div>
+  </div>
+
+  <div class="checklist">
+    <label class="check"><input class="progressCheck" type="checkbox" data-key="filesdone"><span>전체 프롬프트(또는 파일 + 메타 프롬프트)를 외부 LLM에 넣었다.</span></label>
+    <label class="check"><input class="progressCheck" type="checkbox" data-key="interview1"><span>AI의 역질문에 답했다.</span></label>
+    <label class="check"><input class="progressCheck" type="checkbox" data-key="interview2"><span>One-Page PRD에 <b>외부 데이터(API)</b>와 <b>Supabase 저장 데이터</b>가 들어 있다.</span></label>
+  </div>
 </section>
 
 <section id="step5" class="step">
-  <div class="step-head"><div class="num">5</div><div><h2>ChatGPT 또는 Claude에서 AI 인터뷰 진행하기</h2>
-  <p class="kicker">이 단계부터 장소가 바뀝니다. 새 채팅을 열고, 준비한 자료를 넣은 뒤 대화를 시작하세요.</p>
-  <div class="where">지금 하는 곳: <strong>ChatGPT 또는 Claude의 새 채팅</strong></div></div></div>
+  <div class="step-head"><div class="num">5</div><div><h2>One-Page PRD를 발표용 16:9 HTML 슬라이드로 바꾸기</h2>
+  <p class="kicker">STEP 4의 채팅을 <b>그대로 이어서</b> 진행합니다. PRD를 1~2장짜리 슬라이드로 구조화하고, 리뷰하며 고칩니다.</p>
+  <div class="where llm"><span class="dot"></span>지금 하는 곳: <strong>외부 LLM (STEP 4와 같은 채팅)</strong></div></div></div>
   <hr>
 
-  <div class="grid2">
-    <div class="card"><h3>방법 A · 파일 업로드</h3>
-      <p>1. 새 채팅을 엽니다.<br>2. <span class="mono">concept-card.md</span>와 선택한 <span class="mono">prd-template.md</span>를 첨부합니다.<br>3. 이 페이지의 <b>한국어 Interview Prompt</b>를 복사해 붙여넣습니다.<br>4. 전송합니다.</p>
-    </div>
-    <div class="card"><h3>방법 B · 복사/붙여넣기</h3>
-      <p>파일 첨부가 어렵다면 새 채팅에 <b>Interview Prompt → Concept Card → PRD Template</b> 순서로 붙여넣어도 됩니다.</p>
+  <div class="substep">
+    <div class="substep-head"><span class="loc llm"><span class="dot"></span>외부 LLM</span><h3>5-1. PRD 확인하기</h3></div>
+    <div class="checklist" style="margin-top:8px">
+      <label class="check"><input class="progressCheck" type="checkbox" data-key="final1"><span><b>한 페이지:</b> 스크롤 한두 번 안에 끝난다.</span></label>
+      <label class="check"><input class="progressCheck" type="checkbox" data-key="final2"><span><b>사용자와 문제:</b> 누구의 어떤 어려움인지 Concept Card와 일치한다.</span></label>
+      <label class="check"><input class="progressCheck" type="checkbox" data-key="final3"><span><b>가정 표시:</b> AI가 지어낸 숫자나 사실이 없고, 추측은 [가정]으로 표시되어 있다.</span></label>
     </div>
   </div>
 
-  <div class="tip" style="margin-top:16px"><b>중요:</b> AI가 첫 답변부터 PRD 전체를 써버리면 멈추고 이렇게 말하세요.<br><span class="mono">“아직 PRD를 작성하지 말고, 먼저 중요한 결정을 위한 질문부터 해줘. 한 번에 3–5개만 물어봐.”</span></div>
-
-  <h3 style="margin-top:24px">AI 질문에 답할 때</h3>
-  <div class="grid3">
-    <div class="card"><h3>1. 편하게 답하기</h3><p>전문용어를 쓸 필요 없습니다. “잘 모르겠다”, “A와 B 중 고민된다”도 좋은 답입니다.</p></div>
-    <div class="card"><h3>2. 선택지는 비교시키기</h3><p>모르겠다면 “가능한 선택지 3개와 각각의 장단점을 알려줘”라고 요청하세요.</p></div>
-    <div class="card"><h3>3. 기술은 행동으로 설명하기</h3><p>“Supabase가 필요해?” 대신 “사용자마다 자기 데이터만 보이게 하고 싶다”고 말하세요. 기술 번역은 AI에게 맡깁니다.</p></div>
+  <div class="substep">
+    <div class="substep-head"><span class="loc llm"><span class="dot"></span>외부 LLM</span><h3>5-2. 16:9 HTML 슬라이드로 바꿔달라고 하기</h3></div>
+    <p class="sub-desc">아래 프롬프트를 복사해 같은 채팅에 붙여넣으세요.</p>
+    <div class="btnrow"><button class="btn primary" onclick="copyText(SLIDE_PROMPT)">슬라이드 프롬프트 복사</button></div>
+    <div class="codebox"><pre id="slidePrompt"></pre></div>
+    <div class="note" style="margin-top:14px"><b>결과 보기:</b> ChatGPT는 코드 블록의 <b>미리보기(Canvas)</b>, Claude는 <b>Artifact</b> 화면에서 바로 볼 수 있습니다. 코드를 복사해 <span class="mono">팀명_서비스명_slide.html</span>로 저장한 뒤 브라우저로 열어도 됩니다.</div>
   </div>
 
-  <h3 style="margin-top:24px">특히 C. Feature Implementation Spec을 골랐다면</h3>
-  <div class="note">AI가 database, authentication, API, hosting 같은 용어를 제안할 수 있습니다. <b>그 기술을 이미 알아야 하는 것은 아닙니다.</b> “왜 필요한지 비전공자에게 설명해줘”, “더 단순한 대안은?”, “무료/초보자 친화적 선택은?”이라고 되물으세요. 기술 선택은 이 단계에서 확정 사실이 아니라 <b>기능에서 도출된 구현 가설</b>입니다.</div>
-
-  <h3 style="margin-top:24px">대화가 충분히 진행되면</h3>
-  <div class="codebox"><pre>지금까지 내가 답한 내용을 바탕으로 핵심 제품 결정을 먼저 요약해줘.
-1) 결정된 것
-2) 아직 가정인 것
-3) 열린 질문
-을 구분해 보여줘.
-
-내가 확인한 뒤에만, 제공한 PRD Template의 구조를 유지해서 최종 PRD를 작성해줘.</pre></div>
+  <div class="substep">
+    <div class="substep-head"><span class="loc llm"><span class="dot"></span>외부 LLM</span><h3>5-3. 리뷰하면서 고치기</h3></div>
+    <p class="sub-desc">먼저 AI에게 스스로 검토하게 한 뒤, 내 눈으로 보고 한 가지씩 고쳐달라고 하세요.</p>
+    <div class="btnrow"><button class="btn dark" onclick="copyText(REVIEW_PROMPT)">리뷰 프롬프트 복사</button></div>
+    <div class="codebox"><pre id="reviewPrompt"></pre></div>
+    <div class="grid3" style="margin-top:16px">
+      <div class="card"><h3>내용 고치기</h3><p>“2장의 핵심 기능을 경험 → 기능 화살표 흐름으로 바꿔줘.”</p></div>
+      <div class="card"><h3>분량 줄이기</h3><p>“1장에 글이 너무 많아. 문장마다 12자 이내 키워드로 줄여줘.”</p></div>
+      <div class="card"><h3>디자인 바꾸기</h3><p>“흰 배경에 포인트 색 하나만 쓰고, 제목을 더 크게 해줘.”</p></div>
+    </div>
+  </div>
 
   <div class="checklist">
-    <label class="check"><input class="progressCheck" type="checkbox" data-key="interview1"><span>AI가 나에게 실제로 clarifying question을 물었고 내가 답했다.</span></label>
-    <label class="check"><input class="progressCheck" type="checkbox" data-key="interview2"><span>모르는 결정 하나 이상에서 선택지·장단점을 AI에게 물어봤다.</span></label>
-    <label class="check"><input class="progressCheck" type="checkbox" data-key="interview3"><span>최종 작성 전에 AI가 “결정 / 가정 / 열린 질문”을 구분해 요약하게 했다.</span></label>
+    <label class="check"><input class="progressCheck" type="checkbox" data-key="interview3"><span>1~2장짜리 16:9 HTML 슬라이드를 받았다.</span></label>
+    <label class="check"><input class="progressCheck" type="checkbox" data-key="final4"><span>한 번 이상 리뷰하고 고친 뒤 <span class="mono">.html</span>로 저장했다.</span></label>
   </div>
 </section>
 
 <section id="step6" class="step">
-  <div class="step-head"><div class="num">6</div><div><h2>최종 PRD 검토·저장 — AI가 썼다고 끝이 아닙니다</h2>
-  <p class="kicker">PRD의 주인은 AI가 아니라 당신입니다. 마지막에는 “그럴듯함”보다 의도와 일치하는지 확인합니다.</p>
-  <div class="where">지금 하는 곳: <strong>ChatGPT/Claude에서 검토 → 내 컴퓨터에 .md 저장</strong></div></div></div>
+  <div class="step-head"><div class="num">6</div><div><h2>Peer Review 및 피드백</h2>
+  <p class="kicker">6명이 다 같이 한 명씩 돌아가며 <b>3분 발표 · 3분 피드백</b>을 합니다. 모든 사람은 <b>최소 2명에게</b> 피드백을 줍니다. 받은 피드백은 이 페이지에 메모해 두고, 집에 돌아가서 회고하며 고칠 것만 고치면 됩니다.</p>
+  <div class="where-row">
+    <div class="where peer"><span class="dot"></span>① 발표 · 피드백: <strong>다 같이 (교실)</strong></div>
+    <span class="where-arrow">→</span>
+    <div class="where web"><span class="dot"></span>② 메모: <strong>이 웹페이지</strong></div>
+    <span class="where-arrow">→</span>
+    <div class="where llm"><span class="dot"></span>③ 회고 · 수정 (선택): <strong>집에서 · 외부 LLM</strong></div>
+  </div></div></div>
   <hr>
 
-  <h3>최종 체크</h3>
-  <div class="checklist">
-    <label class="check"><input class="progressCheck" type="checkbox" data-key="final1"><span><b>사용자:</b> 누구를 위한 제품인지 구체적이다.</span></label>
-    <label class="check"><input class="progressCheck" type="checkbox" data-key="final2"><span><b>문제:</b> 기능이 아니라 사용자의 실제 어려움이 설명되어 있다.</span></label>
-    <label class="check"><input class="progressCheck" type="checkbox" data-key="final3"><span><b>핵심 경험:</b> 사용자가 처음부터 원하는 결과까지 무엇을 하는지 따라갈 수 있다.</span></label>
-    <label class="check"><input class="progressCheck" type="checkbox" data-key="final4"><span><b>범위:</b> 이번 버전에 넣는 것과 넣지 않는 것이 구분되어 있다.</span></label>
-    <label class="check"><input class="progressCheck" type="checkbox" data-key="final5"><span><b>가정:</b> AI가 임의로 만들어낸 사실이나 근거 없는 숫자가 “사실”처럼 들어가 있지 않다.</span></label>
-    <label class="check"><input class="progressCheck" type="checkbox" data-key="final6"><span><b>검증 가능성:</b> “완성되었다”고 판단할 수 있는 기준이 적혀 있다.</span></label>
+  <div class="substep">
+    <div class="substep-head"><span class="loc peer"><span class="dot"></span>다 같이 (6명)</span><h3>6-1. 진행 방법 (1명당 6분 · 총 약 36분)</h3></div>
+    <div class="grid3">
+      <div class="card"><h3>발표 3분</h3><p>슬라이드를 화면에 띄우고 “누구의 어떤 문제를, 어떤 기능과 데이터로 푸는지” 설명합니다.</p></div>
+      <div class="card"><h3>피드백 3분</h3><p>듣는 사람은 아래 질문을 보고 <b>좋은 점 · 아쉬운 점 · 제안</b> 중 하나 이상을 말합니다. 발표자는 반박하지 말고 메모만 합니다.</p></div>
+      <div class="card"><h3>최소 2명에게 피드백</h3><p>모든 사람은 발표 6개 중 <b>최소 2명</b>에게 피드백을 줍니다. 한 사람에게 피드백이 몰리지 않도록 순서대로 나눠 말해주세요.</p></div>
+    </div>
+    <h3 style="margin-top:22px;font-size:16px">리뷰어가 볼 질문</h3>
+    <div class="grid2 review-q">
+      <div class="note"><b>문제</b> · 사용자의 어려움이 기능보다 먼저 이해되는가?</div>
+      <div class="note"><b>기능</b> · 핵심 기능 3개가 그 어려움을 실제로 줄여주는가?</div>
+      <div class="note"><b>데이터 (API)</b> · 필요한 외부 데이터를 정말 얻을 수 있는가?</div>
+      <div class="note"><b>저장 (Supabase)</b> · 저장하는 정보가 기능과 연결되고, 불필요한 개인정보는 없는가?</div>
+      <div class="note"><b>범위</b> · 웹으로 한 번에 만들 만한 크기인가? 뺄 것은?</div>
+      <div class="note"><b>전달</b> · 슬라이드만 보고도 서비스가 이해되는가?</div>
+    </div>
   </div>
 
-  <div class="tip" style="margin-top:18px"><b>제출/저장 파일 권장 이름</b><br><span class="mono">팀명_서비스명_PRD.md</span><br><br>
-  ChatGPT/Claude의 최종 PRD를 복사해 Markdown 파일로 저장하세요. 다음 개발 실습에서는 이 PRD가 AI coding agent에게 넘어갈 입력물이 됩니다.</div>
+  <div class="substep">
+    <div class="substep-head"><span class="loc web"><span class="dot"></span>이 웹페이지</span><h3>6-2. 받은 피드백 메모</h3></div>
+    <div class="grid3">
+      <div class="field"><label>좋은 점</label><textarea data-save="fb_like" id="fb_like" placeholder="예: 문제 상황이 바로 공감됐다"></textarea></div>
+      <div class="field"><label>아쉬운 점</label><textarea data-save="fb_wish" id="fb_wish" placeholder="예: 스크린타임 데이터를 웹에서 가져올 수 있는지 불확실하다"></textarea></div>
+      <div class="field"><label>제안</label><textarea data-save="fb_what" id="fb_what" placeholder="예: 사용자가 직접 사용 시간을 입력하는 방식으로 시작해보면 어떨까"></textarea></div>
+    </div>
+  </div>
 
-  <h3 style="margin-top:24px">마지막 성찰 질문</h3>
-  <div class="grid2">
-    <div class="card"><h3>PRD가 제품을 바꿨는가?</h3><p>처음 Rough Idea와 비교했을 때 어떤 결정이 가장 크게 달라졌는지 한 가지 적어보세요.</p></div>
-    <div class="card"><h3>AI가 아니라 내가 결정한 것은?</h3><p>AI가 제안했지만 내가 선택·수정·거절한 결정 하나를 적어보세요.</p></div>
+  <div class="substep llm-zone">
+    <div class="substep-head"><span class="loc llm"><span class="dot"></span>집에서 · 외부 LLM (선택)</span><h3>6-3. 집에서 회고하며 고칠 것만 고치기</h3></div>
+    <p class="sub-desc">모든 피드백을 반영할 필요는 없습니다. 메모를 다시 읽고 <b>내 서비스에 맞는 것만</b> 골라 고치세요. AI와 같이 정리하고 싶다면 아래 프롬프트를 STEP 4·5의 채팅에 붙여넣으면 됩니다.</p>
+    <div class="btnrow"><button class="btn dark" onclick="copyText(feedbackPrompt())">회고 프롬프트 복사</button></div>
+    <div class="codebox"><pre id="feedbackPrompt"></pre></div>
+  </div>
+
+  <div class="checklist">
+    <label class="check"><input class="progressCheck" type="checkbox" data-key="final5"><span>3분 발표를 하고 받은 피드백을 메모했다.</span></label>
+    <label class="check"><input class="progressCheck" type="checkbox" data-key="final6"><span>최소 2명에게 피드백을 주었다.</span></label>
+  </div>
+</section>
+
+<section id="step7" class="step">
+  <div class="step-head"><div class="num bonus">B7</div><div><h2>Bonus: Claude Code 실습을 위한 PRD 문서 분리하기</h2>
+  <p class="kicker">다음 차시에는 Claude Code로 각자의 서비스를 1차로 만들어봅니다. 이때 PRD를 한 번에 통째로 주지 않고 <b>3단계로 나눠서</b> 줍니다. 오늘은 그 3개의 프롬프트를 외부 LLM에게 만들어달라고 해서 준비해 옵니다.</p>
+  <div class="where-row">
+    <div class="where web"><span class="dot"></span>① 프롬프트 복사: <strong>이 웹페이지</strong></div>
+    <span class="where-arrow">→</span>
+    <div class="where llm"><span class="dot"></span>② 3단계 프롬프트 받기: <strong>외부 LLM (STEP 4·5와 같은 채팅)</strong></div>
+    <span class="where-arrow">→</span>
+    <div class="where web"><span class="dot"></span>③ 붙여넣고 .md 저장: <strong>이 웹페이지</strong></div>
+  </div></div></div>
+  <hr>
+
+  <div class="substep">
+    <div class="substep-head"><span class="loc web"><span class="dot"></span>이 웹페이지</span><h3>7-1. Claude Code에 줄 3단계 한눈에 보기</h3></div>
+    <div class="grid3 cc-steps">
+      <div class="card"><span class="badge">1단계</span><h3>전체 서비스 뼈대</h3><p>One-Page PRD를 <b>그대로</b> 넣어 <b>Next.js</b> 웹 앱을 만듭니다. 외부 API와 Supabase는 <b>“나중에 연결할 예정이니 지금은 하지 마”</b>라고만 알리고, 샘플 데이터로 화면이 동작하게 합니다.</p></div>
+      <div class="card"><span class="badge">2단계</span><h3>외부 API 연결 + Key 넣기</h3><p>핵심 API 하나를 연결하고, 내가 API Key를 붙여넣을 <span class="mono">.env</span>와 <span class="mono">.gitignore</span>를 설정하게 합니다.</p><p class="cc-ex">이제 실시간 가격을 가져오기 위해 Finnhub API를 연결할 준비가 됐어. API Key는 준비되어 있어. 내가 Key를 붙여넣을 수 있도록 .env 파일과 .gitignore를 설정해줘.</p></div>
+      <div class="card"><span class="badge">3단계</span><h3>Supabase로 DB 연결</h3><p>로그인과 데이터 저장을 붙이고, 사용자가 자기 데이터만 보게 합니다.</p><p class="cc-ex">Supabase로 데이터베이스를 설정해줘. Supabase MCP는 연결되어 있어. 사용자가 로그인하고 관심 종목을 저장할 수 있게만 해줘. 사용자는 자기 종목만 볼 수 있어야 해.</p></div>
+    </div>
+    <p class="sub-desc" style="margin-top:10px">회색 문장은 주식 관심 목록 서비스 예시입니다. 내 서비스에 맞는 문장은 아래 프롬프트로 AI가 만들어줍니다.</p>
+  </div>
+
+  <div class="substep llm-zone">
+    <div class="substep-head"><span class="loc llm"><span class="dot"></span>외부 LLM (STEP 4·5와 같은 채팅)</span><h3>7-2. 3단계 프롬프트를 만들어달라고 하기</h3></div>
+    <p class="sub-desc">One-Page PRD가 있는 채팅에 그대로 붙여넣으세요. 단계마다 구분선으로 나뉜 박스(인용 블록) 3개가 나와서 줄바꿈된 채로 읽기 쉽습니다. 마지막에 3단계 전체를 담은 <span class="mono">.md</span> 파일 다운로드 링크도 함께 받습니다. 링크가 안 나오면 아래 7-3에 붙여넣어 저장하세요.</p>
+    <div class="btnrow"><button class="btn primary" onclick="copyText(SPLIT_PROMPT)">3단계 분리 프롬프트 복사</button></div>
+    <div class="codebox"><pre id="splitPrompt"></pre></div>
+  </div>
+
+  <div class="substep">
+    <div class="substep-head"><span class="loc web"><span class="dot"></span>이 웹페이지</span><h3>7-3. 받은 3단계 프롬프트를 붙여넣고 Markdown으로 저장하기</h3></div>
+    <p class="sub-desc">외부 LLM이 준 프롬프트를 단계별 칸에 붙여넣으세요. 입력 내용은 이 브라우저에 자동 저장되고, 버튼을 누르면 3단계가 구분선으로 나뉜 <span class="mono">.md</span> 파일로 받을 수 있습니다. 다음 차시에 이 파일을 가져오면 됩니다.</p>
+    <div class="cc-stage"><div class="cc-stage-head"><span class="cc-num">1</span><b>1단계 · 전체 서비스 뼈대</b></div>
+      <textarea data-save="cc1" id="cc1" placeholder="이 PRD대로 Next.js로 웹 서비스를 만들어줘. (One-Page PRD 전체) ... 지금은 API와 Supabase를 연결하지 말고 샘플 데이터로 동작하게 해줘."></textarea></div>
+    <div class="cc-stage"><div class="cc-stage-head"><span class="cc-num">2</span><b>2단계 · 외부 API 연결 + Key 넣기</b></div>
+      <textarea data-save="cc2" id="cc2" placeholder="이제 ○○ API를 연결할 준비가 됐어. API Key는 준비되어 있어. 내가 Key를 붙여넣을 수 있도록 .env 파일과 .gitignore를 설정해줘."></textarea></div>
+    <div class="cc-stage"><div class="cc-stage-head"><span class="cc-num">3</span><b>3단계 · Supabase로 DB 연결</b></div>
+      <textarea data-save="cc3" id="cc3" placeholder="Supabase로 데이터베이스를 설정해줘. Supabase MCP는 연결되어 있어. ... 사용자는 자기 데이터만 볼 수 있어야 해."></textarea></div>
+    <div class="btnrow">
+      <button class="btn primary" onclick="downloadCCPrompts()">3단계 프롬프트 (.md) 저장</button>
+      <button class="btn" onclick="copyText(ccMarkdown())">전체 복사</button>
+    </div>
+    <div class="help" style="margin-top:8px">권장 파일 이름: <span class="mono">팀명_서비스명_claude-code-prompts.md</span> · 준비하지 못했다면 다음 차시에 기본 템플릿을 제공합니다.</div>
+  </div>
+
+  <div class="substep">
+    <div class="substep-head"><span class="loc peer"><span class="dot"></span>다음 차시 예고 (오늘은 하지 않음)</span><h3>7-4. 다음 시간에 할 것: Claude Code로 풀사이클 돌려보기</h3></div>
+    <p class="sub-desc">오늘 준비한 3단계 프롬프트로 “만들기 → 연결하기 → 저장하기 → 올리기”를 한 번에 끝까지 경험합니다.</p>
+    <div class="cycle">
+      <div class="card"><span class="badge">1</span><h3>Claude Code 시작</h3><p>설치와 로그인 후, 1단계 프롬프트로 내 서비스의 뼈대를 샘플 데이터로 만들어 로컬에서 띄워봅니다.</p></div>
+      <div class="card"><span class="badge">2</span><h3>외부 API 연결</h3><p>API Key 발급받기, <span class="mono">.env</span>에 Key 넣기, <span class="mono">.gitignore</span>로 Key가 공개되지 않게 막기. 샘플 데이터를 실제 데이터로 바꿉니다.</p></div>
+      <div class="card"><span class="badge">3</span><h3>Supabase 연결</h3><p>Supabase 프로젝트 만들기와 MCP 연결, 로그인 기능, 사용자별 데이터 저장, 내 데이터만 보이게 하는 권한 설정(RLS)까지.</p></div>
+      <div class="card"><span class="badge">4</span><h3>GitHub 가입 및 연결</h3><p>코드를 저장하고 버전을 관리할 GitHub 계정을 만들고 Claude Code와 연결합니다. <b>미리 가입해 오면 좋습니다.</b></p></div>
+      <div class="card"><span class="badge">5</span><h3>Vercel 배포</h3><p>GitHub 저장소를 Vercel에 연결해 배포하고, 환경 변수(API Key, Supabase)를 넣어 배포된 링크에서도 로그인과 저장이 잘 동작하는지 확인합니다.</p></div>
+    </div>
+  </div>
+
+  <div class="checklist">
+    <label class="check"><input class="progressCheck" type="checkbox" data-key="bonus1"><span>(Bonus) 내 서비스에 맞는 Claude Code 3단계 프롬프트를 받아 .md로 저장했다.</span></label>
   </div>
 </section>
 
 <section id="refs" class="step">
-  <div class="step-head"><div class="num">R</div><div><h2>원본 레퍼런스 — 템플릿 이름과 워크플로우를 직접 확인하기</h2>
+  <div class="step-head"><div class="num">R</div><div><h2>원본 레퍼런스: 템플릿 이름과 워크플로우를 직접 확인하기</h2>
   <p class="kicker">이 원페이저는 아래 공개 원본을 바탕으로 수업 목적에 맞게 단순화·재구성했습니다.</p>
   <div class="where">지금 하는 곳: <strong>원본을 더 확인하고 싶을 때</strong></div></div></div>
   <hr>
@@ -922,22 +1118,22 @@ input:focus,textarea:focus{
     <a href="https://v0.dev/" target="_blank" rel="noopener">v0 official site ↗</a>
   </div>
 
-  <div class="source"><b>ChatPRD — Included Templates</b><br>
+  <div class="source"><b>ChatPRD · Included Templates</b><br>
     ChatPRD 공식 문서에는 <i>Lenny’s 1-Pager</i>와, v0.dev·Bolt·Lovable·Replit 같은 AI code generation 플랫폼을 위한 <i>App Prototyping with AI Code Generation</i> 템플릿이 포함되어 있다고 명시되어 있습니다.<br>
     <a href="https://www.chatprd.ai/docs/included-templates" target="_blank" rel="noopener">Included Templates ↗</a>
   </div>
 
-  <div class="source"><b>ChatPRD — AI-first Builder Templates</b><br>
+  <div class="source"><b>ChatPRD · AI-first Builder Templates</b><br>
     ChatPRD는 <i>Feature Implementation Spec</i>을 requirements, API contracts, UI behavior, test plans를 다루는 AI-first development template으로 공개했습니다. 이 실습의 C 템플릿은 기술을 아직 배우지 않은 학생을 위해 “기술명”보다 “원하는 동작”을 먼저 답하게 단순화했습니다.<br>
     <a href="https://www.chatprd.ai/blog/new-templates-for-ai-builders-smarter-file-search-and-self-serve-seat-upgrades" target="_blank" rel="noopener">AI-first builder templates ↗</a>
   </div>
 
-  <div class="source"><b>ChatPRD — Writing Your First PRD</b><br>
-    공식 가이드는 rough brief에서 시작해 필요한 경우 clarifying questions를 받고, 초안을 만든 뒤 chat으로 반복 수정하는 workflow를 설명합니다. 이 수업의 “Concept Card → AI interview → final PRD” 구조가 이 방식과 맞닿아 있습니다.<br>
+  <div class="source"><b>ChatPRD · Writing Your First PRD</b><br>
+    공식 가이드는 rough brief에서 시작해 필요한 경우 clarifying questions를 받고, 초안을 만든 뒤 chat으로 반복 수정하는 workflow를 설명합니다. 이 수업의 “Concept Card → AI의 역질문 → One-Page PRD” 구조가 이 방식과 맞닿아 있습니다.<br>
     <a href="https://www.chatprd.ai/docs/writing-your-first-prd" target="_blank" rel="noopener">Writing Your First PRD ↗</a>
   </div>
 
-  <div class="source"><b>ChatPRD — Template Library</b><br>
+  <div class="source"><b>ChatPRD · Template Library</b><br>
     PRD, one-pager, technical design 등 공개 템플릿 라이브러리를 직접 둘러볼 수 있습니다.<br>
     <a href="https://www.chatprd.ai/templates" target="_blank" rel="noopener">Template Library ↗</a>
   </div>
@@ -972,7 +1168,7 @@ input:focus,textarea:focus{
 
 <script>
 const TEMPLATES = {
-build: `# v0 Build PRD — Classroom Adaptation
+build: `# v0 Build PRD: Classroom Adaptation
 
 > 목적: 아이디어를 실제 사용자 경험, 화면, 기능, 상태까지 구체화한다.
 > 참고: Vercel v0 build workflow + ChatPRD "App Prototyping with AI Code Generation"
@@ -1048,13 +1244,13 @@ build: `# v0 Build PRD — Classroom Adaptation
 ## 11. Open Questions
 -`,
 
-onepager: `# Lenny’s 1-Pager — Classroom Adaptation
+onepager: `# Lenny’s 1-Pager: Classroom Adaptation
 
 > 목적: 기능을 늘리기 전에 문제, 사용자, 가치, 성공 기준을 한 페이지 관점으로 정렬한다.
 > 참고: ChatPRD에 포함된 "Lenny’s 1-Pager" community template.
 
 ## 1. The Idea
-제품/기능 제안을 1–2문장으로 설명한다.
+제품/기능 제안을 1~2문장으로 설명한다.
 
 ## 2. Problem
 - 우리가 풀려는 핵심 사용자 문제:
@@ -1100,7 +1296,7 @@ onepager: `# Lenny’s 1-Pager — Classroom Adaptation
 ## 10. Open Questions
 -`,
 
-feature: `# Feature Implementation Spec — Beginner-friendly Adaptation
+feature: `# Feature Implementation Spec: Beginner-friendly Adaptation
 
 > 목적: 기능이 실제로 어떻게 동작해야 하는지 명확히 하고, 구현에 필요한 기술은 AI가 기능 요구에서 역으로 제안하게 한다.
 > 참고: ChatPRD "Feature Implementation Spec" (requirements, API contracts, UI behavior, test plans)
@@ -1146,7 +1342,7 @@ so that [결과].
 - 이메일 / 지도 / 결제 / 캘린더 / AI 등 외부 연결이 필요한가?
 - 무엇을 위해 필요한가?
 
-## 8. Technical Recommendations — AI가 제안
+## 8. Technical Recommendations (AI가 제안)
 학생에게 기술명을 요구하지 말 것.
 기능 요구를 바탕으로 AI가 다음을 "선택지 + 이유 + 더 단순한 대안" 형태로 제안한다.
 - 필요한 데이터 저장 방식
@@ -1178,211 +1374,6 @@ so that [결과].
 
 ## 12. Open Questions & Assumptions
 -`
-};
-
-const PROMPTS_KO = {
-build: `당신은 제품 매니저이자 UX 기획 퍼실리테이터입니다.
-
-나는 ① Product Concept Card와 ② v0 Build PRD 템플릿을 제공합니다.
-당신의 역할은 PRD를 즉시 대신 써주는 것이 아니라, 내가 제품을 더 구체적으로 생각하도록 질문한 뒤 템플릿에 맞는 최종 PRD를 함께 완성하는 것입니다.
-
-[작업 규칙]
-1. 먼저 Concept Card와 PRD Template을 읽고 다음을 구분하세요.
-   - 이미 결정된 정보
-   - 빠진 정보
-   - 내가 직접 결정해야 하는 중요한 선택
-   - 합리적으로 추론할 수 있지만 확인이 필요한 부분
-
-2. 아직 최종 PRD를 작성하지 마세요.
-   한 번에 3–5개의 중요한 질문만 하세요.
-
-3. 질문은 특히 다음을 구체화해야 합니다.
-   - 핵심 사용자와 사용 상황
-   - 시작부터 결과까지의 핵심 user journey
-   - 꼭 필요한 기능과 나중으로 미룰 기능
-   - 주요 화면/뷰와 사용자의 행동
-   - empty / loading / error / success 같은 중요한 상태
-   - AI 기능이 있다면 AI와 사람의 역할
-   - 성공했다고 판단할 수 있는 기준
-
-4. 내가 애매하게 답하면 무조건 동의하지 말고 무엇이 애매한지 짧게 알려준 뒤 더 좋은 후속 질문을 하세요.
-
-5. 내가 결정을 어려워하면 2–4개의 현실적인 선택지를 제시하고 각각의 장단점을 짧게 비교하세요.
-
-6. 내가 기술을 모른다고 가정하세요.
-   데이터베이스, 인증, API 같은 기술명을 먼저 묻지 말고,
-   "사용자마다 자기 데이터만 보여야 하나요?", "어떤 정보를 기억해야 하나요?"처럼 제품 행동을 물으세요.
-   필요한 기술은 답변을 바탕으로 나중에 쉬운 말로 제안하세요.
-
-7. 충분한 정보가 모이면 최종 작성 전에 아래 세 가지를 먼저 요약하세요.
-   A. 결정된 것
-   B. 아직 가정인 것
-   C. 열린 질문
-   그리고 내 확인을 받으세요.
-
-8. 내가 확인한 뒤에만 제공된 v0 Build PRD 템플릿의 구조를 유지해 최종 PRD를 Markdown으로 작성하세요.
-   중요한 빈칸을 임의로 만들어내지 말고 [가정] 또는 [열린 질문]으로 명시하세요.
-
-9. 최종 PRD는 다음 단계에서 디자이너나 AI coding agent가 읽어도 핵심 경험과 범위를 이해할 수 있을 만큼 구체적으로 작성하세요.
-
-이제 첨부/붙여넣은 Concept Card와 PRD Template을 읽고, 아직 PRD를 쓰지 말고 첫 질문 3–5개부터 시작하세요.`,
-
-onepager: `당신은 제품 전략 코치이자 PRD 퍼실리테이터입니다.
-
-나는 ① Product Concept Card와 ② Lenny’s 1-Pager 수업용 템플릿을 제공합니다.
-당신의 역할은 내 아이디어를 그럴듯하게 포장하는 것이 아니라, 문제·사용자·가치·성공 기준이 실제로 정렬되어 있는지 질문을 통해 검토한 뒤 One-Pager를 함께 완성하는 것입니다.
-
-[작업 규칙]
-1. 먼저 Concept Card와 Template을 읽고 다음을 구분하세요.
-   - 이미 알고 있는 것
-   - 근거 없이 가정하고 있는 것
-   - 아직 결정하지 않은 것
-   - 서로 모순되거나 너무 넓은 부분
-
-2. 아직 One-Pager를 작성하지 마세요.
-   한 번에 3–5개의 고가치 질문만 하세요.
-
-3. 기능 세부사항보다 먼저 다음을 파고드세요.
-   - 정확히 누구의 문제인가?
-   - 어떤 상황에서 문제가 발생하는가?
-   - 현재 사용자는 어떻게 해결하고 있는가?
-   - 해결되면 사용자에게 무엇이 의미 있게 달라지는가?
-   - 왜 지금 이 문제를 시도할 가치가 있는가?
-   - 가장 단순한 해결 방향은 무엇인가?
-   - 성공했다는 것을 어떤 행동이나 결과로 알 수 있는가?
-   - 이번 버전에서 의도적으로 하지 않을 것은 무엇인가?
-
-4. 내가 solution-first로 답하면 "문제"와 "해결책"을 구분해 다시 질문하세요.
-   예: "AI 추천 기능이 필요하다"라고 말하면, 먼저 그 추천이 없어서 사용자가 겪는 어려움이 무엇인지 물으세요.
-
-5. 내가 결정을 어려워하면 2–4개 선택지와 trade-off를 제시하세요.
-   사실처럼 보이는 시장 수치나 사용자 데이터를 임의로 만들어내지 마세요.
-
-6. 충분한 정보가 모이면 최종 작성 전에
-   A. 결정된 것
-   B. 검증이 필요한 가정
-   C. 열린 질문
-   을 먼저 요약하고 내 확인을 받으세요.
-
-7. 내가 확인한 뒤에만 제공된 One-Pager Template의 구조를 유지해 Markdown으로 작성하세요.
-   문서를 억지로 길게 만들지 말고, 핵심 정렬과 의사결정이 잘 보이게 하세요.
-
-이제 첨부/붙여넣은 Concept Card와 Template을 읽고, 아직 One-Pager를 쓰지 말고 첫 질문 3–5개부터 시작하세요.`,
-
-feature: `당신은 제품 매니저이자 초보자를 돕는 implementation planner입니다.
-
-나는 ① Product Concept Card와 ② Feature Implementation Spec 수업용 템플릿을 제공합니다.
-나는 아직 웹 개발 기술을 배우기 전일 수 있습니다. 따라서 기술 지식을 시험하지 말고, 내가 원하는 제품 동작을 이해한 뒤 필요한 구현 개념과 선택지를 쉬운 말로 번역해 주세요.
-
-[작업 규칙]
-1. 먼저 Concept Card와 Template을 읽고 다음을 구분하세요.
-   - 기능의 목적과 사용자 결과
-   - 이미 정해진 동작
-   - 아직 정의되지 않은 동작
-   - 중요한 예외 상황
-   - 구현을 위해 나중에 기술 선택이 필요한 부분
-
-2. 아직 최종 Spec을 작성하지 마세요.
-   한 번에 3–5개의 질문만 하세요.
-
-3. 질문은 기술명보다 사용자/서비스 행동으로 물으세요.
-   나쁜 질문: "Postgres를 쓸까요?"
-   좋은 질문: "사용자가 만든 정보는 다음 방문에도 남아 있어야 하나요?"
-
-   나쁜 질문: "OAuth가 필요합니까?"
-   좋은 질문: "로그인해야 하나요? 사용자마다 자기 정보만 볼 수 있어야 하나요?"
-
-4. 특히 다음을 명확히 하세요.
-   - 사용자가 기능을 시작하는 조건
-   - 사용자의 입력과 서비스의 결과
-   - 무엇을 저장/기억해야 하는지
-   - 로그인 및 권한 요구
-   - empty/loading/error/invalid input 상태
-   - AI가 실패하거나 확신하지 못할 때의 행동
-   - 완료 여부를 확인할 acceptance criteria
-
-5. 내가 기술을 모르면 답을 요구하지 마세요.
-   대신 기능 요구를 이해한 뒤 필요한 기술을 다음 형식으로 추천하세요.
-   - 필요한 능력/개념
-   - 왜 필요한지 (비전공자 설명)
-   - 초보자 친화적 선택지 1–2개
-   - 더 단순하게 만들 수 있는 대안
-   - 비용/복잡도/개인정보 등 주의점
-   특정 기술을 유일한 정답처럼 말하지 마세요.
-
-6. 근거 없이 실제 성능, 비용, 보안 수준을 확정하지 마세요.
-   확인이 필요한 것은 [검증 필요]라고 표시하세요.
-
-7. 충분한 정보가 모이면 최종 작성 전에
-   A. 결정된 제품 동작
-   B. 제안하는 구현 가설
-   C. 검증이 필요한 부분
-   D. 열린 질문
-   을 요약하고 내 확인을 받으세요.
-
-8. 내가 확인한 뒤에만 제공된 Feature Implementation Spec 구조를 유지하여 Markdown으로 작성하세요.
-   Acceptance Criteria는 관찰하고 테스트할 수 있는 문장으로 작성하세요.
-
-이제 Concept Card와 Template을 읽고, 아직 Spec을 쓰지 말고 첫 질문 3–5개부터 시작하세요.`
-};
-
-const PROMPTS_EN = {
-build: `You are my product manager and UX planning facilitator.
-
-I will provide (1) a Product Concept Card and (2) a classroom v0 Build PRD template.
-Do NOT immediately write the PRD. First interview me so I can make the important product decisions myself.
-
-Rules:
-1. Separate what is already decided, what is missing, what I must decide, and what can only be inferred tentatively.
-2. Ask only 3–5 high-value questions at a time.
-3. Focus on target user, context, core journey, must-have scope, screens/views, important UI states, AI/human roles, and success criteria.
-4. If my answer is vague or contradictory, briefly challenge it and ask a better follow-up.
-5. If I am unsure, offer 2–4 realistic options and explain the trade-offs.
-6. Assume I may not know technical terms. Ask about desired product behavior first; recommend technical options later in plain language.
-7. When enough information is available, summarize: (A) decisions, (B) assumptions, and (C) open questions. Ask me to confirm.
-8. Only after confirmation, write the final PRD in Markdown using EXACTLY the supplied template structure. Do not invent important missing decisions.
-9. Make it specific enough for a designer or AI coding agent to understand the intended experience and scope.
-
-Read the supplied Concept Card and PRD Template. Do not write the PRD yet. Start with your first 3–5 questions.`,
-
-onepager: `You are my product strategy coach and PRD facilitator.
-
-I will provide (1) a Product Concept Card and (2) a classroom adaptation of Lenny’s 1-Pager.
-Your goal is not to make my idea sound impressive. Your goal is to test whether the problem, user, value, scope, and success criteria are aligned.
-
-Rules:
-1. Separate known information, assumptions, undecided issues, contradictions, and overly broad claims.
-2. Do NOT write the One-Pager yet. Ask only 3–5 high-value questions at a time.
-3. Prioritize: who has the problem, when it occurs, current alternatives, meaningful user value, why now, simplest solution direction, success signals, and intentional non-goals.
-4. If I jump to features, bring me back to the underlying user problem.
-5. If I am unsure, offer 2–4 options with clear trade-offs. Never invent market facts or user evidence.
-6. Before drafting, summarize: (A) decisions, (B) assumptions that need validation, and (C) open questions. Ask me to confirm.
-7. Only after confirmation, write the final Markdown using the supplied One-Pager structure. Keep it concise and decision-oriented.
-
-Read the supplied materials. Do not write the One-Pager yet. Start with your first 3–5 questions.`,
-
-feature: `You are my product manager and a beginner-friendly implementation planner.
-
-I will provide (1) a Product Concept Card and (2) a classroom Feature Implementation Spec template.
-I may not know web development yet. Do NOT test my technical knowledge. Understand the behavior I want, then translate it into implementation needs and options in plain language.
-
-Rules:
-1. Separate the feature goal, already-defined behavior, undefined behavior, edge cases, and areas that will require a technical choice later.
-2. Do NOT write the final spec yet. Ask only 3–5 questions at a time.
-3. Ask in terms of product behavior, not technology names. For example, ask “Should each user see only their own data?” rather than “Do you need OAuth?”
-4. Clarify triggers, inputs, outputs, stored information, login/permissions, empty/loading/error/invalid states, AI failure behavior, and testable acceptance criteria.
-5. If I do not know a technology, do not require an answer. After understanding the requirement, recommend:
-   - the capability needed,
-   - why it is needed in beginner-friendly language,
-   - 1–2 beginner-friendly options,
-   - a simpler alternative if possible,
-   - important cost/complexity/privacy cautions.
-   Do not present one technology as the only correct answer.
-6. Mark claims that need checking as [Needs validation].
-7. Before drafting, summarize: (A) decided behavior, (B) proposed implementation hypotheses, (C) items needing validation, and (D) open questions. Ask me to confirm.
-8. Only after confirmation, write the final Markdown using the supplied Feature Implementation Spec structure. Make acceptance criteria observable and testable.
-
-Read the supplied materials. Do not write the spec yet. Start with your first 3–5 questions.`
 };
 
 const META = {
@@ -1468,20 +1459,21 @@ ${g("c3b")}
 ## 5. 사용자가 얻고 싶은 결과
 ${g("c4")}
 
-## 6. 가장 중요한 3단계 경험
-1. ${g("c5a")}
-2. ${g("c5b")}
-3. ${g("c5c")}
-
-## 7. 꼭 있었으면 하는 기능
+## 6. 꼭 있었으면 하는 기능 (경험 → 기능)
 - ${g("c6a")}
 - ${g("c6b")}
 - ${g("c6c")}
 
-## 8. AI가 도와줄 수 있을 것 같은 부분
+## 7. AI가 도와줄 수 있을 것 같은 부분
 ${g("c7")}
 
-## 9. 아직 결정하지 못한 것 / AI와 같이 고민할 것
+## 8. 필요한 데이터와 출처 (API)
+${g("c9")}
+
+## 9. 저장해야 할 정보 (Supabase)
+${g("c10")}
+
+## 10. 아직 결정하지 못한 것 / AI와 같이 고민할 것
 ${g("c8")}
 `;
 }
@@ -1520,20 +1512,20 @@ function renderConceptPreviews(){
       <div class="live-value">${escapeHtml(displayValue("c4"))}</div>
     </div>
     <div class="live-block">
-      <span class="live-label">가장 중요한 경험</span>
-      <ol class="live-list">
-        <li>${escapeHtml(displayValue("c5a"))}</li>
-        <li>${escapeHtml(displayValue("c5b"))}</li>
-        <li>${escapeHtml(displayValue("c5c"))}</li>
-      </ol>
-    </div>
-    <div class="live-block">
-      <span class="live-label">꼭 있었으면 하는 기능</span>
+      <span class="live-label">꼭 있었으면 하는 기능 (경험 → 기능)</span>
       <ul class="live-list">${featureLis}</ul>
     </div>
     <div class="live-block">
       <span class="live-label">AI가 도와줄 수 있는 부분</span>
       <div class="live-value">${escapeHtml(displayValue("c7"))}</div>
+    </div>
+    <div class="live-block">
+      <span class="live-label">필요한 데이터와 출처 (API)</span>
+      <div class="live-value">${escapeHtml(displayValue("c9"))}</div>
+    </div>
+    <div class="live-block">
+      <span class="live-label">저장해야 할 정보 (Supabase)</span>
+      <div class="live-value">${escapeHtml(displayValue("c10"))}</div>
     </div>
     <div class="live-block">
       <span class="live-label">AI와 같이 고민할 것</span>
@@ -1582,15 +1574,6 @@ function renderConceptPreviews(){
 
       <div class="slide-grid">
         <div class="slide-panel-dark">
-          <div class="slide-section-label">Core Experience</div>
-          <ol class="slide-bullets">
-            <li>${escapeHtml(displayValue("c5a"))}</li>
-            <li>${escapeHtml(displayValue("c5b"))}</li>
-            <li>${escapeHtml(displayValue("c5c"))}</li>
-          </ol>
-        </div>
-
-        <div class="slide-panel">
           <div class="slide-section-label">Must-have Features</div>
           <ul class="slide-bullets">${featureLis}</ul>
         </div>
@@ -1598,6 +1581,20 @@ function renderConceptPreviews(){
         <div class="slide-panel">
           <div class="slide-section-label">AI Opportunity</div>
           <div class="slide-text">${escapeHtml(displayValue("c7"))}</div>
+        </div>
+
+        <div class="slide-panel">
+          <div class="slide-section-label">Data Plan</div>
+          <div class="slide-mini-grid">
+            <div>
+              <div class="slide-section-label">Data · API</div>
+              <div class="slide-text">${escapeHtml(displayValue("c9"))}</div>
+            </div>
+            <div>
+              <div class="slide-section-label">Store · Supabase</div>
+              <div class="slide-text">${escapeHtml(displayValue("c10"))}</div>
+            </div>
+          </div>
         </div>
       </div>
     </div>
@@ -1610,6 +1607,7 @@ function renderConceptPreviews(){
       <div class="slide-note">Generated from the Product Concept Card in this one-pager.</div>
     </div>
   `;
+  renderStep4();
 }
 
 function slideHTMLString(){
@@ -1852,6 +1850,127 @@ async function downloadConceptSlidePNG(){
   }
 }
 
+function metaPrompt(mode){
+  const name = selected ? META[selected][0] : "[STEP 3에서 템플릿을 선택하세요]";
+  const src = mode==="attach"
+    ? "첨부한 파일 두 개를 먼저 읽어주세요.\n① concept-card.md: 내가 직접 정리한 문제, 사용자, 기능, 데이터 아이디어\n② prd-template.md ("+name+"): 최종 문서의 구조"
+    : "아래에 두 가지 자료를 붙여넣었습니다.\n① Product Concept Card: 내가 직접 정리한 문제, 사용자, 기능, 데이터 아이디어\n② PRD Template ("+name+"): 최종 문서의 구조";
+  return `당신은 비개발자와 함께 웹 서비스를 기획하는 제품 매니저입니다.
+
+${src}
+
+[목표]
+두 자료를 합쳐 한 페이지 분량의 간결한 One-Page PRD를 완성합니다.
+
+[고정 조건]
+· 서비스 유형: 웹 서비스 (모바일 앱 아님)
+· 데이터 저장소: Supabase
+· 코드, DB 컬럼 타입, API 엔드포인트 명세, 인프라 설정 같은 상세 기술 스펙은 쓰지 않습니다.
+· 대신 아래 두 가지는 반드시 포함합니다.
+  1) 외부 데이터 (API): 어떤 기능에 어떤 외부 데이터가 필요하고, 어떤 API에서 가져오는지
+  2) 저장할 데이터 (Supabase): 어떤 정보를 누구 기준으로 저장하는지 (항목 이름 수준)
+
+[진행 방식]
+1. 바로 PRD를 쓰지 마세요. Concept Card를 Template 구조에 맞춰 보며 비어 있거나 애매한 항목을 찾으세요.
+2. 애매한 항목은 나에게 역으로 질문하세요. 한 번에 최대 5개, 번호를 붙이고, 가능하면 고를 수 있는 선택지 2~3개를 함께 주세요.
+3. 내가 모르겠다고 하면 가장 무난한 선택지를 추천하고 [가정]으로 표시하세요.
+4. 질문이 해결되면 최종 One-Page PRD를 작성하세요.
+
+[One-Page PRD 형식]
+· Template의 섹션 순서를 따르되, A4 한 장을 넘지 않도록 섹션을 합치거나 줄이세요.
+· 각 섹션은 3줄 이내 bullet로 씁니다.
+· 반드시 포함: 서비스 한 줄 소개 / 대상 사용자와 문제 / 핵심 기능 3개 (경험 → 기능) / 외부 데이터 (API) / 저장 데이터 (Supabase) / 이번 버전에서 하지 않을 것 / 성공 기준 / 열린 질문과 [가정]
+· Concept Card에 없는 사실이나 숫자를 지어내지 마세요.
+
+지금은 PRD를 쓰지 말고, 애매한 항목에 대한 첫 질문부터 시작하세요.`;
+}
+function fullPrompt(){
+  const tpl = selected ? TEMPLATES[selected] : "[STEP 3에서 템플릿을 선택하세요]";
+  return metaPrompt("full")
+    + "\n\n\n[자료 ① Product Concept Card]\n\n" + conceptMarkdown()
+    + "\n\n[자료 ② PRD Template]\n\n" + tpl + "\n";
+}
+const SLIDE_PROMPT = `위에서 완성한 One-Page PRD를 발표용 16:9 HTML 슬라이드로 만들어줘.
+
+[조건]
+· 슬라이드 1~2장, 하나의 HTML 파일 (CSS 포함, 외부 라이브러리 없이)
+· 각 슬라이드는 16:9 비율 고정, 브라우저 화면에 맞춰 보이게
+· 1장: 서비스 한 줄 소개 · 대상 사용자와 문제 · 핵심 기능 3개 (경험 → 기능)
+· 2장: 외부 데이터 (API) · 저장 데이터 (Supabase) · 성공 기준 · 열린 질문
+· 긴 문장 대신 키워드, 카드, 화살표 흐름으로 구조화
+· PRD에 없는 내용은 추가하지 마
+· 전체 HTML 코드를 한 블록으로 출력하고, 바로 받을 수 있게 .html 파일 다운로드 링크도 함께 제공해줘`;
+const REVIEW_PROMPT = `방금 만든 슬라이드를 발표자 입장에서 검토해줘.
+1) PRD와 내용이 다르거나 빠진 것
+2) 한 장에 글이 너무 많은 곳
+3) 처음 보는 청중이 이해하기 어려운 표현
+각각 짧게 짚어주고, 고친 전체 HTML을 다시 한 블록으로 출력해줘.`;
+function feedbackPrompt(){
+  const g=id=>getField(id)||"[미작성]";
+  return `오늘 Peer Review에서 받은 피드백이야.
+· 좋은 점: ${g("fb_like")}
+· 아쉬운 점: ${g("fb_wish")}
+· 제안: ${g("fb_what")}
+
+모두 반영할 필요는 없어. 내 서비스의 방향에 비추어
+1) 고치면 좋을 것
+2) 그대로 둬도 되는 것
+을 이유와 함께 짧게 정리해줘. 내가 고를 테니 아직 PRD나 슬라이드는 수정하지 마.`;
+}
+const SPLIT_PROMPT = `위에서 완성한 One-Page PRD를 바탕으로, Claude Code에 단계별로 나눠서 줄 프롬프트 3개를 작성해줘.
+한 번에 모든 걸 만들게 하지 않고, 아래 3단계로 나눠서 하나씩 실행할 거야.
+
+[1단계] 전체 서비스 뼈대 만들기
+· One-Page PRD 내용을 줄이거나 바꾸지 말고 그대로 넣어줘
+· 맨 앞에 "이 PRD대로 Next.js로 웹 서비스를 만들어줘"라는 요청을 한 줄 붙여줘
+· 맨 뒤에는 아래 안내를 붙여줘
+  "이 서비스는 나중에 외부 API(PRD에 적힌 API 이름)와 Supabase를 연결할 예정이야. 하지만 지금은 연결하지 말고, 샘플 데이터로 화면과 기능이 동작하게만 만들어줘."
+
+[2단계] 외부 API 연결하고 Key 넣기
+· PRD의 외부 데이터(API) 중 가장 핵심인 API 하나를 연결
+· .env 파일과 .gitignore를 설정해서 내가 API Key를 직접 붙여넣을 수 있게
+· 예시: "이제 실시간 가격을 가져오기 위해 Finnhub API를 연결할 준비가 됐어. API Key는 준비되어 있어. 내가 Key를 붙여넣을 수 있도록 .env 파일과 .gitignore를 설정해줘."
+
+[3단계] Supabase로 DB 연결
+· PRD의 저장 데이터(Supabase)를 기준으로 로그인과 데이터 저장 기능
+· 사용자는 자기 데이터만 볼 수 있게
+· 예시: "Supabase로 데이터베이스를 설정해줘. Supabase MCP는 연결되어 있어. 사용자가 로그인하고 관심 종목을 저장할 수 있게만 해줘. 사용자는 자기 종목만 볼 수 있어야 해."
+
+[작성 규칙]
+· 모든 출력은 한국어로 작성해줘 (프롬프트 본문도 한국어)
+· 2단계와 3단계 프롬프트는 위 예시처럼 2~5문장으로 짧게
+· 코드나 상세 기술 스펙은 쓰지 말고, 내 서비스에서 "무엇을 원하는지"만
+· PRD에서 API를 확정하지 못했다면 비개발자도 쓰기 쉬운 무료 API 하나를 골라 넣고 설명에 [추천]이라고 표시
+· 출력 형식: 코드 블록은 쓰지 마 (줄바꿈이 안 돼서 읽기 어려워)
+· 대신 단계마다 아래 모양으로, 단계 사이에는 구분선을 넣어줘
+  ### 1단계 · 제목
+  한 줄 설명
+  > 프롬프트 본문 (인용 블록 안에서 자연스럽게 줄바꿈)
+· 마지막으로 3단계 전체를 같은 형식 그대로 담은 claude-code-prompts.md 파일을 만들어 다운로드 링크로 제공해줘`;
+
+function ccMarkdown(){
+  const g=id=>getField(id)||"[미작성]";
+  const line="\n\n***\n\n";
+  return "# Claude Code 3단계 프롬프트"+line
+    +"## 1단계 · 전체 서비스 뼈대\n\n"+g("cc1")+line
+    +"## 2단계 · 외부 API 연결 + Key 넣기\n\n"+g("cc2")+line
+    +"## 3단계 · Supabase로 DB 연결\n\n"+g("cc3")+"\n";
+}
+function downloadCCPrompts(){ saveAll(); dl("claude-code-prompts.md", ccMarkdown()); }
+function setStatus(id, ok, text){
+  const el=document.getElementById(id); if(!el) return;
+  el.classList.toggle("ok",ok); el.classList.toggle("warn",!ok);
+  el.querySelector("p").textContent=text;
+}
+function renderStep4(){
+  const req=["c1","c2","c3a","c3b","c4"];
+  const missing=req.filter(id=>!getField(id)).length;
+  setStatus("st-concept", missing===0, missing===0 ? "필수 항목 작성 완료" : `필수 항목 ${missing}개가 비어 있습니다. 비어 있어도 AI가 질문으로 채웁니다.`);
+  setStatus("st-template", !!selected, selected ? META[selected][0] : "아직 선택하지 않았습니다. STEP 3에서 골라주세요.");
+  const f=document.getElementById("promptFull"); if(f) f.textContent=fullPrompt();
+  const m=document.getElementById("promptMeta"); if(m) m.textContent=metaPrompt("attach");
+  const fb=document.getElementById("feedbackPrompt"); if(fb) fb.textContent=feedbackPrompt();
+}
 function selectPRD(v,scroll=true){
   selected=v;
   localStorage.setItem("selectedPRD",v);
@@ -1860,42 +1979,32 @@ function selectPRD(v,scroll=true){
   document.getElementById("prdTitle").textContent=META[v][0];
   document.getElementById("prdDesc").textContent=META[v][1];
   document.getElementById("templatePreview").textContent=TEMPLATES[v];
-  document.getElementById("promptKo").textContent=PROMPTS_KO[v];
-  document.getElementById("promptEn").textContent=PROMPTS_EN[v];
-  if(scroll) document.getElementById("step4").scrollIntoView({behavior:"smooth",block:"start"});
+  renderStep4();
+  if(scroll) document.getElementById("prdContent").scrollIntoView({behavior:"smooth",block:"nearest"});
 }
 function requireSelected(){
   if(!selected){
-    toast("먼저 STEP 3에서 PRD를 선택하세요.");
+    toast("먼저 STEP 3에서 PRD 템플릿을 선택하세요.");
     return false;
   }
   return true;
 }
 function downloadTemplate(){
   if(!requireSelected()) return;
-  dl(`${selected}-prd-template.md`, TEMPLATES[selected]);
+  dl("prd-template.md", TEMPLATES[selected]);
 }
 function copyTemplate(){
   if(!requireSelected()) return;
   copyText(TEMPLATES[selected]);
 }
-function downloadBundle(){
-  if(!requireSelected()) return;
-  dl(`prd-lab-${selected}-bundle.md`, conceptMarkdown()+`
-
----
-
-`+TEMPLATES[selected]);
-}
-function showPrompt(lang,btn){
+function copyFullPrompt(){ if(!requireSelected()) return; saveAll(); copyText(fullPrompt()); }
+function downloadFullPrompt(){ if(!requireSelected()) return; saveAll(); dl("one-page-prd-prompt.md", fullPrompt()); }
+function copyMetaPrompt(){ if(!requireSelected()) return; copyText(metaPrompt("attach")); }
+function showPrompt(key,btn){
   document.querySelectorAll(".prompt-panel").forEach(x=>x.classList.remove("active"));
   document.querySelectorAll(".tab").forEach(x=>x.classList.remove("active"));
-  document.getElementById("prompt-"+lang).classList.add("active");
+  document.getElementById("prompt-"+key).classList.add("active");
   btn.classList.add("active");
-}
-function copyPrompt(lang){
-  if(!requireSelected()) return;
-  copyText(lang==="ko" ? PROMPTS_KO[selected] : PROMPTS_EN[selected]);
 }
 function updateProgress(){
   const c=[...document.querySelectorAll(".progressCheck")];
@@ -1904,6 +2013,9 @@ function updateProgress(){
   document.getElementById("progressBar").style.width=p+"%";
   document.getElementById("progressText").textContent=p+"%";
 }
+document.getElementById("slidePrompt").textContent=SLIDE_PROMPT;
+document.getElementById("reviewPrompt").textContent=REVIEW_PROMPT;
+document.getElementById("splitPrompt").textContent=SPLIT_PROMPT;
 restore();
 </script>
 </body>
