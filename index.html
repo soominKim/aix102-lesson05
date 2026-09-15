@@ -838,22 +838,22 @@ input:focus,textarea:focus{
   <div class="grid3">
     <label class="choice"><input type="radio" name="prd" value="build" onchange="selectPRD(this.value)"><div class="card">
       <span class="badge green">A · Build-oriented</span><h3>v0 Build PRD</h3>
-      <p><b>핵심 질문:</b> 사용자가 실제로 무엇을 보고, 누르고, 경험해야 할까?</p>
-      <p><b>잘 보이는 것:</b> 핵심 흐름, 화면, 기능, 상태, 프로토타입 범위</p>
-      <p><b>추천:</b> 아이디어가 있는데 아직 서비스 모습이 흐릿할 때</p>
+      <p><b>핵심 질문:</b> 무엇을, 누가 어떤 순간에, 어떤 제약으로 쓰나?</p>
+      <p><b>구성:</b> Product Surface · Context of Use · Constraints &amp; Taste (3개)</p>
+      <p><b>추천:</b> 짧고 빠르게, 만들 화면을 떠올리고 싶을 때</p>
     </div></label>
 
     <label class="choice"><input type="radio" name="prd" value="onepager" onchange="selectPRD(this.value)"><div class="card">
       <span class="badge blue">B · Strategy-oriented</span><h3>Lenny’s 1-Pager</h3>
-      <p><b>핵심 질문:</b> 누구의 어떤 문제를 왜 지금 풀어야 할까?</p>
-      <p><b>잘 보이는 것:</b> 문제, 대상 사용자, 가치, 성공 기준, 리스크</p>
+      <p><b>핵심 질문:</b> 이 문제가 진짜이고 풀 가치가 있나?</p>
+      <p><b>구성:</b> Description · Problem · Why · Success · Audience · What · How · When (8개)</p>
       <p><b>추천:</b> 기능보다 문제 정의와 방향을 더 검증하고 싶을 때</p>
     </div></label>
 
     <label class="choice"><input type="radio" name="prd" value="feature" onchange="selectPRD(this.value)"><div class="card">
       <span class="badge violet">C · Execution-oriented</span><h3>Feature Implementation Spec</h3>
       <p><b>핵심 질문:</b> 이 기능이 정확히 어떻게 동작해야 할까?</p>
-      <p><b>잘 보이는 것:</b> 동작 규칙, 예외 상황, 완료 기준</p>
+      <p><b>구성:</b> Requirements · API Contracts · UI Behavior · Test Plans (4개)</p>
       <p><b>추천:</b> 기능이 꽤 구체적이고 “실제로 만들려면?”까지 가보고 싶을 때</p>
     </div></label>
   </div>
@@ -881,12 +881,12 @@ input:focus,textarea:focus{
       <thead><tr><th></th><th>A. v0 Build PRD</th><th>B. Lenny’s 1-Pager</th><th>C. Feature Implementation Spec</th></tr></thead>
       <tbody>
         <tr><th>생각하는 관점</th><td>Designer / Builder</td><td>Product Manager</td><td>Implementation Planner</td></tr>
-        <tr><th>주로 묻는 것</th><td>Flow, screen, feature, state</td><td>Problem, user, value, success</td><td>Behavior, edge case, acceptance criteria</td></tr>
+        <tr><th>주로 묻는 것</th><td>Product surface, context of use, constraints</td><td>Problem, why, success, audience, experiment, timeline</td><td>Requirements, API contracts, UI behavior, test plans</td></tr>
         <tr><th>기술 지식 필요?</th><td>거의 없음</td><td>없음</td><td>없음 (원하는 동작만 답하면 됨)</td></tr>
-        <tr><th>주의점</th><td>기능부터 생각하기 쉬움</td><td>화면 디테일은 부족할 수 있음</td><td>AI의 기술 추천은 결론이 아니라 <b>가설</b></td></tr>
+        <tr><th>주의점</th><td>짧은 만큼 문제 정의는 약할 수 있음</td><td>화면 디테일은 부족할 수 있음</td><td>AI의 기술 추천은 결론이 아니라 <b>가설</b></td></tr>
       </tbody>
     </table>
-    <div class="note" style="margin-top:16px"><b>출처 표시:</b> A는 Vercel v0의 공개 build workflow와 ChatPRD의 <i>App Prototyping with AI Code Generation</i> 템플릿을 참고한 <b>수업용 adaptation</b>입니다. B의 <i>Lenny’s 1-Pager</i>와 C의 <i>Feature Implementation Spec</i>은 ChatPRD 공개 템플릿 라이브러리의 형식을 비전공자 수업용으로 단순화한 버전입니다.</div>
+    <div class="note" style="margin-top:16px"><b>출처 표시:</b> A는 Vercel 공식 가이드 <i>How to prompt v0</i>의 3요소, B는 Lenny Rachitsky의 1-pager 원문 섹션과 질문을 그대로 옮기고 한국어 번역만 덧붙였습니다. C는 ChatPRD가 공개한 네 영역(requirements, API contracts, UI behavior, test plans)을 섹션으로 쓰고, 본문이 공개되지 않아 세부 질문만 수업용으로 작성했습니다. Vercel은 별도의 공식 PRD 템플릿을 제공하지 않습니다.</div>
   </details>
 
   <div class="checklist"><label class="check"><input class="progressCheck" type="checkbox" data-key="chosendone"><span>템플릿을 하나 골랐고, 펼쳐진 항목을 훑어봤다.</span></label></div>
@@ -1114,8 +1114,8 @@ input:focus,textarea:focus{
   <hr>
 
   <div class="source"><b>Vercel v0</b><br>
-    v0는 아이디어에서 작동하는 앱을 만들고, GitHub와 동기화하거나 Vercel에 배포할 수 있는 build workflow를 공개합니다. 이 실습의 A 템플릿은 그 “build-oriented” 관점을 반영한 수업용 adaptation입니다.<br>
-    <a href="https://v0.dev/" target="_blank" rel="noopener">v0 official site ↗</a>
+    Vercel은 별도의 공식 PRD 템플릿을 제공하지 않고, v0에 요청을 잘 쓰는 법을 Product Surface · Context of Use · Constraints &amp; Taste 세 요소로 안내합니다. 이 실습의 A 템플릿은 이 구조를 그대로 옮겼습니다.<br>
+    <a href="https://vercel.com/blog/how-to-prompt-v0" target="_blank" rel="noopener">How to prompt v0 ↗</a> · <a href="https://v0.app/docs/prd-design" target="_blank" rel="noopener">v0 Docs: PRD design ↗</a>
   </div>
 
   <div class="source"><b>ChatPRD · Included Templates</b><br>
@@ -1123,8 +1123,13 @@ input:focus,textarea:focus{
     <a href="https://www.chatprd.ai/docs/included-templates" target="_blank" rel="noopener">Included Templates ↗</a>
   </div>
 
+  <div class="source"><b>Lenny Rachitsky · 1-Pager</b><br>
+    Lenny가 “How I start every project”라고 소개한 1-pager 원본 문서입니다. Description · Problem · Why · Success · Audience · What · How · When 여덟 섹션으로 되어 있고, 이 실습의 B 템플릿은 질문 원문을 그대로 옮겼습니다.<br>
+    <a href="https://docs.google.com/document/d/1541V32QgSwyCFWxtiMIThn-6n-2s7fVWztEWVa970uo/edit" target="_blank" rel="noopener">1-Pager 원본 (Google Docs) ↗</a> · <a href="https://www.lennysnewsletter.com/p/my-favorite-templates-issue-37" target="_blank" rel="noopener">My favorite templates ↗</a>
+  </div>
+
   <div class="source"><b>ChatPRD · AI-first Builder Templates</b><br>
-    ChatPRD는 <i>Feature Implementation Spec</i>을 requirements, API contracts, UI behavior, test plans를 다루는 AI-first development template으로 공개했습니다. 이 실습의 C 템플릿은 기술을 아직 배우지 않은 학생을 위해 “기술명”보다 “원하는 동작”을 먼저 답하게 단순화했습니다.<br>
+    ChatPRD는 <i>Feature Implementation Spec</i>을 requirements, API contracts, UI behavior, test plans를 다루는 AI-first development template으로 공개했습니다. 이 실습의 C 템플릿은 이 네 영역을 그대로 섹션으로 쓰고, 본문이 앱 안에서만 제공되어 세부 질문만 수업용으로 작성했습니다.<br>
     <a href="https://www.chatprd.ai/blog/new-templates-for-ai-builders-smarter-file-search-and-self-serve-seat-upgrades" target="_blank" rel="noopener">AI-first builder templates ↗</a>
   </div>
 
@@ -1168,218 +1173,107 @@ input:focus,textarea:focus{
 
 <script>
 const TEMPLATES = {
-build: `# v0 Build PRD: Classroom Adaptation
+build: `# v0 Build PRD
 
-> 목적: 아이디어를 실제 사용자 경험, 화면, 기능, 상태까지 구체화한다.
-> 참고: Vercel v0 build workflow + ChatPRD "App Prototyping with AI Code Generation"
+> 출처: Vercel, "How to prompt v0" (https://vercel.com/blog/how-to-prompt-v0)
+> v0 공식 가이드의 3요소 구조를 그대로 옮기고, 괄호 안에 한국어 안내만 덧붙였습니다.
 
-## 1. Product Overview
-- Product / Service Name:
-- One-line Description:
-- Primary User:
-- Core User Outcome:
+Build [product surface]
+Used by [who], in [what moment], to [what decision]
+Constraints: [platform/device], [visual tone], [layout assumptions]
 
-## 2. Problem & Context
-- 사용자가 겪는 문제:
-- 문제가 발생하는 구체적 상황:
-- 현재 사용자가 하는 대안:
+## 1. Product Surface
+What specifically are you building? List the actual components, features, and data.
+(무엇을 만드나요? 실제 화면 구성요소, 기능, 보여줄 데이터를 적습니다.)
+- Components:
+- Features:
+- Data:
 
-## 3. Core User Journey
-1.
-2.
-3.
-4.
+## 2. Context of Use
+Who's using this, and in what moment?
+(누가, 어떤 순간에 쓰나요?)
+- Who uses this?
+- When do they use it?
+- What decision are they making?
+- How much time do they have?
 
-## 4. Must-have Features
-### Feature 1
-- 목적:
+## 3. Constraints & Taste
+How should it work and look? Constraints tell v0 what not to invent.
+(어떻게 동작하고 보여야 하나요? 제약을 적어두면 AI가 없는 것을 지어내지 않습니다.)
+- Platform / device:
+- Visual tone:
+- Layout assumptions:`,
+
+onepager: `# Lenny’s 1-Pager
+
+> 출처: Lenny Rachitsky, "How I start every project" 1-pager 템플릿
+> (Lenny’s Newsletter, "My favorite product management templates")
+> 원문 섹션과 질문을 그대로 두고, 괄호 안에 한국어 번역만 덧붙였습니다.
+
+# [Project Title]
+
+## Description
+What is it?
+(무엇인가요?)
+
+## Problem
+What problem is this solving?
+(어떤 문제를 해결하나요?)
+
+## Why
+How do we know this is a real problem and worth solving?
+(진짜 문제이고 풀 가치가 있다는 걸 어떻게 아나요?)
+
+## Success
+How do we know if we've solved this problem?
+(문제를 해결했는지 어떻게 알 수 있나요?)
+
+## Audience
+Who are we building for?
+(누구를 위해 만드나요?)
+
+## What
+Roughly, what does this look like in the product?
+(제품에서 대략 어떤 모습인가요?)
+
+## How
+What is the experiment plan?
+(어떤 실험으로 확인하나요?)
+
+## When
+When does it ship and what are the milestones?
+(언제 출시하고, 중간 목표는 무엇인가요?)`,
+
+feature: `# Feature Implementation Spec
+
+> 출처: ChatPRD AI-first builder 템플릿
+> 공개 설명 "requirements, API contracts, UI behavior, and test plans"의 네 영역을 그대로 섹션으로 썼습니다.
+> 템플릿 본문은 ChatPRD 앱 안에서만 제공되어, 각 섹션의 한국어 질문은 수업용으로 작성했습니다.
+
+## 1. Requirements
+(이 기능이 무엇을 해야 하나요?)
+- 기능의 목적:
 - 사용자가 하는 행동:
-- 서비스의 반응:
 - 기대 결과:
 
-### Feature 2
-- 목적:
-- 사용자가 하는 행동:
-- 서비스의 반응:
-- 기대 결과:
+## 2. API Contracts
+(어떤 데이터를 주고받나요? 기술 용어를 몰라도 "무엇을 넣으면 무엇이 나오는지"로 적습니다.)
+- 입력 → 출력:
+- 연결할 외부 API:
 
-## 5. Main Screens / Views
-각 화면의 목적, 핵심 정보, 주요 행동을 적는다.
+## 3. UI Behavior
+(화면에서 어떻게 반응하나요?)
+- 처음 · 불러오는 중 · 비어 있음 · 오류 · 성공일 때:
 
-### Screen 1
-- Purpose:
-- Main elements:
-- Primary action:
-
-## 6. Important UI States
-- First use / onboarding:
-- Empty state:
-- Loading:
-- Error:
-- Success / completion:
-
-## 7. AI Behavior (해당되는 경우)
-- AI가 담당하는 일:
-- AI가 알기 위해 필요한 맥락:
-- AI가 확신하지 못할 때:
-- 사용자가 수정/거절할 수 있는 방법:
-
-## 8. Data / Connections
-기술명을 몰라도 된다. "무엇을 기억해야 하는가 / 다른 서비스와 연결해야 하는가"를 설명한다.
-- 저장해야 하는 정보:
-- 사용자별로 구분되어야 하는 정보:
-- 연결이 필요한 외부 서비스:
-
-## 9. Scope
-### In Scope
--
-
-### Out of Scope
--
-
-## 10. Success Criteria
-- 사용자가 무엇을 성공적으로 할 수 있으면 되는가?
-- 어떤 행동/결과를 보면 가치가 있다고 판단할 수 있는가?
-
-## 11. Open Questions
--`,
-
-onepager: `# Lenny’s 1-Pager: Classroom Adaptation
-
-> 목적: 기능을 늘리기 전에 문제, 사용자, 가치, 성공 기준을 한 페이지 관점으로 정렬한다.
-> 참고: ChatPRD에 포함된 "Lenny’s 1-Pager" community template.
-
-## 1. The Idea
-제품/기능 제안을 1~2문장으로 설명한다.
-
-## 2. Problem
-- 우리가 풀려는 핵심 사용자 문제:
-- 이 문제를 겪는 사람:
-- 문제가 특히 심해지는 상황:
-- 현재 사용자의 대안:
-
-## 3. Why This / Why Now?
-- 왜 이 문제를 풀 가치가 있는가?
-- 왜 지금 시도할 이유가 있는가?
-- 아직 근거가 없는 부분은 무엇인가?
-
-## 4. Target User
-- Primary user:
-- 중요한 특성/상황:
-- 우리가 우선하지 않는 사용자:
-
-## 5. Proposed Solution
-가장 단순한 해결 방향을 설명한다. 기능 목록으로만 쓰지 않는다.
-
-## 6. Key User Value
-이 제품을 사용한 뒤 사용자에게 무엇이 의미 있게 달라지는가?
-
-## 7. Success
-- 핵심 사용자 행동:
-- 핵심 사용자 결과:
-- 관찰/측정 가능한 성공 신호:
-
-## 8. Scope
-### In Scope
--
-
-### Not in Scope
--
-
-## 9. Risks & Assumptions
-### Assumptions
--
-
-### Risks
--
-
-## 10. Open Questions
--`,
-
-feature: `# Feature Implementation Spec: Beginner-friendly Adaptation
-
-> 목적: 기능이 실제로 어떻게 동작해야 하는지 명확히 하고, 구현에 필요한 기술은 AI가 기능 요구에서 역으로 제안하게 한다.
-> 참고: ChatPRD "Feature Implementation Spec" (requirements, API contracts, UI behavior, test plans)
-
-## 1. Feature Goal
-- 이 기능으로 사용자가 할 수 있어야 하는 것:
-- 이 기능이 해결하는 문제:
-- 대상 사용자:
-
-## 2. User Story
-As a [사용자],
-I want to [행동],
-so that [결과].
-
-## 3. Expected Behavior
-사용자가 무엇을 하면 서비스가 어떻게 반응해야 하는지 단계별로 적는다.
-
-1.
-2.
-3.
-
-## 4. Inputs & Outputs
-기술 용어 대신 사용자가 주는 정보와 받는 결과를 먼저 설명한다.
-- 사용자가 입력/제공하는 것:
-- 서비스가 보여주거나 만드는 것:
-- 서비스가 기억해야 하는 것:
-
-## 5. Access & Permissions
-- 로그인 필요 여부:
-- 사용자마다 자기 데이터만 보여야 하는가?
-- 누가 생성/조회/수정/삭제할 수 있는가?
-
-## 6. UI Behavior & States
-- Normal / happy path:
-- First use:
-- Empty:
-- Loading:
-- Invalid input:
-- Error:
-- AI가 답하지 못하거나 확신하지 못하는 경우:
-
-## 7. External Connections
-- 이메일 / 지도 / 결제 / 캘린더 / AI 등 외부 연결이 필요한가?
-- 무엇을 위해 필요한가?
-
-## 8. Technical Recommendations (AI가 제안)
-학생에게 기술명을 요구하지 말 것.
-기능 요구를 바탕으로 AI가 다음을 "선택지 + 이유 + 더 단순한 대안" 형태로 제안한다.
-- 필요한 데이터 저장 방식
-- 인증/권한이 필요한지
-- 외부 API가 필요한지
-- 초보자에게 적합한 구현 선택지
-- 비용/복잡도 주의점
-
-## 9. Edge Cases
-- 데이터가 없을 때:
-- 잘못된 입력:
-- 네트워크/외부 서비스 실패:
-- 중복 작업:
-- 사용자 취소/되돌리기:
-- 기타:
-
-## 10. Acceptance Criteria
-기능이 완료되었다고 판단할 수 있는 관찰 가능한 조건.
-- [ ]
-- [ ]
-- [ ]
-
-## 11. Test Scenarios
-### Happy Path
--
-
-### Failure / Edge Cases
--
-
-## 12. Open Questions & Assumptions
+## 4. Test Plans
+(완성됐다고 판단할 확인 항목은 무엇인가요?)
 -`
 };
 
 const META = {
- build:["v0 Build PRD","사용 경험·화면·기능을 구체화하는 build-oriented 문서입니다."],
- onepager:["Lenny’s 1-Pager","문제·사용자·가치·성공 기준을 정렬하는 strategy-oriented 문서입니다."],
- feature:["Feature Implementation Spec","제품 동작과 예외·검증 기준을 명확히 하고 필요한 기술을 AI가 역으로 제안하도록 하는 문서입니다."]
+ build:["v0 Build PRD","Vercel 공식 가이드의 3요소(무엇을 · 누가 언제 · 제약)로 짧게 정리하는 문서입니다."],
+ onepager:["Lenny’s 1-Pager","Lenny Rachitsky의 원문 8개 질문으로 문제와 방향을 검증하는 문서입니다."],
+ feature:["Feature Implementation Spec","요구사항 · API · 화면 동작 · 테스트 네 영역으로 기능 동작을 명확히 하는 문서입니다."]
 };
 
 
