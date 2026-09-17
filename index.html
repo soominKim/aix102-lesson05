@@ -718,75 +718,87 @@ input:focus,textarea:focus{
     <div class="step2-form">
       <div class="w2-guide">
         <b>W2 과제와 연결하기</b>
-        <p>지난주 제출한 <i>[W2 Assignment] Problem Definition One-Pager</i>를 옆에 펼쳐두세요. 각 질문 옆 <span class="w2-map">W2 · 번호</span> 표시는 그 답을 가져올 W2 항목입니다. 그대로 복사하기보다 한 문장으로 다듬어 옮기세요. <span class="w2-map new">NEW</span> 표시는 W2에 없던, 이번에 새로 생각할 질문입니다.</p>
+        <p>지난주 제출한 <i>[W2 Assignment] Problem Definition One-Pager</i>를 옆에 펼쳐두세요. ①~⑦은 W2와 <b>같은 질문</b>이라 W2 답을 그대로 옮겨 와도 됩니다. 각 질문 옆 <span class="w2-map">W2 · 번호</span> 표시는 가져올 W2 항목입니다. ⑧~⑩ 기능은 W2 08 아이디어를 더 구체화하는 칸이고, <span class="w2-map new">NEW</span> 표시는 W2에 없던, 이번에 새로 생각할 질문입니다.</p>
       </div>
 
       <div class="field">
-        <label>① 우리가 만들고 싶은 것은? <span class="required-mark" aria-label="필수"></span> <span class="help">한 문장</span> <span class="w2-map">W2 · 07 HMW + 08 Solution Ideas</span></label>
-        <div class="w2-hint">07 HMW 질문에 대한 답으로, 08 Solution Ideas 중 가장 해보고 싶은 아이디어 하나를 골라 한 문장으로 적습니다.</div>
-        <textarea data-save="c1" id="c1" placeholder="예: 자기 전 스마트폰 사용을 자연스럽게 마무리하도록 돕는 AI 수면 루틴 서비스"></textarea>
-      </div>
-
-      <div class="field">
-        <label>② 누구를 위한 것인가? <span class="required-mark" aria-label="필수"></span> <span class="help">가능한 한 구체적으로</span> <span class="w2-map">W2 · 01 Target User</span></label>
-        <div class="w2-hint">01 Target User를 옮기되, 06 POV의 [고객] 표현과 맞춰 역할·상황·맥락까지 적습니다.</div>
+        <label>① 누구를 이해하려고 했는가? <span class="w2-map">W2 · 01 Target User</span></label>
+        <div class="w2-hint">역할·상황·맥락까지 구체적으로. ‘20대 직장인’ 같은 넓은 범주는 대상이 아닙니다.</div>
         <textarea data-save="c2" id="c2" placeholder="예: 기숙사에서 생활하며 잠들기 전 숏폼을 오래 보는 대학생"></textarea>
       </div>
 
       <div class="field">
-        <label>③ 그 사람은 언제, 어떤 어려움을 겪는가? (상황) <span class="required-mark" aria-label="필수"></span> <span class="w2-map">W2 · 02 Key Data · 03 Key Theme</span></label>
-        <div class="w2-hint">02 Key Data의 [행동 및 상황]과 03 Key Theme에서 반복된 장면을 가져옵니다.</div>
-        <textarea data-save="c3a" id="c3a" placeholder="예: 불을 끄고 침대에 누워 알람을 맞추려고 폰을 열었을 때"></textarea>
+        <label>② 반복적으로 나타난 패턴은 무엇인가? <span class="w2-map">W2 · 03 Key Theme</span></label>
+        <div class="w2-hint">2명 이상에게서 공통으로 나타난 행동·감정·언어를 묶어 이름을 붙입니다.</div>
+        <textarea data-save="c11" id="c11" placeholder="예: ‘딱 하나만 더’ 반복 → 취침 지연, 3명 중 3명"></textarea>
       </div>
 
       <div class="field">
-        <label>④ 그 상황에서 구체적으로 무엇이 어려운가? <span class="required-mark" aria-label="필수"></span> <span class="w2-map">W2 · 05 Pain Point · 04 Insight</span></label>
-        <div class="w2-hint">05의 Pain을 적고, 04 Key Insight(왜 그런지)를 한 줄 덧붙이면 좋습니다.</div>
-        <textarea data-save="c3b" id="c3b" placeholder="예: 짧게 볼 생각이었지만 멈출 지점을 찾지 못해 1시간 이상 보게 됨"></textarea>
+        <label>③ 우리가 새롭게 깨달은 것은 무엇인가? <span class="w2-map">W2 · 04 Key Insight</span></label>
+        <div class="w2-hint">패턴 뒤에 숨은 이유(왜)를 한 문장으로. 이미 알던 사실이면 인사이트가 아닙니다.</div>
+        <textarea data-save="c12" id="c12" placeholder="예: 의지가 약해서가 아니라 ‘이제 끝’이라는 신호가 없어서 멈추지 못한다"></textarea>
       </div>
 
       <div class="field">
-        <label>⑤ 무엇이 가능해지면 좋을까? <span class="required-mark" aria-label="필수"></span> <span class="help">기능 이름보다 사용자 결과</span> <span class="w2-map">W2 · 05 Need · 07 HMW [원하는 상태]</span></label>
-        <div class="w2-hint">05의 Need와 07 HMW의 [원하는 상태]를 사용자 결과 문장으로 적습니다.</div>
-        <textarea data-save="c4" id="c4" placeholder="예: 사용자가 억지로 차단당한다는 느낌 없이 스스로 오늘의 폰 사용을 끝내고 잠들 준비를 할 수 있으면 좋겠다."></textarea>
+        <label>④ 그래서 사용자는 무엇을 원하고 있는가? <span class="w2-map">W2 · 05 User Need &amp; Pain Point</span></label>
+        <div class="w2-hint">원하는 상태(Need)와, 언제·어떤 상황에서 그것이 막히는지(Pain)를 한 칸에 함께 적습니다. 기능 이름보다 사용자 결과로 씁니다.</div>
+<textarea data-save="c4" id="c4" placeholder="예: 억지로 차단당하는 느낌 없이 스스로 폰 사용을 끝내고 잠들고 싶지만, 침대에 누워 알람을 맞추려 폰을 열면 짧게 볼 생각이어도 멈출 지점을 찾지 못해 1시간 이상 보게 된다"></textarea>
       </div>
 
       <div class="field">
-        <label>⑥ 꼭 있었으면 하는 기능 1 <span class="help">경험 → 기능 · 선택</span> <span class="w2-map">W2 · 08 Idea 01</span></label>
-        <div class="w2-hint">사용자가 겪는 <b>경험</b>과 그것을 가능하게 하는 <b>구체적인 기능</b>을 함께 적습니다. 08 Solution Ideas를 경험 순서대로 풀어보세요.</div>
+        <label>⑤ [고객]는 [문제/상황] 때문에, [니즈]가 필요하다. <span class="w2-map">W2 · 06 Point of View</span></label>
+        <div class="w2-hint">01·04·05(카드 ①·③·④)를 한 문장으로 합칩니다. 해결책은 아직 넣지 않습니다.</div>
+        <textarea data-save="c13" id="c13" placeholder="예: 기숙사 대학생은 폰 사용을 끝낼 신호가 없기 때문에, 억지 차단 없이 스스로 마무리할 계기가 필요하다."></textarea>
+      </div>
+
+      <div class="field">
+        <label>⑥ 어떻게 하면 [사용자]가 [원하는 상태]가 되도록 할 수 있을까? <span class="w2-map">W2 · 07 How Might We</span></label>
+        <div class="w2-hint">POV를 질문으로 바꿉니다. 너무 넓지도, 답이 이미 정해져 있지도 않게.</div>
+        <textarea data-save="c14" id="c14" placeholder="예: 어떻게 하면 대학생이 자기 전 폰 사용을 스스로 기분 좋게 끝낼 수 있을까?"></textarea>
+      </div>
+
+      <div class="field">
+        <label>⑦ Solution Ideas: 그중 우리가 만들고 싶은 것은? <span class="help">한 문장</span> <span class="w2-map">W2 · 08 Solution Ideas</span></label>
+        <div class="w2-hint">W2 08의 아이디어 중 가장 해보고 싶은 하나를 골라 한 문장으로 적습니다.</div>
+        <textarea data-save="c1" id="c1" placeholder="예: 자기 전 스마트폰 사용을 자연스럽게 마무리하도록 돕는 AI 수면 루틴 서비스"></textarea>
+      </div>
+
+      <div class="field">
+        <label>⑧ 꼭 있었으면 하는 기능 1 <span class="help">경험 → 기능</span> <span class="w2-map">W2 · 08 Idea 01</span></label>
+        <div class="w2-hint">사용자가 겪는 <b>경험</b>과 그것을 가능하게 하는 <b>구체적인 기능</b>을 함께 적습니다. W2 08 아이디어를 경험 순서대로 풀어보세요.</div>
         <textarea data-save="c6a" id="c6a" placeholder="예: 경험: 잠들 준비를 하며 오늘 상태를 간단히 알려준다 → 기능: 3초 컨디션 체크(피곤함·스트레스 버튼)"></textarea>
       </div>
 
       <div class="field">
-        <label>⑦ 꼭 있었으면 하는 기능 2 <span class="help">경험 → 기능 · 선택</span> <span class="w2-map">W2 · 08 Idea 02</span></label>
+        <label>⑨ 꼭 있었으면 하는 기능 2 <span class="help">경험 → 기능</span> <span class="w2-map">W2 · 08 Idea 02</span></label>
         <textarea data-save="c6b" id="c6b" placeholder="예: 경험: 오늘 상황에 맞는 마무리 방법을 제안받는다 → 기능: 사용 기록과 답변 기반 AI 마무리 루틴 추천"></textarea>
       </div>
 
       <div class="field">
-        <label>⑧ 꼭 있었으면 하는 기능 3 <span class="help">경험 → 기능 · 선택</span> <span class="w2-map">W2 · 08 Idea 03</span></label>
+        <label>⑩ 꼭 있었으면 하는 기능 3 <span class="help">경험 → 기능</span> <span class="w2-map">W2 · 08 Idea 03</span></label>
         <textarea data-save="c6c" id="c6c" placeholder="예: 경험: 자연스럽게 폰을 내려놓고 잠들 준비로 넘어간다 → 기능: 화면이 서서히 어두워지는 굿나잇 모드"></textarea>
       </div>
 
       <div class="field">
-        <label>⑨ AI가 잘 도와줄 수 있을 것 같은 부분 <span class="help">선택 · 모르면 비워도 됨</span> <span class="w2-map">W2 · 04 Insight</span></label>
+        <label>⑪ AI가 잘 도와줄 수 있을 것 같은 부분 <span class="help">모르면 비워도 됨</span> <span class="w2-map new">NEW</span></label>
         <textarea data-save="c7" id="c7" placeholder="예: 그날의 사용 기록과 사용자의 답변을 보고 오늘은 어떤 마무리 방법이 적당한지 제안"></textarea>
       </div>
 
       <div class="field">
-        <label>⑩ 어떤 데이터가 필요하고, 어디서 얻을 수 있을까? (API) <span class="help">선택</span> <span class="w2-map new">NEW</span></label>
-        <div class="w2-hint">⑥~⑧ 기능이 동작하려면 무엇을 알아야 하는지 적고, 그 데이터를 가져올 곳(외부 API, 사용자 직접 입력, AI 모델)을 짝지어 봅니다. 서비스 이름을 몰라도 “날씨 정보를 주는 API”처럼 쓰면 됩니다.</div>
+        <label>⑫ 어떤 데이터가 필요하고, 어디서 얻을 수 있을까? (API) <span class="w2-map new">NEW</span></label>
+        <div class="w2-hint">⑧~⑩ 기능이 동작하려면 무엇을 알아야 하는지 적고, 그 데이터를 가져올 곳(외부 API, 사용자 직접 입력, AI 모델)을 짝지어 봅니다. 서비스 이름을 몰라도 “날씨 정보를 주는 API”처럼 쓰면 됩니다.</div>
         <div class="w2-hint">💬 막히면 GPT에게: <b>“[이런이런 걸] 하고 싶은데, 비개발자도 쓸 수 있는 무료 또는 저렴한 API 추천해줘.”</b></div>
         <textarea data-save="c9" id="c9" placeholder="예: 오늘 화면 사용 시간 → 기기 스크린타임 API / 기상·수면 시간 → 사용자 입력 / 마무리 루틴 추천 문장 → OpenAI 또는 Claude API"></textarea>
       </div>
 
       <div class="field">
-        <label>⑪ 어떤 정보를 저장해야 하는가? (Supabase) <span class="help">선택</span> <span class="w2-map new">NEW</span></label>
+        <label>⑬ 어떤 정보를 저장해야 하는가? (Supabase) <span class="w2-map new">NEW</span></label>
         <div class="w2-hint">다음에 다시 열었을 때 남아 있어야 하는 정보를 적습니다. “누구의 / 무엇을 / 언제” 단위로 나누면 Supabase 테이블 설계로 바로 이어집니다.</div>
         <textarea data-save="c10" id="c10" placeholder="예: 사용자 프로필(이름, 목표 취침 시간) / 매일의 컨디션 체크 기록(날짜, 상태) / AI가 추천한 루틴과 실제 실행 여부"></textarea>
       </div>
 
       <div class="field">
-        <label>⑫ 아직 결정하지 못한 것 / AI와 같이 고민하고 싶은 것 <span class="help">선택</span></label>
+        <label>⑭ 아직 결정하지 못한 것 / AI와 같이 고민하고 싶은 것 <span class="w2-map new">NEW</span></label>
         <textarea data-save="c8" id="c8" placeholder="예: 사용을 멈추게 하는 방식이 알림이 좋을지, 대화가 좋을지 모르겠다. 앱이 나을지 웹서비스가 나을지도 모르겠다."></textarea>
       </div>
 
@@ -797,7 +809,7 @@ input:focus,textarea:focus{
       </div>
 
       <div class="checklist">
-        <label class="check"><input class="progressCheck" type="checkbox" data-key="conceptdone"><span>필수 항목(빨간 점)까지 채웠다. 기능·데이터·저장 등 선택 항목은 비워두어도 된다.</span></label>
+        <label class="check"><input class="progressCheck" type="checkbox" data-key="conceptdone"><span>떠오르는 데까지 채웠다. 비어 있는 항목은 다운로드·복사 시 자동으로 빠진다.</span></label>
       </div>
     </div>
 
@@ -1351,44 +1363,29 @@ function restore(){
 }
 
 function conceptMarkdown(){
-  const g=id=>(document.getElementById(id)?.value||"").trim()||"[미작성]";
-  return `# Product Concept Card
-
-## Rough Idea
-${g("rough")}
-
-## 1. 우리가 만들고 싶은 것은?
-${g("c1")}
-
-## 2. 누구를 위한 것인가?
-${g("c2")}
-
-## 3. 사용 상황
-${g("c3a")}
-
-## 4. 구체적인 어려움
-${g("c3b")}
-
-## 5. 사용자가 얻고 싶은 결과
-${g("c4")}
-
-## 6. 꼭 있었으면 하는 기능 (경험 → 기능)
-- ${g("c6a")}
-- ${g("c6b")}
-- ${g("c6c")}
-
-## 7. AI가 도와줄 수 있을 것 같은 부분
-${g("c7")}
-
-## 8. 필요한 데이터와 출처 (API)
-${g("c9")}
-
-## 9. 저장해야 할 정보 (Supabase)
-${g("c10")}
-
-## 10. 아직 결정하지 못한 것 / AI와 같이 고민할 것
-${g("c8")}
-`;
+  const g=id=>(document.getElementById(id)?.value||"").trim();
+  const sections=[
+    ["Rough Idea",["rough"]],
+    ["누구를 이해하려고 했는가? (W2 01 Target User)",["c2"]],
+    ["반복적으로 나타난 패턴 (W2 03 Key Theme)",["c11"]],
+    ["우리가 새롭게 깨달은 것 (W2 04 Key Insight)",["c12"]],
+    ["사용자는 무엇을 원하고 있는가? (W2 05 User Need & Pain Point)",["c4"]],
+    ["Point of View (W2 06)",["c13"]],
+    ["How Might We (W2 07)",["c14"]],
+    ["우리가 만들고 싶은 것 (W2 08 Solution Ideas)",["c1"]],
+    ["꼭 있었으면 하는 기능 (경험 → 기능)",["c6a","c6b","c6c"],true],
+    ["AI가 도와줄 수 있을 것 같은 부분",["c7"]],
+    ["필요한 데이터와 출처 (API)",["c9"]],
+    ["저장해야 할 정보 (Supabase)",["c10"]],
+    ["아직 결정하지 못한 것 / AI와 같이 고민할 것",["c8"]]
+  ];
+  let out="# Product Concept Card\n";
+  sections.forEach(([title,ids,list])=>{
+    const vals=ids.map(g).filter(Boolean);
+    if(!vals.length) return;
+    out+="\n## "+title+"\n"+(list?vals.map(v=>"- "+v).join("\n"):vals.join("\n"))+"\n";
+  });
+  return out;
 }
 
 function renderConceptPreviews(){
@@ -1405,24 +1402,32 @@ function renderConceptPreviews(){
       <div class="live-value">${escapeHtml(displayValue("rough"))}</div>
     </div>
     <div class="live-block">
-      <span class="live-label">우리가 만들고 싶은 것</span>
-      <div class="live-value">${escapeHtml(displayValue("c1"))}</div>
-    </div>
-    <div class="live-block">
-      <span class="live-label">누구를 위한 것인가</span>
+      <span class="live-label">01 Target User</span>
       <div class="live-value">${escapeHtml(displayValue("c2"))}</div>
     </div>
     <div class="live-block">
-      <span class="live-label">상황</span>
-      <div class="live-value">${escapeHtml(displayValue("c3a"))}</div>
+      <span class="live-label">03 Key Theme</span>
+      <div class="live-value">${escapeHtml(displayValue("c11"))}</div>
     </div>
     <div class="live-block">
-      <span class="live-label">어려움</span>
-      <div class="live-value">${escapeHtml(displayValue("c3b"))}</div>
+      <span class="live-label">04 Key Insight</span>
+      <div class="live-value">${escapeHtml(displayValue("c12"))}</div>
     </div>
     <div class="live-block">
-      <span class="live-label">사용자가 얻고 싶은 결과</span>
+      <span class="live-label">05 User Need &amp; Pain Point</span>
       <div class="live-value">${escapeHtml(displayValue("c4"))}</div>
+    </div>
+    <div class="live-block">
+      <span class="live-label">06 Point of View</span>
+      <div class="live-value">${escapeHtml(displayValue("c13"))}</div>
+    </div>
+    <div class="live-block">
+      <span class="live-label">07 How Might We</span>
+      <div class="live-value">${escapeHtml(displayValue("c14"))}</div>
+    </div>
+    <div class="live-block">
+      <span class="live-label">08 우리가 만들고 싶은 것</span>
+      <div class="live-value">${escapeHtml(displayValue("c1"))}</div>
     </div>
     <div class="live-block">
       <span class="live-label">꼭 있었으면 하는 기능 (경험 → 기능)</span>
@@ -1466,21 +1471,21 @@ function renderConceptPreviews(){
         </div>
 
         <div class="slide-panel">
-          <div class="slide-section-label">Situation & Problem</div>
+          <div class="slide-section-label">Insight & POV</div>
           <div class="slide-mini-grid">
             <div>
-              <div class="slide-section-label">Situation</div>
-              <div class="slide-text">${escapeHtml(displayValue("c3a"))}</div>
+              <div class="slide-section-label">Key Insight</div>
+              <div class="slide-text">${escapeHtml(displayValue("c12"))}</div>
             </div>
             <div>
-              <div class="slide-section-label">Difficulty</div>
-              <div class="slide-text">${escapeHtml(displayValue("c3b"))}</div>
+              <div class="slide-section-label">Point of View</div>
+              <div class="slide-text">${escapeHtml(displayValue("c13"))}</div>
             </div>
           </div>
         </div>
 
         <div class="slide-panel">
-          <div class="slide-section-label">Desired Outcome</div>
+          <div class="slide-section-label">Need & Pain</div>
           <div class="slide-text">${escapeHtml(displayValue("c4"))}</div>
         </div>
       </div>
@@ -1876,9 +1881,8 @@ function setStatus(id, ok, text){
   el.querySelector("p").textContent=text;
 }
 function renderStep4(){
-  const req=["c1","c2","c3a","c3b","c4"];
-  const missing=req.filter(id=>!getField(id)).length;
-  setStatus("st-concept", missing===0, missing===0 ? "필수 항목 작성 완료" : `필수 항목 ${missing}개가 비어 있습니다. 비어 있어도 AI가 질문으로 채웁니다.`);
+  const filled=["c2","c11","c12","c4","c13","c14","c1","c6a","c6b","c6c","c7","c9","c10","c8"].filter(id=>getField(id)).length;
+  setStatus("st-concept", filled>0, filled>0 ? `${filled}개 항목 작성됨. 채운 항목만 AI에게 전달됩니다.` : "아직 작성한 항목이 없습니다. STEP 2에서 떠오르는 데까지 채워주세요.");
   setStatus("st-template", !!selected, selected ? META[selected][0] : "아직 선택하지 않았습니다. STEP 3에서 골라주세요.");
   const f=document.getElementById("promptFull"); if(f) f.textContent=fullPrompt();
   const m=document.getElementById("promptMeta"); if(m) m.textContent=metaPrompt("attach");
