@@ -1528,6 +1528,14 @@ function renderConceptPreviews(){
   renderStep4();
 }
 
+// Shrink slide text until every column fits inside the fixed 16:9 canvas.
+function fitSlideCanvas(canvas){
+  if(!canvas) return;
+  let sc=1; canvas.style.setProperty("--s",sc);
+  const over=()=>[...canvas.querySelectorAll(".slide-grid")].some(g=>g.scrollHeight>g.clientHeight+1) || canvas.scrollHeight>canvas.clientHeight+1;
+  while(over() && sc>0.45){ sc=Math.round((sc-0.03)*100)/100; canvas.style.setProperty("--s",sc); }
+}
+
 function slideHTMLString(){
   const slideInner = document.getElementById("conceptSlidePreview").innerHTML;
   return `<!doctype html>
@@ -1551,17 +1559,18 @@ body{margin:0;background:#f4f4f4;font-family:Inter,"Noto Sans KR",Arial,sans-ser
 .slide-top{display:grid;grid-template-columns:1fr auto;gap:16px;align-items:start;padding-bottom:14px;border-bottom:1px solid var(--hairline-cool)}
 .slide-kicker{display:inline-flex;align-items:center;gap:8px;color:var(--ink-mute);font-size:11px;line-height:1.4;text-transform:uppercase}
 .slide-kicker::before{content:"";width:7px;height:7px;border-radius:9999px;background:var(--primary)}
-.slide-title{margin:8px 0 0;color:var(--ink);font-size:48px;line-height:1.08;font-weight:500;letter-spacing:-1.44px}
-.slide-main{display:grid;grid-template-columns:1.25fr .95fr;gap:18px;padding-top:16px}
+.slide-title{margin:8px 0 0;color:var(--ink);font-size:calc(48px*var(--s,1));line-height:1.08;font-weight:500;letter-spacing:-1.44px}
+.slide-main{display:grid;grid-template-columns:1.25fr .95fr;gap:18px;padding-top:16px;min-height:0}
 .slide-panel,.slide-panel-dark{border:1px solid var(--hairline);border-radius:12px;padding:14px 14px 12px;background:#fff}
 .slide-panel-dark{background:var(--canvas-night);border-color:#2a2a2a;color:#fff}
-.slide-grid{display:grid;gap:12px}
+.slide-grid{display:flex;flex-direction:column;gap:12px;min-height:0;overflow:hidden}
+.slide-grid>*{flex:1 1 auto}
 .slide-section-label{color:var(--ink-mute);font-size:11px;line-height:1.4;text-transform:uppercase;margin-bottom:6px}
 .slide-panel-dark .slide-section-label{color:rgba(255,255,255,.66)}
-.slide-text{color:var(--ink);font-size:22px;line-height:1.55;white-space:pre-wrap;word-break:keep-all}
+.slide-text{color:var(--ink);font-size:calc(22px*var(--s,1));line-height:1.55;white-space:pre-wrap;word-break:keep-all}
 .slide-panel-dark .slide-text{color:#fff}
 .slide-bullets{margin:0;padding-left:28px}
-.slide-bullets li{margin:6px 0;color:inherit;font-size:21px;line-height:1.45}
+.slide-bullets li{margin:calc(6px*var(--s,1)) 0;color:inherit;font-size:calc(21px*var(--s,1));line-height:1.45}
 .slide-mini-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
 .slide-footer{display:flex;align-items:center;justify-content:space-between;gap:12px;padding-top:14px;border-top:1px solid var(--hairline-cool)}
 .slide-chip{display:inline-flex;align-items:center;gap:6px;padding:4px 7px;border:1px solid var(--hairline);border-radius:4px;background:var(--canvas-soft);font-size:11px;color:var(--ink-mute)}
@@ -1574,6 +1583,12 @@ body{margin:0;background:#f4f4f4;font-family:Inter,"Noto Sans KR",Arial,sans-ser
 <div class="wrapper">
   <div class="slide-canvas">${slideInner}</div>
 </div>
+<script>
+${fitSlideCanvas.toString()}
+const c=document.querySelector(".slide-canvas");
+fitSlideCanvas(c);
+if(document.fonts&&document.fonts.ready) document.fonts.ready.then(()=>fitSlideCanvas(c));
+<\/script>
 </body>
 </html>`;
 }
@@ -1704,17 +1719,18 @@ const SLIDE_EXPORT_CSS = `
 #slidePngExportRoot .slide-top{display:grid;grid-template-columns:1fr auto;gap:16px;align-items:start;padding-bottom:14px;border-bottom:1px solid #ededed}
 #slidePngExportRoot .slide-kicker{display:inline-flex;align-items:center;gap:8px;color:#707070;font-size:20px;line-height:1.4;text-transform:uppercase}
 #slidePngExportRoot .slide-kicker::before{content:"";width:12px;height:12px;border-radius:9999px;background:#3ecf8e}
-#slidePngExportRoot .slide-title{margin:8px 0 0;color:#171717;font-size:48px;line-height:1.08;font-weight:500;letter-spacing:-1.44px}
+#slidePngExportRoot .slide-title{margin:8px 0 0;color:#171717;font-size:calc(48px*var(--s,1));line-height:1.08;font-weight:500;letter-spacing:-1.44px}
 #slidePngExportRoot .slide-main{display:grid;grid-template-columns:1.25fr .95fr;gap:18px;padding-top:16px;min-height:0}
 #slidePngExportRoot .slide-panel,#slidePngExportRoot .slide-panel-dark{border:1px solid #dfdfdf;border-radius:12px;padding:14px 14px 12px;background:#fff}
 #slidePngExportRoot .slide-panel-dark{background:#1c1c1c;border-color:#2a2a2a;color:#fff}
-#slidePngExportRoot .slide-grid{display:grid;gap:12px}
+#slidePngExportRoot .slide-grid{display:flex;flex-direction:column;gap:12px;min-height:0;overflow:hidden}
+#slidePngExportRoot .slide-grid>*{flex:1 1 auto}
 #slidePngExportRoot .slide-section-label{color:#707070;font-size:18px;line-height:1.4;text-transform:uppercase;margin-bottom:6px}
 #slidePngExportRoot .slide-panel-dark .slide-section-label{color:rgba(255,255,255,.66)}
-#slidePngExportRoot .slide-text{color:#171717;font-size:22px;line-height:1.55;white-space:pre-wrap;word-break:keep-all}
+#slidePngExportRoot .slide-text{color:#171717;font-size:calc(22px*var(--s,1));line-height:1.55;white-space:pre-wrap;word-break:keep-all}
 #slidePngExportRoot .slide-panel-dark .slide-text{color:#fff}
 #slidePngExportRoot .slide-bullets{margin:0;padding-left:28px}
-#slidePngExportRoot .slide-bullets li{margin:6px 0;color:inherit;font-size:21px;line-height:1.45}
+#slidePngExportRoot .slide-bullets li{margin:calc(6px*var(--s,1)) 0;color:inherit;font-size:calc(21px*var(--s,1));line-height:1.45}
 #slidePngExportRoot .slide-mini-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
 #slidePngExportRoot .slide-footer{display:flex;align-items:center;justify-content:space-between;gap:12px;padding-top:14px;border-top:1px solid #ededed}
 #slidePngExportRoot .slide-chip{display:inline-flex;align-items:center;gap:6px;padding:6px 10px;border:1px solid #dfdfdf;border-radius:4px;background:#fafafa;font-size:17px;color:#707070}
@@ -1749,6 +1765,7 @@ async function downloadConceptSlidePNG(){
   document.body.appendChild(root);
   try{
     await document.fonts.ready;
+    fitSlideCanvas(slide);
     const blob = await htmlToImage.toBlob(slide, {
       pixelRatio:2,
       backgroundColor:"#ffffff",
