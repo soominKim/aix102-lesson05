@@ -534,7 +534,7 @@ input:focus,textarea:focus{
   font-size:26px;line-height:1.08;font-weight:500;letter-spacing:-.6px;
 }
 .slide-main{
-  display:grid;grid-template-columns:1.25fr .95fr;gap:18px;
+  display:grid;grid-template-columns:.9fr 1.1fr;gap:18px;
   padding-top:16px;min-height:0
 }
 .slide-panel,.slide-panel-dark{
@@ -1465,7 +1465,7 @@ function renderConceptPreviews(){
 
     <div class="slide-main">
       <div class="slide-grid">
-        <div class="slide-panel">
+        <div class="slide-panel slide-compact">
           <div class="slide-section-label">Target User</div>
           <div class="slide-text">${escapeHtml(displayValue("c2"))}</div>
         </div>
@@ -1560,11 +1560,12 @@ body{margin:0;background:#f4f4f4;font-family:Inter,"Noto Sans KR",Arial,sans-ser
 .slide-kicker{display:inline-flex;align-items:center;gap:8px;color:var(--ink-mute);font-size:11px;line-height:1.4;text-transform:uppercase}
 .slide-kicker::before{content:"";width:7px;height:7px;border-radius:9999px;background:var(--primary)}
 .slide-title{margin:8px 0 0;color:var(--ink);font-size:calc(48px*var(--s,1));line-height:1.08;font-weight:500;letter-spacing:-1.44px}
-.slide-main{display:grid;grid-template-columns:1.25fr .95fr;gap:18px;padding-top:16px;min-height:0}
+.slide-main{display:grid;grid-template-columns:.9fr 1.1fr;gap:18px;padding-top:16px;min-height:0}
 .slide-panel,.slide-panel-dark{border:1px solid var(--hairline);border-radius:12px;padding:14px 14px 12px;background:#fff}
 .slide-panel-dark{background:var(--canvas-night);border-color:#2a2a2a;color:#fff}
 .slide-grid{display:flex;flex-direction:column;gap:12px;min-height:0;overflow:hidden}
 .slide-grid>*{flex:1 1 auto}
+.slide-grid>.slide-compact{flex:0 0 auto}
 .slide-section-label{color:var(--ink-mute);font-size:11px;line-height:1.4;text-transform:uppercase;margin-bottom:6px}
 .slide-panel-dark .slide-section-label{color:rgba(255,255,255,.66)}
 .slide-text{color:var(--ink);font-size:calc(22px*var(--s,1));line-height:1.55;white-space:pre-wrap;word-break:keep-all}
@@ -1720,11 +1721,12 @@ const SLIDE_EXPORT_CSS = `
 #slidePngExportRoot .slide-kicker{display:inline-flex;align-items:center;gap:8px;color:#707070;font-size:20px;line-height:1.4;text-transform:uppercase}
 #slidePngExportRoot .slide-kicker::before{content:"";width:12px;height:12px;border-radius:9999px;background:#3ecf8e}
 #slidePngExportRoot .slide-title{margin:8px 0 0;color:#171717;font-size:calc(48px*var(--s,1));line-height:1.08;font-weight:500;letter-spacing:-1.44px}
-#slidePngExportRoot .slide-main{display:grid;grid-template-columns:1.25fr .95fr;gap:18px;padding-top:16px;min-height:0}
+#slidePngExportRoot .slide-main{display:grid;grid-template-columns:.9fr 1.1fr;gap:18px;padding-top:16px;min-height:0}
 #slidePngExportRoot .slide-panel,#slidePngExportRoot .slide-panel-dark{border:1px solid #dfdfdf;border-radius:12px;padding:14px 14px 12px;background:#fff}
 #slidePngExportRoot .slide-panel-dark{background:#1c1c1c;border-color:#2a2a2a;color:#fff}
 #slidePngExportRoot .slide-grid{display:flex;flex-direction:column;gap:12px;min-height:0;overflow:hidden}
 #slidePngExportRoot .slide-grid>*{flex:1 1 auto}
+#slidePngExportRoot .slide-grid>.slide-compact{flex:0 0 auto}
 #slidePngExportRoot .slide-section-label{color:#707070;font-size:18px;line-height:1.4;text-transform:uppercase;margin-bottom:6px}
 #slidePngExportRoot .slide-panel-dark .slide-section-label{color:rgba(255,255,255,.66)}
 #slidePngExportRoot .slide-text{color:#171717;font-size:calc(22px*var(--s,1));line-height:1.55;white-space:pre-wrap;word-break:keep-all}
